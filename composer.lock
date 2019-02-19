@@ -1,0 +1,943 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "This file is @generated automatically"
+    ],
+    "content-hash": "059e2f09fc161afac69cda4c7d196e11",
+    "packages": [
+        {
+            "name": "container-interop/container-interop",
+            "version": "1.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/container-interop/container-interop.git",
+                "reference": "79cbf1341c22ec75643d841642dd5d6acd83bdb8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/container-interop/container-interop/zipball/79cbf1341c22ec75643d841642dd5d6acd83bdb8",
+                "reference": "79cbf1341c22ec75643d841642dd5d6acd83bdb8",
+                "shasum": ""
+            },
+            "require": {
+                "psr/container": "^1.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Interop\\Container\\": "src/Interop/Container/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Promoting the interoperability of container objects (DIC, SL, etc.)",
+            "homepage": "https://github.com/container-interop/container-interop",
+            "time": "2017-02-14T19:40:03+00:00"
+        },
+        {
+            "name": "facebook/graph-sdk",
+            "version": "5.7.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/facebook/php-graph-sdk.git",
+                "reference": "2d8250638b33d73e7a87add65f47fabf91f8ad9b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/facebook/php-graph-sdk/zipball/2d8250638b33d73e7a87add65f47fabf91f8ad9b",
+                "reference": "2d8250638b33d73e7a87add65f47fabf91f8ad9b",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^5.4|^7.0"
+            },
+            "require-dev": {
+                "guzzlehttp/guzzle": "~5.0",
+                "mockery/mockery": "~0.8",
+                "phpunit/phpunit": "~4.0"
+            },
+            "suggest": {
+                "guzzlehttp/guzzle": "Allows for implementation of the Guzzle HTTP client",
+                "paragonie/random_compat": "Provides a better CSPRNG option in PHP 5"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "5.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Facebook\\": "src/Facebook/"
+                },
+                "files": [
+                    "src/Facebook/polyfills.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Facebook Platform"
+            ],
+            "authors": [
+                {
+                    "name": "Facebook",
+                    "homepage": "https://github.com/facebook/php-graph-sdk/contributors"
+                }
+            ],
+            "description": "Facebook SDK for PHP",
+            "homepage": "https://github.com/facebook/php-graph-sdk",
+            "keywords": [
+                "facebook",
+                "sdk"
+            ],
+            "time": "2018-12-11T22:56:31+00:00"
+        },
+        {
+            "name": "hybridauth/hybridauth",
+            "version": "v2.9.6",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/hybridauth/hybridauth.git",
+                "reference": "8e17bdb8d28efedb008504550db230c985723d8a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/hybridauth/hybridauth/zipball/8e17bdb8d28efedb008504550db230c985723d8a",
+                "reference": "8e17bdb8d28efedb008504550db230c985723d8a",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "facebook/graph-sdk": "^5.4",
+                "php": ">=5.2.0"
+            },
+            "require-dev": {
+                "squizlabs/php_codesniffer": "2.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Hybrid": "hybridauth/"
+                },
+                "classmap": [
+                    "hybridauth/Hybrid"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "(MIT or GPL-3.0+)"
+            ],
+            "authors": [
+                {
+                    "name": "Miled",
+                    "email": "hybridauth@gmail.com"
+                }
+            ],
+            "description": "Open source social sign on PHP library.",
+            "homepage": "http://hybridauth.sourceforge.net",
+            "keywords": [
+                "OpenId",
+                "facebook",
+                "google",
+                "hybridauth",
+                "login",
+                "oauth",
+                "social",
+                "twitter",
+                "yahoo"
+            ],
+            "time": "2017-07-09T07:14:21+00:00"
+        },
+        {
+            "name": "imagine/imagine",
+            "version": "v0.6.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/avalanche123/Imagine.git",
+                "reference": "149041d2a1b517107bfe270ca2b1a17aa341715d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/avalanche123/Imagine/zipball/149041d2a1b517107bfe270ca2b1a17aa341715d",
+                "reference": "149041d2a1b517107bfe270ca2b1a17aa341715d",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.2"
+            },
+            "require-dev": {
+                "sami/sami": "dev-master"
+            },
+            "suggest": {
+                "ext-gd": "to use the GD implementation",
+                "ext-gmagick": "to use the Gmagick implementation",
+                "ext-imagick": "to use the Imagick implementation"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-develop": "0.7-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Imagine": "lib/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Bulat Shakirzyanov",
+                    "email": "mallluhuct@gmail.com",
+                    "homepage": "http://avalanche123.com"
+                }
+            ],
+            "description": "Image processing for PHP 5.3",
+            "homepage": "http://imagine.readthedocs.org/",
+            "keywords": [
+                "drawing",
+                "graphics",
+                "image manipulation",
+                "image processing"
+            ],
+            "time": "2015-09-19T16:54:05+00:00"
+        },
+        {
+            "name": "nikic/fast-route",
+            "version": "v1.3.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/nikic/FastRoute.git",
+                "reference": "181d480e08d9476e61381e04a71b34dc0432e812"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/nikic/FastRoute/zipball/181d480e08d9476e61381e04a71b34dc0432e812",
+                "reference": "181d480e08d9476e61381e04a71b34dc0432e812",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^4.8.35|~5.7"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "FastRoute\\": "src/"
+                },
+                "files": [
+                    "src/functions.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Nikita Popov",
+                    "email": "nikic@php.net"
+                }
+            ],
+            "description": "Fast request router for PHP",
+            "keywords": [
+                "router",
+                "routing"
+            ],
+            "time": "2018-02-13T20:26:39+00:00"
+        },
+        {
+            "name": "phpmailer/phpmailer",
+            "version": "v5.2.27",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/PHPMailer/PHPMailer.git",
+                "reference": "dde1db116511aa4956389d75546c5be4c2beb2a6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/PHPMailer/PHPMailer/zipball/dde1db116511aa4956389d75546c5be4c2beb2a6",
+                "reference": "dde1db116511aa4956389d75546c5be4c2beb2a6",
+                "shasum": ""
+            },
+            "require": {
+                "ext-ctype": "*",
+                "php": ">=5.0.0"
+            },
+            "require-dev": {
+                "doctrine/annotations": "1.2.*",
+                "jms/serializer": "0.16.*",
+                "phpdocumentor/phpdocumentor": "2.*",
+                "phpunit/phpunit": "4.8.*",
+                "symfony/debug": "2.8.*",
+                "symfony/filesystem": "2.8.*",
+                "symfony/translation": "2.8.*",
+                "symfony/yaml": "2.8.*",
+                "zendframework/zend-cache": "2.5.1",
+                "zendframework/zend-config": "2.5.1",
+                "zendframework/zend-eventmanager": "2.5.1",
+                "zendframework/zend-filter": "2.5.1",
+                "zendframework/zend-i18n": "2.5.1",
+                "zendframework/zend-json": "2.5.1",
+                "zendframework/zend-math": "2.5.1",
+                "zendframework/zend-serializer": "2.5.*",
+                "zendframework/zend-servicemanager": "2.5.*",
+                "zendframework/zend-stdlib": "2.5.1"
+            },
+            "suggest": {
+                "league/oauth2-google": "Needed for Google XOAUTH2 authentication"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "class.phpmailer.php",
+                    "class.phpmaileroauth.php",
+                    "class.phpmaileroauthgoogle.php",
+                    "class.smtp.php",
+                    "class.pop3.php",
+                    "extras/EasyPeasyICS.php",
+                    "extras/ntlm_sasl_client.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL-2.1"
+            ],
+            "authors": [
+                {
+                    "name": "Jim Jagielski",
+                    "email": "jimjag@gmail.com"
+                },
+                {
+                    "name": "Marcus Bointon",
+                    "email": "phpmailer@synchromedia.co.uk"
+                },
+                {
+                    "name": "Andy Prevost",
+                    "email": "codeworxtech@users.sourceforge.net"
+                },
+                {
+                    "name": "Brent R. Matzelle"
+                }
+            ],
+            "description": "PHPMailer is a full-featured email creation and transfer class for PHP",
+            "time": "2018-11-15T22:32:31+00:00"
+        },
+        {
+            "name": "pimple/pimple",
+            "version": "v3.2.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/silexphp/Pimple.git",
+                "reference": "9e403941ef9d65d20cba7d54e29fe906db42cf32"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/silexphp/Pimple/zipball/9e403941ef9d65d20cba7d54e29fe906db42cf32",
+                "reference": "9e403941ef9d65d20cba7d54e29fe906db42cf32",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0",
+                "psr/container": "^1.0"
+            },
+            "require-dev": {
+                "symfony/phpunit-bridge": "^3.2"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "3.2.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Pimple": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
+                }
+            ],
+            "description": "Pimple, a simple Dependency Injection Container",
+            "homepage": "http://pimple.sensiolabs.org",
+            "keywords": [
+                "container",
+                "dependency injection"
+            ],
+            "time": "2018-01-21T07:42:36+00:00"
+        },
+        {
+            "name": "predis/predis",
+            "version": "v1.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/nrk/predis.git",
+                "reference": "f0210e38881631afeafb56ab43405a92cafd9fd1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/nrk/predis/zipball/f0210e38881631afeafb56ab43405a92cafd9fd1",
+                "reference": "f0210e38881631afeafb56ab43405a92cafd9fd1",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.9"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.8"
+            },
+            "suggest": {
+                "ext-curl": "Allows access to Webdis when paired with phpiredis",
+                "ext-phpiredis": "Allows faster serialization and deserialization of the Redis protocol"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Predis\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Daniele Alessandri",
+                    "email": "suppakilla@gmail.com",
+                    "homepage": "http://clorophilla.net"
+                }
+            ],
+            "description": "Flexible and feature-complete Redis client for PHP and HHVM",
+            "homepage": "http://github.com/nrk/predis",
+            "keywords": [
+                "nosql",
+                "predis",
+                "redis"
+            ],
+            "time": "2016-06-16T16:22:20+00:00"
+        },
+        {
+            "name": "psr/container",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/php-fig/container.git",
+                "reference": "b7ce3b176482dbbc1245ebf52b181af44c2cf55f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/php-fig/container/zipball/b7ce3b176482dbbc1245ebf52b181af44c2cf55f",
+                "reference": "b7ce3b176482dbbc1245ebf52b181af44c2cf55f",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Psr\\Container\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "PHP-FIG",
+                    "homepage": "http://www.php-fig.org/"
+                }
+            ],
+            "description": "Common Container Interface (PHP FIG PSR-11)",
+            "homepage": "https://github.com/php-fig/container",
+            "keywords": [
+                "PSR-11",
+                "container",
+                "container-interface",
+                "container-interop",
+                "psr"
+            ],
+            "time": "2017-02-14T16:28:37+00:00"
+        },
+        {
+            "name": "psr/http-message",
+            "version": "1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/php-fig/http-message.git",
+                "reference": "f6561bf28d520154e4b0ec72be95418abe6d9363"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/php-fig/http-message/zipball/f6561bf28d520154e4b0ec72be95418abe6d9363",
+                "reference": "f6561bf28d520154e4b0ec72be95418abe6d9363",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Psr\\Http\\Message\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "PHP-FIG",
+                    "homepage": "http://www.php-fig.org/"
+                }
+            ],
+            "description": "Common interface for HTTP messages",
+            "homepage": "https://github.com/php-fig/http-message",
+            "keywords": [
+                "http",
+                "http-message",
+                "psr",
+                "psr-7",
+                "request",
+                "response"
+            ],
+            "time": "2016-08-06T14:39:51+00:00"
+        },
+        {
+            "name": "slim/php-view",
+            "version": "2.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/slimphp/PHP-View.git",
+                "reference": "122ed121a8d9cf91a94020814d2a3ee6c836754f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/slimphp/PHP-View/zipball/122ed121a8d9cf91a94020814d2a3ee6c836754f",
+                "reference": "122ed121a8d9cf91a94020814d2a3ee6c836754f",
+                "shasum": ""
+            },
+            "require": {
+                "psr/http-message": "^1.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^4.8",
+                "slim/slim": "^3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Slim\\Views\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Glenn Eggleton",
+                    "email": "geggleto@gmail.com"
+                }
+            ],
+            "description": "Render PHP view scripts into a PSR-7 Response object.",
+            "keywords": [
+                "framework",
+                "php",
+                "phtml",
+                "renderer",
+                "slim",
+                "template",
+                "view"
+            ],
+            "time": "2016-10-11T07:43:08+00:00"
+        },
+        {
+            "name": "slim/slim",
+            "version": "3.12.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/slimphp/Slim.git",
+                "reference": "f4947cc900b6e51cbfda58b9f1247bca2f76f9f0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/slimphp/Slim/zipball/f4947cc900b6e51cbfda58b9f1247bca2f76f9f0",
+                "reference": "f4947cc900b6e51cbfda58b9f1247bca2f76f9f0",
+                "shasum": ""
+            },
+            "require": {
+                "container-interop/container-interop": "^1.2",
+                "nikic/fast-route": "^1.0",
+                "php": ">=5.5.0",
+                "pimple/pimple": "^3.0",
+                "psr/container": "^1.0",
+                "psr/http-message": "^1.0"
+            },
+            "provide": {
+                "psr/http-message-implementation": "1.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^4.0",
+                "squizlabs/php_codesniffer": "^2.5"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Slim\\": "Slim"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Rob Allen",
+                    "email": "rob@akrabat.com",
+                    "homepage": "http://akrabat.com"
+                },
+                {
+                    "name": "Josh Lockhart",
+                    "email": "hello@joshlockhart.com",
+                    "homepage": "https://joshlockhart.com"
+                },
+                {
+                    "name": "Gabriel Manricks",
+                    "email": "gmanricks@me.com",
+                    "homepage": "http://gabrielmanricks.com"
+                },
+                {
+                    "name": "Andrew Smith",
+                    "email": "a.smith@silentworks.co.uk",
+                    "homepage": "http://silentworks.co.uk"
+                }
+            ],
+            "description": "Slim is a PHP micro framework that helps you quickly write simple yet powerful web applications and APIs",
+            "homepage": "https://slimframework.com",
+            "keywords": [
+                "api",
+                "framework",
+                "micro",
+                "router"
+            ],
+            "time": "2019-01-15T13:21:25+00:00"
+        },
+        {
+            "name": "websk/php-cache",
+            "version": "1.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/websk/php-cache.git",
+                "reference": "509ee2876d256302eacbfef45dedc230f1fdfbf4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/websk/php-cache/zipball/509ee2876d256302eacbfef45dedc230f1fdfbf4",
+                "reference": "509ee2876d256302eacbfef45dedc230f1fdfbf4",
+                "shasum": ""
+            },
+            "require": {
+                "predis/predis": "1.*",
+                "psr/container": "^1.0",
+                "websk/php-slim": "1.0.*",
+                "websk/php-utils": "1.0.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "time": "2018-12-12T10:48:47+00:00"
+        },
+        {
+            "name": "websk/php-captcha",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/websk/php-captcha.git",
+                "reference": "ae8b05a9bdd80ed8dcf8665b51f0f4e55ace1c61"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/websk/php-captcha/zipball/ae8b05a9bdd80ed8dcf8665b51f0f4e55ace1c61",
+                "reference": "ae8b05a9bdd80ed8dcf8665b51f0f4e55ace1c61",
+                "shasum": ""
+            },
+            "require": {
+                "websk/php-slim": "1.0.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "time": "2019-02-19T09:32:12+00:00"
+        },
+        {
+            "name": "websk/php-config",
+            "version": "1.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/websk/php-config.git",
+                "reference": "806f75eafc1536c2543f383875503f12c72bcfe3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/websk/php-config/zipball/806f75eafc1536c2543f383875503f12c72bcfe3",
+                "reference": "806f75eafc1536c2543f383875503f12c72bcfe3",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "description": "PHP configs wrapper",
+            "homepage": "https://websk.ru/",
+            "time": "2018-12-03T15:24:53+00:00"
+        },
+        {
+            "name": "websk/php-db",
+            "version": "1.2.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/websk/php-db.git",
+                "reference": "a2872b508643e484f79922175fe048249fda1196"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/websk/php-db/zipball/a2872b508643e484f79922175fe048249fda1196",
+                "reference": "a2872b508643e484f79922175fe048249fda1196",
+                "shasum": ""
+            },
+            "require": {
+                "ext-pdo": "*",
+                "websk/php-slim": "1.0.*",
+                "websk/php-utils": "1.0.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "time": "2019-02-16T14:20:39+00:00"
+        },
+        {
+            "name": "websk/php-entity",
+            "version": "1.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/websk/php-entity.git",
+                "reference": "4c95844d7555407b695b4ead85b3495f0e3c0155"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/websk/php-entity/zipball/4c95844d7555407b695b4ead85b3495f0e3c0155",
+                "reference": "4c95844d7555407b695b4ead85b3495f0e3c0155",
+                "shasum": ""
+            },
+            "require": {
+                "ext-pdo": "*",
+                "websk/php-cache": "1.1.*",
+                "websk/php-db": "1.2.*",
+                "websk/php-utils": "1.0.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "time": "2019-02-16T13:40:15+00:00"
+        },
+        {
+            "name": "websk/php-imagemanager",
+            "version": "1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/websk/php-imagemanager.git",
+                "reference": "a65a922af7c69b350d383e243ad817c1840934f7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/websk/php-imagemanager/zipball/a65a922af7c69b350d383e243ad817c1840934f7",
+                "reference": "a65a922af7c69b350d383e243ad817c1840934f7",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "ext-mbstring": "*",
+                "imagine/imagine": "0.6.3",
+                "websk/php-config": "1.0.*",
+                "websk/php-simple-router": "1.0.*",
+                "websk/php-utils": "1.0.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "time": "2019-02-19T10:32:19+00:00"
+        },
+        {
+            "name": "websk/php-simple-router",
+            "version": "1.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/websk/php-simple-router.git",
+                "reference": "1685670d6e2a303511963a6eab5977e4caf27517"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/websk/php-simple-router/zipball/1685670d6e2a303511963a6eab5977e4caf27517",
+                "reference": "1685670d6e2a303511963a6eab5977e4caf27517",
+                "shasum": ""
+            },
+            "require": {
+                "ext-xmlwriter": "*",
+                "websk/php-config": "1.0.*",
+                "websk/php-utils": "1.0.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "time": "2018-12-03T15:32:05+00:00"
+        },
+        {
+            "name": "websk/php-slim",
+            "version": "1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/websk/php-slim.git",
+                "reference": "c10087e9b253ff2b7a0b04d1c72cade33800c06e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/websk/php-slim/zipball/c10087e9b253ff2b7a0b04d1c72cade33800c06e",
+                "reference": "c10087e9b253ff2b7a0b04d1c72cade33800c06e",
+                "shasum": ""
+            },
+            "require": {
+                "slim/php-view": "^2.2",
+                "slim/slim": "^3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "description": "Slim framework utils",
+            "homepage": "https://websk.ru/",
+            "time": "2018-11-30T11:48:41+00:00"
+        },
+        {
+            "name": "websk/php-utils",
+            "version": "1.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/websk/php-utils.git",
+                "reference": "7e5136c23902e1433f04ad5d7bf6059d9206ee57"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/websk/php-utils/zipball/7e5136c23902e1433f04ad5d7bf6059d9206ee57",
+                "reference": "7e5136c23902e1433f04ad5d7bf6059d9206ee57",
+                "shasum": ""
+            },
+            "require": {
+                "websk/php-config": "1.0.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "time": "2019-01-13T16:51:35+00:00"
+        },
+        {
+            "name": "websk/php-view",
+            "version": "1.0.7",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/websk/php-view.git",
+                "reference": "59c917663eea071bbdc179240c1732f5f52345f5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/websk/php-view/zipball/59c917663eea071bbdc179240c1732f5f52345f5",
+                "reference": "59c917663eea071bbdc179240c1732f5f52345f5",
+                "shasum": ""
+            },
+            "require": {
+                "ext-mbstring": "*",
+                "psr/container": "^1.0",
+                "websk/php-config": "1.0.*",
+                "websk/php-slim": "1.0.*",
+                "websk/php-utils": "1.0.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "time": "2019-02-19T07:57:00+00:00"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": [],
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": [],
+    "platform-dev": []
+}
