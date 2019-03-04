@@ -13,7 +13,7 @@ class UserComponents
 {
     public static function renderLoginForm($destination)
     {
-        $content = PhpRender::renderTemplateByModule(
+        $content = PhpRender::renderTemplateForModuleNamespace(
             'WebSK/Auth/Users',
             'login_form_block.tpl.php',
             ['destination' => $destination]

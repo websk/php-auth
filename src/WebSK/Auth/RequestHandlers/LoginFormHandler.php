@@ -33,13 +33,13 @@ class LoginFormHandler extends BaseHandler
         $content = '';
 
         if (Auth::useSocialLogin()) {
-            $content .= PhpRender::renderTemplateByModule(
+            $content .= PhpRender::renderTemplateForModuleNamespace(
                 'WebSK/Auth',
                 'social_buttons.tpl.php'
             );
         }
 
-        $content .= PhpRender::renderTemplateByModule(
+        $content .= PhpRender::renderTemplateForModuleNamespace(
             'WebSK/Auth',
             'login_form.tpl.php'
         );

@@ -43,7 +43,7 @@ class RoleEditHandler extends BaseHandler
             $save_handler_url = $this->pathFor(UsersRoutes::ROUTE_NAME_ADMIN_ROLE_UPDATE, ['role_id' => $role_id]);
         }
 
-        $content = PhpRender::renderTemplateByModule(
+        $content = PhpRender::renderTemplateForModuleNamespace(
             'WebSK/Auth/Users',
             'role_form_edit.tpl.php',
             ['role_obj' => $role_obj, 'save_handler_url' => $save_handler_url]

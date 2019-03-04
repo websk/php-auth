@@ -47,7 +47,7 @@ class UserEditHandler extends BaseHandler
 
         $content = '';
 
-        $content .= PhpRender::renderTemplateByModule(
+        $content .= PhpRender::renderTemplateForModuleNamespace(
             'WebSK/Auth/Users',
             'user_form_edit.tpl.php',
             [

@@ -21,7 +21,7 @@ class SendConfirmCodeFormHandler extends BaseHandler
      */
     public function __invoke(Request $request, Response $response)
     {
-        $content = PhpRender::renderTemplateByModule(
+        $content = PhpRender::renderTemplateForModuleNamespace(
             'WebSK/Auth',
             'send_confirm_code_form.tpl.php'
         );

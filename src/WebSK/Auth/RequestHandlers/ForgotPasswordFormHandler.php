@@ -21,7 +21,7 @@ class ForgotPasswordFormHandler extends BaseHandler
      */
     public function __invoke(Request $request, Response $response)
     {
-        $content = PhpRender::renderTemplateByModule(
+        $content = PhpRender::renderTemplateForModuleNamespace(
             'WebSK/Auth',
             'forgot_password_form.tpl.php'
         );
