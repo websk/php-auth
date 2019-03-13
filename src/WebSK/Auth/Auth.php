@@ -158,9 +158,9 @@ class Auth
     }
 
     /**
-     * @return bool
+     * @return bool|User
      */
-    public static function currentUserIsAdmin()
+    public static function getCurrentUserObj()
     {
         $user_id = self::getCurrentUserId();
         if (!$user_id) {
@@ -171,11 +171,24 @@ class Auth
 
         $user_service = UsersServiceProvider::getUserService($container);
 
-        $user_obj = $user_service->getById($user_id, false);
+        return $user_service->getById($user_id, false);
+    }
+
+    /**
+     * @return bool
+     */
+    public static function currentUserIsAdmin()
+    {
+        $container = Container::self();
+
+        $user_service = UsersServiceProvider::getUserService($container);
+
+        $user_obj = self::getCurrentUserObj();
         if (!$user_obj) {
             return false;
         }
 
+        $user_id = self::getCurrentUserId();
         if ($user_service->hasRoleAdminByUserId($user_id)) {
             return true;
         }
