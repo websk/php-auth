@@ -10,6 +10,7 @@
     "websk/php-slim": "1.0.*",
     "websk/php-utils": "1.0.*",
     "websk/php-view": "1.0.*",
+    "websk/php-logger": "1.0.*",
     "phpmailer/phpmailer": "5.2.*",
     "hybridauth/hybridauth": "2.9.*"
   },

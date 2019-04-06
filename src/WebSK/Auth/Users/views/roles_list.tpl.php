@@ -50,7 +50,7 @@ use WebSK\Auth\Users\UsersUtils;
                     </a>
                 </td>
             </tr>
-            <?
+            <?php
         }
         ?>
     </table>

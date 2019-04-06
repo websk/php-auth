@@ -19,7 +19,6 @@ class UsersUtils
      * @param int $user_id
      * @param bool $exception_if_not_loaded
      * @return User
-     * @deprecated
      * @throws \Exception
      */
     public static function loadUser(int $user_id, bool $exception_if_not_loaded = true)
@@ -35,7 +34,6 @@ class UsersUtils
      * @param int $role_id
      * @param bool $exception_if_not_loaded
      * @return Role
-     * @deprecated
      * @throws \Exception
      */
     public static function loadRole(int $role_id, bool $exception_if_not_loaded = true)
