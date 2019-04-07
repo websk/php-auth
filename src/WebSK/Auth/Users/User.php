@@ -82,33 +82,33 @@ class User extends Entity
     }
 
     /**
-     * @return string
+     * @return null|string
      */
-    public function getFirstName(): string
+    public function getFirstName(): ?string
     {
         return $this->first_name;
     }
 
     /**
-     * @param string $first_name
+     * @param null|string $first_name
      */
-    public function setFirstName(string $first_name): void
+    public function setFirstName(?string $first_name): void
     {
         $this->first_name = $first_name;
     }
 
     /**
-     * @return string
+     * @return null|string
      */
-    public function getLastName(): string
+    public function getLastName(): ?string
     {
         return $this->last_name;
     }
 
     /**
-     * @param string $last_name
+     * @param null|string $last_name
      */
-    public function setLastName(string $last_name): void
+    public function setLastName(?string $last_name): void
     {
         $this->last_name = $last_name;
     }
