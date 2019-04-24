@@ -141,13 +141,15 @@ $destination = Url::getUriNoQueryString();
         <div>
             <div class="form-group">
                 <label class="col-md-4 control-label">Пароль</label>
-
-                <div class="col-md-8"><input type="password" name="new_password_first" class="form-control"></div>
+                <div class="col-md-8">
+                    <input type="password" name="new_password_first" class="form-control" autocomplete="dsfasdas">
+                </div>
             </div>
             <div class="form-group">
                 <label class="col-md-4 control-label">Подтверждение пароля</label>
-
-                <div class="col-md-8"><input type="password" name="new_password_second" class="form-control"></div>
+                <div class="col-md-8">
+                    <input type="password" name="new_password_second" class="form-control">
+                </div>
             </div>
 
             <?php

@@ -37,7 +37,7 @@ $requested_role_id = Request::getQueryParam('role_id', 0);
                 </form>
             </div>
             <div class="col-md-4">
-                <a href="<?php echo Router::pathFor(UsersRoutes::ROUTE_NAME_ADMIN_ROLE_LIST); ?>" class="btn btn-outline btn-info">
+                <a href="<?php echo Router::pathFor(UsersRoutes::ROUTE_NAME_ADMIN_ROLE_LIST); ?>" class="btn btn-info">
                     <span class="glyphicon glyphicon-wrench"></span> Редактировать роли</a>
             </div>
         </div>
@@ -78,16 +78,16 @@ $requested_role_id = Request::getQueryParam('role_id', 0);
                 <td class="hidden-xs hidden-sm"><?php echo $user_obj->getEmail(); ?></td>
                 <td align="right">
                     <a href="<?php echo Router::pathFor(UsersRoutes::ROUTE_NAME_ADMIN_USER_EDIT, ['user_id' => $user_id]); ?>" title="Редактировать"
-                       class="btn btn-outline btn-default btn-sm">
+                       class="btn btn-default btn-sm">
                         <span class="fa fa-edit fa-lg text-warning fa-fw"></span>
                     </a>
                     <a href="<?php echo LoggerRender::getLoggerLinkForEntityObj($user_obj); ?>" target="_blank" title="Журнал"
-                       class="btn btn-outline btn-default btn-sm">
+                       class="btn btn-default btn-sm">
                         <span class="fa fa-history fa-lg fa-fw"></span>
                     </a>
                     <a href="<?php echo Router::pathFor(UsersRoutes::ROUTE_NAME_USER_DELETE, ['user_id' => $user_id], ['destination' => Request::getUri()->getPath()]); ?>"
                        onClick="return confirm('Вы уверены, что хотите удалить?')" title="Удалить"
-                       class="btn btn-outline btn-default btn-sm">
+                       class="btn btn-default btn-sm">
                         <span class="fa fa-trash-o fa-lg text-danger fa-fw"></span>
                     </a>
                 </td>

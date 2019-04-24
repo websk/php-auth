@@ -39,13 +39,13 @@ use WebSK\Auth\Users\UsersUtils;
                 <td align="right">
                     <a href="<?php echo Router::pathFor(UsersRoutes::ROUTE_NAME_ADMIN_ROLE_EDIT, ['role_id' => $role_id]); ?>"
                        title="Редактировать"
-                       class="btn btn-outline btn-default btn-sm">
+                       class="btn btn-default btn-sm">
                         <span class="fa fa-edit fa-lg text-warning fa-fw"></span>
                     </a>
                     <a href="<?php echo Router::pathFor(UsersRoutes::ROUTE_NAME_ADMIN_ROLE_DELETE,
                         ['role_id' => $role_id]); ?>"
                        onClick="return confirm('Вы уверены, что хотите удалить?')" title="Удалить"
-                       class="btn btn-outline btn-default btn-sm">
+                       class="btn btn-default btn-sm">
                         <span class="fa fa-trash-o fa-lg text-danger fa-fw"></span>
                     </a>
                 </td>
