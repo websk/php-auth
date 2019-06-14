@@ -62,7 +62,7 @@ class AuthRoutes
             $app->post('/registration', RegistrationHandler::class)
                 ->setName(self::ROUTE_NAME_AUTH_REGISTRATION);
 
-            $app->post('/confirm_registration/{confirm_code:\d+}', ConfirmRegistrationHandler::class)
+            $app->post('/confirm_registration/{confirm_code:\w+}', ConfirmRegistrationHandler::class)
                 ->setName(self::ROUTE_NAME_AUTH_CONFIRM_REGISTRATION);
 
             $app->get('/send_confirm_code_form', SendConfirmCodeFormHandler::class)
