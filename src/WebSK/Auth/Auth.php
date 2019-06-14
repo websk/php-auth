@@ -232,6 +232,16 @@ class Auth
     }
 
     /**
+     * URL авторизации на сайте через внешнего провайдера социальной сети
+     * @param $provider
+     * @return string
+     */
+    public static function getSocialLoginUrl($provider)
+    {
+        return '/user/social_login/' . $provider;
+    }
+
+    /**
      * @param $provider_name
      * @param $destination
      * @return \Hybrid_Provider_Adapter|null
