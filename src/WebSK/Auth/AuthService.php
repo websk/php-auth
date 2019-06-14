@@ -29,10 +29,10 @@ class AuthService
     /**
      * @param string $name
      * @param string $email
-     * @param int $confirm_code
+     * @param string $confirm_code
      * @throws \phpmailerException
      */
-    public function sendConfirmMail(string $name, string $email, int $confirm_code)
+    public function sendConfirmMail(string $name, string $email, string $confirm_code)
     {
         $site_email = ConfWrapper::value('site_email');
         $site_domain = ConfWrapper::value('site_domain');
