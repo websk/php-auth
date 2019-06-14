@@ -9,7 +9,7 @@ $destination = Router::pathFor(AuthRoutes::ROUTE_NAME_AUTH_LOGIN_FORM);
 
 $user_obj = new User();
 ?>
-<form id="registration_form" action="<?php Router::pathFor(AuthRoutes::ROUTE_NAME_AUTH_REGISTRATION); ?>" autocomplete="off" method="post" class="form-horizontal">
+<form id="registration_form" action="<?php echo Router::pathFor(AuthRoutes::ROUTE_NAME_AUTH_REGISTRATION); ?>" autocomplete="off" method="post" class="form-horizontal">
     <div xmlns="http://www.w3.org/1999/html">
         <div class="form-group">
             <label class="col-md-4 control-label">Имя на сайте</label>
