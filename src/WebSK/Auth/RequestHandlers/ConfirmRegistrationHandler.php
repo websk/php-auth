@@ -19,11 +19,11 @@ class ConfirmRegistrationHandler extends BaseHandler
     /**
      * @param Request $request
      * @param Response $response
-     * @param int $confirm_code
+     * @param string $confirm_code
      * @return Response
      * @throws \Exception
      */
-    public function __invoke(Request $request, Response $response, int $confirm_code)
+    public function __invoke(Request $request, Response $response, string $confirm_code)
     {
         $user_id = UsersUtils::getUserIdByConfirmCode($confirm_code);
 

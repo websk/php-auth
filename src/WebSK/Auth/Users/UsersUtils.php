@@ -169,10 +169,10 @@ class UsersUtils
 
     /**
      * ID пользователя по коду подтверждения регистрации на сайте
-     * @param $confirm_code
+     * @param string $confirm_code
      * @return mixed
      */
-    public static function getUserIdByConfirmCode($confirm_code)
+    public static function getUserIdByConfirmCode(string $confirm_code)
     {
         $query = "SELECT id FROM " . User::DB_TABLE_NAME . " WHERE confirm_code=? LIMIT 1";
 
