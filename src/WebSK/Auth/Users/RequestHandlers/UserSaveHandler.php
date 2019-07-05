@@ -10,7 +10,6 @@ use WebSK\Utils\Messages;
 use WebSK\Slim\RequestHandlers\BaseHandler;
 use WebSK\Auth\Auth;
 use WebSK\Auth\Users\User;
-use WebSK\Auth\Users\UserRole;
 use WebSK\Auth\Users\UsersRoutes;
 use WebSK\Auth\Users\UsersServiceProvider;
 use WebSK\Auth\Users\UsersUtils;
@@ -114,24 +113,6 @@ class UserSaveHandler extends BaseHandler
         $user_obj->setComment($comment);
 
         $user_service->save($user_obj);
-
-
-        // Roles
-        // TODO: убрать
-        if (Auth::currentUserIsAdmin()) {
-            $user_service->deleteUserRolesForUserId($user_id);
-
-            if ($roles_ids_arr) {
-                $user_role_service = UsersServiceProvider::getUserRoleService($this->container);
-
-                foreach ($roles_ids_arr as $role_id) {
-                    $user_role_obj = new UserRole();
-                    $user_role_obj->setUserId($user_obj->getId());
-                    $user_role_obj->setRoleId($role_id);
-                    $user_role_service->save($user_role_obj);
-                }
-            }
-        }
 
         // Image
         if (array_key_exists('image_file', $_FILES)) {
