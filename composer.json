@@ -1,6 +1,8 @@
 {
   "name": "websk/php-auth",
   "require": {
+    "php": "^7.2",
+    "ext-pdo": "*",
     "slim/slim": "^3.0",
     "websk/php-captcha": "1.0.*",
     "websk/php-config": "1.0.*",

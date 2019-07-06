@@ -11,15 +11,11 @@ use WebSK\Auth\Users\UsersRoutes;
 use WebSK\Auth\Users\UsersServiceProvider;
 use WebSK\Cache\CacheServiceProvider;
 use WebSK\Captcha\CaptchaRoutes;
-use WebSK\Config\ConfWrapper;
 use WebSK\DB\DBWrapper;
 use WebSK\Logger\LoggerRoutes;
 use WebSK\Logger\LoggerServiceProvider;
 use WebSK\Slim\Facade;
 use WebSK\Slim\Router;
-use WebSK\Views\BreadcrumbItemDTO;
-use WebSK\Views\LayoutDTO;
-use WebSK\Views\PhpRender;
 
 /**
  * Class PhpAuthApp
