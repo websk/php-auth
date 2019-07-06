@@ -4,8 +4,8 @@ namespace WebSK\Auth\Middleware;
 
 use Slim\Http\Request;
 use Slim\Http\Response;
+use Slim\Http\StatusCode;
 use WebSK\Auth\Auth;
-use WebSK\Utils\HTTP;
 
 /**
  * Class CurrentUserHasRightToEditUser
@@ -34,7 +34,7 @@ class CurrentUserHasRightToEditUser
         $current_user_id = Auth::getCurrentUserId();
 
         if (($current_user_id != $user_id) && !Auth::currentUserIsAdmin()) {
-            return $response->withStatus(HTTP::STATUS_FORBIDDEN);
+            return $response->withStatus(StatusCode::HTTP_FORBIDDEN);
         }
 
         $response = $next($request, $response);

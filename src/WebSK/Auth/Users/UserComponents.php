@@ -7,16 +7,25 @@ use WebSK\Views\PhpRender;
 /**
  * Class UserComponents
  * @package WebSK\Auth\Users
- * @deprecated
  */
 class UserComponents
 {
-    public static function renderLoginForm($destination)
+    /**
+     * @param User $user_obj
+     * @param array $user_roles_ids_arr
+     * @param string $save_handler_url
+     * @return string
+     */
+    public static function renderEditForm(User $user_obj, array $user_roles_ids_arr, string $save_handler_url)
     {
         $content = PhpRender::renderTemplateForModuleNamespace(
-            'WebSK/Auth/Users',
-            'login_form_block.tpl.php',
-            ['destination' => $destination]
+            'WebSK' . DIRECTORY_SEPARATOR . 'Auth' . DIRECTORY_SEPARATOR . 'Users',
+            'user_form_edit.tpl.php',
+            [
+                'user_obj' => $user_obj,
+                'user_roles_ids_arr' => $user_roles_ids_arr,
+                'save_handler_url' => $save_handler_url
+            ]
         );
 
         return $content;

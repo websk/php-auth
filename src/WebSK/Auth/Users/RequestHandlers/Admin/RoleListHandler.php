@@ -25,7 +25,7 @@ class RoleListHandler extends BaseHandler
     public function __invoke(Request $request, Response $response)
     {
         $content = PhpRender::renderTemplateForModuleNamespace(
-            'WebSK/Auth/Users',
+            'WebSK' . DIRECTORY_SEPARATOR . 'Auth' . DIRECTORY_SEPARATOR .  'Users',
             'roles_list.tpl.php'
         );
 

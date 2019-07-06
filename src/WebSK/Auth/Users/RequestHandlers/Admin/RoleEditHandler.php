@@ -4,6 +4,7 @@ namespace WebSK\Auth\Users\RequestHandlers\Admin;
 
 use Slim\Http\Request;
 use Slim\Http\Response;
+use Slim\Http\StatusCode;
 use WebSK\Config\ConfWrapper;
 use WebSK\Views\LayoutDTO;
 use WebSK\Slim\RequestHandlers\BaseHandler;
@@ -11,7 +12,6 @@ use WebSK\Auth\Users\Role;
 use WebSK\Auth\Users\UsersRoutes;
 use WebSK\Auth\Users\UsersServiceProvider;
 use WebSK\Views\BreadcrumbItemDTO;
-use WebSK\Utils\HTTP;
 use WebSK\Views\PhpRender;
 
 /**
@@ -37,14 +37,14 @@ class RoleEditHandler extends BaseHandler
         } else {
             $role_obj = $role_service->getById($role_id, false);
             if (!$role_obj) {
-                return $response->withStatus(HTTP::STATUS_NOT_FOUND);
+                return $response->withStatus(StatusCode::HTTP_NOT_FOUND);
             }
 
             $save_handler_url = $this->pathFor(UsersRoutes::ROUTE_NAME_ADMIN_ROLE_UPDATE, ['role_id' => $role_id]);
         }
 
         $content = PhpRender::renderTemplateForModuleNamespace(
-            'WebSK/Auth/Users',
+            'WebSK' . DIRECTORY_SEPARATOR . 'Auth' . DIRECTORY_SEPARATOR . 'Users',
             'role_form_edit.tpl.php',
             ['role_obj' => $role_obj, 'save_handler_url' => $save_handler_url]
         );

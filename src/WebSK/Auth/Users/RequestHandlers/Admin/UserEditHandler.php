@@ -4,6 +4,8 @@ namespace WebSK\Auth\Users\RequestHandlers\Admin;
 
 use Slim\Http\Request;
 use Slim\Http\Response;
+use Slim\Http\StatusCode;
+use WebSK\Auth\Users\UserComponents;
 use WebSK\Config\ConfWrapper;
 use WebSK\Views\LayoutDTO;
 use WebSK\Slim\RequestHandlers\BaseHandler;
@@ -11,7 +13,6 @@ use WebSK\Auth\Users\User;
 use WebSK\Auth\Users\UsersRoutes;
 use WebSK\Auth\Users\UsersServiceProvider;
 use WebSK\Views\BreadcrumbItemDTO;
-use WebSK\Utils\HTTP;
 use WebSK\Views\PhpRender;
 
 /**
@@ -39,24 +40,14 @@ class UserEditHandler extends BaseHandler
             $user_obj = $user_service->getById($user_id, false);
 
             if (!$user_obj) {
-                return $response->withStatus(HTTP::STATUS_NOT_FOUND);
+                return $response->withStatus(StatusCode::HTTP_NOT_FOUND);
             }
 
             $save_handler_url = $this->pathFor(UsersRoutes::ROUTE_NAME_USER_UPDATE, ['user_id' => $user_id]);
             $user_roles_ids_arr = $user_service->getRoleIdsArrByUserId($user_id);
         }
 
-        $content = '';
-
-        $content .= PhpRender::renderTemplateForModuleNamespace(
-            'WebSK/Auth/Users',
-            'user_form_edit.tpl.php',
-            [
-                'user_obj' => $user_obj,
-                'user_roles_ids_arr' => $user_roles_ids_arr,
-                'save_handler_url' => $save_handler_url
-            ]
-        );
+        $content = UserComponents::renderEditForm($user_obj, $user_roles_ids_arr, $save_handler_url);
 
         $layout_dto = new LayoutDTO();
         $layout_dto->setTitle('Редактирование профиля');

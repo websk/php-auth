@@ -6,6 +6,8 @@ use Slim\Http\Request;
 use Slim\Http\Response;
 use WebSK\Config\ConfWrapper;
 use WebSK\Slim\RequestHandlers\BaseHandler;
+use WebSK\Views\BreadcrumbItemDTO;
+use WebSK\Views\LayoutDTO;
 use WebSK\Views\PhpRender;
 
 /**
@@ -22,21 +24,19 @@ class ForgotPasswordFormHandler extends BaseHandler
     public function __invoke(Request $request, Response $response)
     {
         $content = PhpRender::renderTemplateForModuleNamespace(
-            'WebSK/Auth',
+            'WebSK' . DIRECTORY_SEPARATOR . 'Auth',
             'forgot_password_form.tpl.php'
         );
 
-        return PhpRender::render(
-            $response,
-            ConfWrapper::value('layout.main'),
-            [
-                'content' => $content,
-                'editor_nav_arr' => [],
-                'title' => 'Восстановление пароля',
-                'keywords' => '',
-                'description' => '',
-                'breadcrumbs_arr' => []
-            ]
-        );
+        $layout_dto = new LayoutDTO();
+        $layout_dto->setTitle('Восстановление пароля');
+        $layout_dto->setContentHtml($content);
+
+        $breadcrumbs_arr = [
+            new BreadcrumbItemDTO('Главная', '/'),
+        ];
+        $layout_dto->setBreadcrumbsDtoArr($breadcrumbs_arr);
+
+        return PhpRender::renderLayout($response, ConfWrapper::value('layout.main'), $layout_dto);
     }
 }

@@ -96,4 +96,13 @@ class AuthServiceProvider
     {
         return $container->get(Sessions::ENTITY_SERVICE_CONTAINER_ID);
     }
+
+    /**
+     * @param ContainerInterface $container
+     * @return DBService
+     */
+    public static function getDBService(ContainerInterface $container)
+    {
+        return $container->get(AuthServiceProvider::DB_SERVICE_CONTAINER_ID);
+    }
 }

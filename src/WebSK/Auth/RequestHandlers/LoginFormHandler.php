@@ -8,6 +8,8 @@ use WebSK\Config\ConfWrapper;
 use WebSK\Auth\Auth;
 use WebSK\Auth\Users\UsersRoutes;
 use WebSK\Slim\RequestHandlers\BaseHandler;
+use WebSK\Views\BreadcrumbItemDTO;
+use WebSK\Views\LayoutDTO;
 use WebSK\Views\PhpRender;
 
 /**
@@ -34,26 +36,25 @@ class LoginFormHandler extends BaseHandler
 
         if (Auth::useSocialLogin()) {
             $content .= PhpRender::renderTemplateForModuleNamespace(
-                'WebSK/Auth',
+                'WebSK' . DIRECTORY_SEPARATOR . 'Auth',
                 'social_buttons.tpl.php'
             );
         }
 
         $content .= PhpRender::renderTemplateForModuleNamespace(
-            'WebSK/Auth',
+            'WebSK' . DIRECTORY_SEPARATOR . 'Auth',
             'login_form.tpl.php'
         );
 
-        return PhpRender::render(
-            $response,
-            ConfWrapper::value('layout.main'),
-            [
-                'content' => $content,
-                'title' => 'Вход на сайт',
-                'keywords' => '',
-                'description' => '',
-                'breadcrumbs_arr' => []
-            ]
-        );
+        $layout_dto = new LayoutDTO();
+        $layout_dto->setTitle('Вход на сайт');
+        $layout_dto->setContentHtml($content);
+
+        $breadcrumbs_arr = [
+            new BreadcrumbItemDTO('Главная', '/'),
+        ];
+        $layout_dto->setBreadcrumbsDtoArr($breadcrumbs_arr);
+
+        return PhpRender::renderLayout($response, ConfWrapper::value('layout.main'), $layout_dto);
     }
 }

@@ -587,16 +587,16 @@
         },
         {
             "name": "slim/php-view",
-            "version": "2.2.0",
+            "version": "2.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/slimphp/PHP-View.git",
-                "reference": "122ed121a8d9cf91a94020814d2a3ee6c836754f"
+                "reference": "a13ada9d7962ca1b48799c0d9ffbca4c33245aed"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/slimphp/PHP-View/zipball/122ed121a8d9cf91a94020814d2a3ee6c836754f",
-                "reference": "122ed121a8d9cf91a94020814d2a3ee6c836754f",
+                "url": "https://api.github.com/repos/slimphp/PHP-View/zipball/a13ada9d7962ca1b48799c0d9ffbca4c33245aed",
+                "reference": "a13ada9d7962ca1b48799c0d9ffbca4c33245aed",
                 "shasum": ""
             },
             "require": {
@@ -632,20 +632,20 @@
                 "template",
                 "view"
             ],
-            "time": "2016-10-11T07:43:08+00:00"
+            "time": "2019-04-15T20:43:28+00:00"
         },
         {
             "name": "slim/slim",
-            "version": "3.12.0",
+            "version": "3.12.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/slimphp/Slim.git",
-                "reference": "f4947cc900b6e51cbfda58b9f1247bca2f76f9f0"
+                "reference": "eaee12ef8d0750db62b8c548016d82fb33addb6b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/slimphp/Slim/zipball/f4947cc900b6e51cbfda58b9f1247bca2f76f9f0",
-                "reference": "f4947cc900b6e51cbfda58b9f1247bca2f76f9f0",
+                "url": "https://api.github.com/repos/slimphp/Slim/zipball/eaee12ef8d0750db62b8c548016d82fb33addb6b",
+                "reference": "eaee12ef8d0750db62b8c548016d82fb33addb6b",
                 "shasum": ""
             },
             "require": {
@@ -703,7 +703,7 @@
                 "micro",
                 "router"
             ],
-            "time": "2019-01-15T13:21:25+00:00"
+            "time": "2019-04-16T16:47:29+00:00"
         },
         {
             "name": "websk/php-cache",
@@ -736,19 +736,21 @@
         },
         {
             "name": "websk/php-captcha",
-            "version": "1.0.1",
+            "version": "1.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/websk/php-captcha.git",
-                "reference": "c5d263198530ccd346a232eebb3dee7701d32c16"
+                "reference": "c75a7077c42568a715b919eddc9be04541b50290"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/websk/php-captcha/zipball/c5d263198530ccd346a232eebb3dee7701d32c16",
-                "reference": "c5d263198530ccd346a232eebb3dee7701d32c16",
+                "url": "https://api.github.com/repos/websk/php-captcha/zipball/c75a7077c42568a715b919eddc9be04541b50290",
+                "reference": "c75a7077c42568a715b919eddc9be04541b50290",
                 "shasum": ""
             },
             "require": {
+                "ext-gd": "*",
+                "ext-mbstring": "*",
                 "websk/php-slim": "1.0.*",
                 "websk/php-utils": "1.0.*"
             },
@@ -759,7 +761,7 @@
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
-            "time": "2019-02-27T10:31:00+00:00"
+            "time": "2019-06-14T14:59:34+00:00"
         },
         {
             "name": "websk/php-config",
@@ -788,16 +790,16 @@
         },
         {
             "name": "websk/php-crud",
-            "version": "1.0.2",
+            "version": "1.0.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/websk/php-crud.git",
-                "reference": "b04241da53e9ed9e0af993288fc29d69f2420134"
+                "reference": "346cdb3bd4ee2d28cd28b078fa7a4d1e1cf05318"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/websk/php-crud/zipball/b04241da53e9ed9e0af993288fc29d69f2420134",
-                "reference": "b04241da53e9ed9e0af993288fc29d69f2420134",
+                "url": "https://api.github.com/repos/websk/php-crud/zipball/346cdb3bd4ee2d28cd28b078fa7a4d1e1cf05318",
+                "reference": "346cdb3bd4ee2d28cd28b078fa7a4d1e1cf05318",
                 "shasum": ""
             },
             "require": {
@@ -813,7 +815,7 @@
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
-            "time": "2019-01-15T14:10:38+00:00"
+            "time": "2019-06-22T15:20:57+00:00"
         },
         {
             "name": "websk/php-db",
@@ -996,16 +998,16 @@
         },
         {
             "name": "websk/php-utils",
-            "version": "1.0.4",
+            "version": "1.0.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/websk/php-utils.git",
-                "reference": "fadf42dbbb0c7591c62bc9164e4f6a14ae5d2d05"
+                "reference": "8eab41d3777d01dad7a60b2d7cf38f433344dd72"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/websk/php-utils/zipball/fadf42dbbb0c7591c62bc9164e4f6a14ae5d2d05",
-                "reference": "fadf42dbbb0c7591c62bc9164e4f6a14ae5d2d05",
+                "url": "https://api.github.com/repos/websk/php-utils/zipball/8eab41d3777d01dad7a60b2d7cf38f433344dd72",
+                "reference": "8eab41d3777d01dad7a60b2d7cf38f433344dd72",
                 "shasum": ""
             },
             "require": {
@@ -1018,20 +1020,20 @@
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
-            "time": "2019-03-17T06:57:29+00:00"
+            "time": "2019-04-25T19:00:25+00:00"
         },
         {
             "name": "websk/php-view",
-            "version": "1.0.12",
+            "version": "1.0.13",
             "source": {
                 "type": "git",
                 "url": "https://github.com/websk/php-view.git",
-                "reference": "43db3222e620292772b7fffcbcb9d4b2749e1e29"
+                "reference": "b2bcdf93887d7de1d7442f7d054f6a1d50fbfa9f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/websk/php-view/zipball/43db3222e620292772b7fffcbcb9d4b2749e1e29",
-                "reference": "43db3222e620292772b7fffcbcb9d4b2749e1e29",
+                "url": "https://api.github.com/repos/websk/php-view/zipball/b2bcdf93887d7de1d7442f7d054f6a1d50fbfa9f",
+                "reference": "b2bcdf93887d7de1d7442f7d054f6a1d50fbfa9f",
                 "shasum": ""
             },
             "require": {
@@ -1048,7 +1050,7 @@
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
-            "time": "2019-03-11T14:23:18+00:00"
+            "time": "2019-04-18T14:02:00+00:00"
         }
     ],
     "packages-dev": [],

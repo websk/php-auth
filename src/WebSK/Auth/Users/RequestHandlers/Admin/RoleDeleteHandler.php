@@ -4,12 +4,12 @@ namespace WebSK\Auth\Users\RequestHandlers\Admin;
 
 use Slim\Http\Request;
 use Slim\Http\Response;
+use Slim\Http\StatusCode;
 use WebSK\Utils\Messages;
 use WebSK\Slim\RequestHandlers\BaseHandler;
 use WebSK\Auth\Users\UsersRoutes;
 use WebSK\Auth\Users\UsersServiceProvider;
 use WebSK\Auth\Users\UsersUtils;
-use WebSK\Utils\HTTP;
 
 /**
  * Class RoleDeleteHandler
@@ -31,7 +31,7 @@ class RoleDeleteHandler extends BaseHandler
         $role_obj = $role_service->getById($role_id, false);
 
         if (!$role_obj) {
-            return $response->withStatus(HTTP::STATUS_NOT_FOUND);
+            return $response->withStatus(StatusCode::HTTP_NOT_FOUND);
         }
 
         $user_ids_arr = UsersUtils::getUsersIdsArr($role_id);

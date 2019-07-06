@@ -2,6 +2,7 @@
 
 namespace WebSK\Auth\Users\RequestHandlers;
 
+use Slim\Http\StatusCode;
 use WebSK\Image\ImageConstants;
 use WebSK\Image\ImageController;
 use Slim\Http\Request;
@@ -14,7 +15,6 @@ use WebSK\Auth\Users\UserRole;
 use WebSK\Auth\Users\UsersRoutes;
 use WebSK\Auth\Users\UsersServiceProvider;
 use WebSK\Auth\Users\UsersUtils;
-use WebSK\Utils\HTTP;
 
 /**
  * Class UserSaveHandler
@@ -37,7 +37,7 @@ class UserSaveHandler extends BaseHandler
             $user_obj = $user_service->getById($user_id, false);
 
             if (!$user_obj) {
-                return $response->withStatus(HTTP::STATUS_NOT_FOUND);
+                return $response->withStatus(StatusCode::HTTP_NOT_FOUND);
             }
 
             $destination = $request->getParam('destination', $this->pathFor(UsersRoutes::ROUTE_NAME_USER_EDIT, ['user_id' => $user_id]));

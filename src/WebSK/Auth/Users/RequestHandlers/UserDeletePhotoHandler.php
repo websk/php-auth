@@ -4,11 +4,11 @@ namespace WebSK\Auth\Users\RequestHandlers;
 
 use Slim\Http\Request;
 use Slim\Http\Response;
+use Slim\Http\StatusCode;
 use WebSK\Utils\Messages;
 use WebSK\Slim\RequestHandlers\BaseHandler;
 use WebSK\Auth\Users\UsersRoutes;
 use WebSK\Auth\Users\UsersServiceProvider;
-use WebSK\Utils\HTTP;
 
 /**
  * Class UserDeletePhotoHandler
@@ -30,7 +30,7 @@ class UserDeletePhotoHandler extends BaseHandler
         $user_obj = $user_service->getById($user_id, false);
 
         if (!$user_obj) {
-            return $response->withStatus(HTTP::STATUS_NOT_FOUND);
+            return $response->withStatus(StatusCode::HTTP_NOT_FOUND);
         }
 
         $destination = $request->getQueryParam('destination', $this->pathFor(UsersRoutes::ROUTE_NAME_USER_EDIT, ['user_id' => $user_id]));

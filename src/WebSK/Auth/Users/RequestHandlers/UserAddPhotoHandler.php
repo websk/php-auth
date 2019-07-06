@@ -2,6 +2,7 @@
 
 namespace WebSK\Auth\Users\RequestHandlers;
 
+use Slim\Http\StatusCode;
 use WebSK\Image\ImageConstants;
 use WebSK\Image\ImageController;
 use Slim\Http\Request;
@@ -9,7 +10,6 @@ use Slim\Http\Response;
 use WebSK\Utils\Messages;
 use WebSK\Slim\RequestHandlers\BaseHandler;
 use WebSK\Auth\Users\UsersServiceProvider;
-use WebSK\Utils\HTTP;
 
 /**
  * Class UserAddPhotoHandler
@@ -31,7 +31,7 @@ class UserAddPhotoHandler extends BaseHandler
         $user_obj = $user_service->getById($user_id, false);
 
         if (!$user_obj) {
-            return $response->withStatus(HTTP::STATUS_NOT_FOUND);
+            return $response->withStatus(StatusCode::HTTP_NOT_FOUND);
         }
 
         $destination = $request->getParam('destination', $this->pathFor(UserEditHandler::class, ['user_id' => $user_id]));

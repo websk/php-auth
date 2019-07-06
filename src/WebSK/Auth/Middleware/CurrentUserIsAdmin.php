@@ -4,8 +4,8 @@ namespace WebSK\Auth\Middleware;
 
 use Slim\Http\Request;
 use Slim\Http\Response;
+use Slim\Http\StatusCode;
 use WebSK\Auth\Auth;
-use WebSK\Utils\HTTP;
 
 /**
  * Class CurrentUserIsAdmin
@@ -22,7 +22,7 @@ class CurrentUserIsAdmin
     public function __invoke(Request $request, Response $response, $next)
     {
         if (!Auth::currentUserIsAdmin()) {
-            return $response->withStatus(HTTP::STATUS_FORBIDDEN);
+            return $response->withStatus(StatusCode::HTTP_FORBIDDEN);
         }
 
         $response = $next($request, $response);
