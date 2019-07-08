@@ -1,16 +1,17 @@
 <?php
 /**
  * @var User $user_obj
+ * @var Role[] $role_objs_arr
  * @var array $user_roles_ids_arr
  * @var string $save_handler_url
  */
 
+use WebSK\Auth\Users\Role;
 use WebSK\Image\ImageManager;
 use WebSK\Slim\Router;
 use WebSK\Auth\Auth;
 use WebSK\Auth\Users\User;
 use WebSK\Auth\Users\UsersRoutes;
-use WebSK\Auth\Users\UsersUtils;
 use WebSK\Utils\Url;
 
 $destination = Url::getUriNoQueryString();
@@ -56,9 +57,8 @@ $destination = Url::getUriNoQueryString();
                 <div class="col-md-8">
                     <div>
                         <?php
-                        $roles_ids_arr = UsersUtils::getRolesIdsArr();
-                        foreach ($roles_ids_arr as $role_id) {
-                            $role_obj = UsersUtils::loadRole($role_id);
+                        foreach ($role_objs_arr as $role_obj) {
+                            $role_id = $role_obj->getId();
                             ?>
                             <div class="checkbox">
                                 <label for="roles_<?php echo $role_id; ?>">

@@ -34,7 +34,7 @@ return [
         'log_path' => '/var/www/log',
         'tmp_path' => '/var/www/tmp',
         'files_data_path' => '/var/www/php-auth/public/files',
-        'site_domain' => 'http://php-auth.dev',
+        'site_domain' => 'http://localhost',
         'site_full_path' => '/var/www/php-auth',
         'site_name' => 'PHP Auth Demo',
         'site_title' => 'WebSK. PHP Auth Demo',

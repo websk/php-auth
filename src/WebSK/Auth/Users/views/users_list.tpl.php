@@ -1,16 +1,17 @@
 <?php
 /**
- *
+ * @var $requested_role_id
+ * @var User[] $user_objs_arr
+ * @var Role[] $role_objs_arr
  */
 
+use WebSK\Auth\Users\Role;
+use WebSK\Auth\Users\User;
 use WebSK\Image\ImageManager;
 use WebSK\Logger\LoggerRender;
 use WebSK\Slim\Request;
 use WebSK\Slim\Router;
 use WebSK\Auth\Users\UsersRoutes;
-use WebSK\Auth\Users\UsersUtils;
-
-$requested_role_id = Request::getQueryParam('role_id', 0);
 ?>
 <div class="panel panel-default">
     <div class="panel-body">
@@ -23,9 +24,8 @@ $requested_role_id = Request::getQueryParam('role_id', 0);
                         <select name="role_id" class="form-control">
                             <option value="0">Все</option>
                             <?php
-                            $roles_ids_arr = UsersUtils::getRolesIdsArr();
-                            foreach ($roles_ids_arr as $role_id) {
-                                $role_obj = UsersUtils::loadRole($role_id);
+                            foreach ($role_objs_arr as $role_obj) {
+                                $role_id = $role_obj->getId();
                                 echo '<option value="' . $role_id . '" ' . ($role_id == $requested_role_id ? 'selected' : '') . '>' . $role_obj->getName() . '</option>';
                             }
                             ?>
@@ -59,9 +59,8 @@ $requested_role_id = Request::getQueryParam('role_id', 0);
             <col class="col-md-3 col-sm-5 col-xs-5">
         </colgroup>
         <?php
-        $users_ids_arr = UsersUtils::getUsersIdsArr($requested_role_id);
-        foreach ($users_ids_arr as $user_id) {
-            $user_obj = UsersUtils::loadUser($user_id);
+        foreach ($user_objs_arr as $user_obj) {
+            $user_id = $user_obj->getId();
             ?>
             <tr>
                 <td><?php echo $user_obj->getId(); ?></td>

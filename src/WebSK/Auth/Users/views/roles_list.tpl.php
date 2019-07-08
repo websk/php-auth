@@ -1,11 +1,11 @@
 <?php
 /**
- *
+ * @var Role[] $role_objs_arr
  */
 
+use WebSK\Auth\Users\Role;
 use WebSK\Slim\Router;
 use WebSK\Auth\Users\UsersRoutes;
-use WebSK\Auth\Users\UsersUtils;
 
 ?>
 <p class="padding_top_10 padding_bottom_10">
@@ -23,9 +23,8 @@ use WebSK\Auth\Users\UsersUtils;
             <col class="col-md-3 col-sm-5 col-xs-5">
         </colgroup>
         <?php
-        $roles_ids_arr = UsersUtils::getRolesIdsArr();
-        foreach ($roles_ids_arr as $role_id) {
-            $role_obj = UsersUtils::loadRole($role_id);
+        foreach ($role_objs_arr as $role_obj) {
+            $role_id = $role_obj->getId();
             ?>
             <tr>
                 <td><?php echo $role_obj->getId(); ?></td>
@@ -54,3 +53,4 @@ use WebSK\Auth\Users\UsersUtils;
         }
         ?>
     </table>
+</div>

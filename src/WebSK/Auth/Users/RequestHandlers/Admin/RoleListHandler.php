@@ -4,6 +4,7 @@ namespace WebSK\Auth\Users\RequestHandlers\Admin;
 
 use Slim\Http\Request;
 use Slim\Http\Response;
+use WebSK\Auth\Users\UsersServiceProvider;
 use WebSK\Config\ConfWrapper;
 use WebSK\Views\LayoutDTO;
 use WebSK\Slim\RequestHandlers\BaseHandler;
@@ -24,9 +25,14 @@ class RoleListHandler extends BaseHandler
      */
     public function __invoke(Request $request, Response $response)
     {
+        $role_service = UsersServiceProvider::getRoleService($this->container);
+
+        $role_objs_arr = $role_service->getAllRoles();
+
         $content = PhpRender::renderTemplateForModuleNamespace(
             'WebSK' . DIRECTORY_SEPARATOR . 'Auth' . DIRECTORY_SEPARATOR .  'Users',
-            'roles_list.tpl.php'
+            'roles_list.tpl.php',
+            ['role_objs_arr' => $role_objs_arr]
         );
 
         $layout_dto = new LayoutDTO();

@@ -4,6 +4,8 @@ namespace WebSK\Auth\Users\RequestHandlers\Admin;
 
 use Slim\Http\Request;
 use Slim\Http\Response;
+use WebSK\Auth\Users\UsersServiceProvider;
+use WebSK\Auth\Users\UsersUtils;
 use WebSK\Config\ConfWrapper;
 use WebSK\Views\LayoutDTO;
 use WebSK\Views\PhpRender;
@@ -23,9 +25,26 @@ class UserListHandler extends BaseHandler
      */
     public function __invoke(Request $request, Response $response)
     {
+        $role_service = UsersServiceProvider::getRoleService($this->container);
+
+        $requested_role_id = $request->getQueryParam('role_id', 0);
+
+        $user_service = UsersServiceProvider::getUserService($this->container);
+
+        $user_objs_arr = [];
+        $users_ids_arr = UsersUtils::getUsersIdsArr($requested_role_id);
+        foreach ($users_ids_arr as $user_id) {
+            $user_objs_arr[] = $user_service->getById($user_id);
+        }
+
         $content = PhpRender::renderTemplateForModuleNamespace(
             'WebSK' . DIRECTORY_SEPARATOR . 'Auth' . DIRECTORY_SEPARATOR . 'Users',
-            'users_list.tpl.php'
+            'users_list.tpl.php',
+            [
+                'requested_role_id' => $requested_role_id,
+                'role_objs_arr' => $role_service->getAllRoles(),
+                'user_objs_arr' => $user_objs_arr
+            ]
         );
 
         $layout_dto = new LayoutDTO();

@@ -16,47 +16,6 @@ class UsersUtils
 {
 
     /**
-     * @param int $user_id
-     * @param bool $exception_if_not_loaded
-     * @return User
-     * @throws \Exception
-     */
-    public static function loadUser(int $user_id, bool $exception_if_not_loaded = true)
-    {
-        $container = Container::self();
-
-        $user_service = UsersServiceProvider::getUserService($container);
-
-        return $user_service->getById($user_id, $exception_if_not_loaded);
-    }
-
-    /**
-     * @param int $role_id
-     * @param bool $exception_if_not_loaded
-     * @return Role
-     * @throws \Exception
-     */
-    public static function loadRole(int $role_id, bool $exception_if_not_loaded = true)
-    {
-        $container = Container::self();
-
-        $role_service = UsersServiceProvider::getRoleService($container);
-
-        return $role_service->getById($role_id, $exception_if_not_loaded);
-    }
-
-    /**
-     * @return array
-     * @throws \Exception
-     */
-    public static function getRolesIdsArr()
-    {
-        $query = "SELECT id FROM " . Role::DB_TABLE_NAME . " ORDER BY name";
-
-        return DBWrapper::readColumn($query);
-    }
-
-    /**
      * @param int|null $role_id
      * @return array
      */
