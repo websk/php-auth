@@ -5,7 +5,7 @@ namespace WebSK\Auth\Users\RequestHandlers;
 use Slim\Http\Request;
 use Slim\Http\Response;
 use Slim\Http\StatusCode;
-use WebSK\Auth\Users\UserComponents;
+use WebSK\Auth\Users\UsersComponents;
 use WebSK\Config\ConfWrapper;
 use WebSK\Views\BreadcrumbItemDTO;
 use WebSK\Views\LayoutDTO;
@@ -47,7 +47,7 @@ class UserEditHandler extends BaseHandler
             $user_roles_ids_arr = $user_service->getRoleIdsArrByUserId($user_id);
         }
 
-        $content = UserComponents::renderEditForm($user_obj, $user_roles_ids_arr, $save_handler_url);
+        $content = UsersComponents::renderEditForm($user_obj, $user_roles_ids_arr, $save_handler_url);
 
         $layout_dto = new LayoutDTO();
         $layout_dto->setTitle('Редактирование профиля');

@@ -5,6 +5,7 @@ namespace WebSK\Auth;
 use WebSK\Config\ConfWrapper;
 use WebSK\Auth\Users\User;
 use WebSK\Auth\Users\UserService;
+use WebSK\DB\DBWrapper;
 use WebSK\Slim\Router;
 use WebSK\Utils\Filters;
 
@@ -24,6 +25,43 @@ class AuthService
     public function __construct(UserService $user_service)
     {
         $this->user_service = $user_service;
+    }
+
+    /**
+     * Авторизация на сайте
+     * @param string $email
+     * @param string $password
+     * @param bool $save_auth
+     * @return bool
+     */
+    public function processAuthorization(string $email, string $password, bool $save_auth = false)
+    {
+        $salt_password = Auth::getHash($password);
+
+        $query = "SELECT id FROM " . User::DB_TABLE_NAME . " WHERE email=? AND passw=? LIMIT 1";
+        $user_id = DBWrapper::readField($query, [$email, $salt_password]);
+
+        if (!$user_id) {
+            return false;
+        }
+
+        $user_obj = $this->user_service->getById($user_id);
+
+        // Регистрация не подтверждена
+        if (!$user_obj->isConfirm()) {
+            return false;
+        }
+
+        $delta = null;
+        if ($save_auth) {
+            $delta = time() + Auth::SESSION_LIFE_TIME;
+        }
+
+        $session = sha1(time() . $user_id);
+
+        Auth::storeUserSession($user_id, $session, $delta);
+
+        return true;
     }
 
     /**

@@ -5,8 +5,9 @@ namespace WebSK\Auth\RequestHandlers;
 use Slim\Http\Request;
 use Slim\Http\Response;
 use WebSK\Auth\AuthRoutes;
+use WebSK\Auth\AuthServiceProvider;
 use WebSK\Slim\RequestHandlers\BaseHandler;
-use WebSK\Auth\Auth;
+use WebSK\Utils\Messages;
 
 /**
  * Class LoginHandler
@@ -25,8 +26,15 @@ class LoginHandler extends BaseHandler
             return $response->withRedirect($this->pathFor(AuthRoutes::ROUTE_NAME_AUTH_LOGIN_FORM));
         }
 
+        $auth_service = AuthServiceProvider::getAuthService($this->container);
+
         $save_auth = ((int)$request->getParam('save_auth') == 1) ? true : false;
-        Auth::doLogin($request->getParam('email'), $request->getParam('password'), $save_auth);
+        $is_authenticated = $auth_service
+            ->processAuthorization($request->getParam('email'), $request->getParam('password'), $save_auth);
+
+        if (!$is_authenticated) {
+            Messages::setError('Ошибка! Неверный адрес электронной почты или пароль.');
+        }
 
         $destination = $request->getParam('destination', '/');
 

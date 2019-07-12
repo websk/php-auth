@@ -4,6 +4,7 @@ namespace WebSK\Auth\RequestHandlers;
 
 use Slim\Http\Request;
 use Slim\Http\Response;
+use WebSK\Auth\AuthServiceProvider;
 use WebSK\Slim\RequestHandlers\BaseHandler;
 use WebSK\Auth\Auth;
 
@@ -20,7 +21,14 @@ class LogoutHandler extends BaseHandler
      */
     public function __invoke(Request $request, Response $response)
     {
-        Auth::logout();
+        $user_id = Auth::getCurrentUserId();
+
+        if ($user_id) {
+            $session_service = AuthServiceProvider::getSessionService($this->container);
+            $session_service->clearUserSession($user_id);
+        }
+
+        //\Hybrid_Auth::logoutAllProviders();
 
         $destination = $request->getQueryParam('destination', '/');
 

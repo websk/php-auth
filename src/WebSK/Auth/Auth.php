@@ -21,44 +21,6 @@ class Auth
     const SESSION_LIFE_TIME = 31536000; // 1 год
 
     /**
-     * Авторизация на сайте
-     * @param $email
-     * @param $password
-     * @param $save_auth
-     * @return bool|mixed
-     */
-    public static function doLogin($email, $password, $save_auth = false)
-    {
-        $salt_password = self::getHash($password);
-
-        $query = "SELECT id FROM " . User::DB_TABLE_NAME . " WHERE email=? AND passw=? LIMIT 1";
-        $user_id = DBWrapper::readField($query, [$email, $salt_password]);
-
-        if (!$user_id) {
-            return false;
-        }
-
-        $container = Container::self();
-        $user_obj = UsersServiceProvider::getUserService($container)->getById($user_id);
-
-        // Регистрация не подтверждена
-        if (!$user_obj->isConfirm()) {
-            return false;
-        }
-
-        $delta = null;
-        if ($save_auth) {
-            $delta = time() + self::SESSION_LIFE_TIME;
-        }
-
-        $session = sha1(time() . $user_id);
-
-        self::storeUserSession($user_id, $session, $delta);
-
-        return true;
-    }
-
-    /**
      * @param int $user_id
      * @param string $session
      * @param int $delta
@@ -100,23 +62,6 @@ class Auth
         $hash = md5($salt . $password);
 
         return $hash;
-    }
-
-    /**
-     * Выход
-     */
-    public static function logout()
-    {
-        $user_id = self::getCurrentUserId();
-
-        if ($user_id) {
-            $container = Container::self();
-
-            $session_service = AuthServiceProvider::getSessionService($container);
-
-            $session_service->clearUserSession($user_id);
-        }
-        //\Hybrid_Auth::logoutAllProviders();
     }
 
     public static function clearUserSession($user_id)

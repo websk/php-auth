@@ -6,10 +6,10 @@ use Websk\Slim\Container;
 use WebSK\Views\PhpRender;
 
 /**
- * Class UserComponents
+ * Class UsersComponents
  * @package WebSK\Auth\Users
  */
-class UserComponents
+class UsersComponents
 {
     /**
      * @param User $user_obj
