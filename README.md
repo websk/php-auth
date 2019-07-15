@@ -6,8 +6,8 @@
 ## Demo
 * copy config/config.default.php as config/config.php
 * replace settings and paths
-* create MySQL DB php-auth (or other) 
-* load in MySQL DB php-auth dump.sql
+* create MySQL DB db_auth (or other) 
+* load in MySQL DB db_auth dump.sql
 * composer update
 * cd public
 * php -S localhost:8000
