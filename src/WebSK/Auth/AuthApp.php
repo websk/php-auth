@@ -11,6 +11,7 @@ use WebSK\Auth\Users\UsersRoutes;
 use WebSK\Auth\Users\UsersServiceProvider;
 use WebSK\Cache\CacheServiceProvider;
 use WebSK\Captcha\CaptchaRoutes;
+use WebSK\CRUD\CRUDServiceProvider;
 use WebSK\DB\DBWrapper;
 use WebSK\Logger\LoggerRoutes;
 use WebSK\Logger\LoggerServiceProvider;
@@ -37,6 +38,7 @@ class AuthApp extends App
         AuthServiceProvider::register($container);
         UsersServiceProvider::register($container);
         LoggerServiceProvider::register($container);
+        CRUDServiceProvider::register($container);
 
         $this->registerRoutes();
     }

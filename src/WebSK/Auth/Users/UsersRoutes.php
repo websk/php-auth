@@ -17,6 +17,7 @@ use WebSK\Auth\Users\RequestHandlers\UserDeleteHandler;
 use WebSK\Auth\Users\RequestHandlers\UserDeletePhotoHandler;
 use WebSK\Auth\Users\RequestHandlers\UserEditHandler;
 use WebSK\Auth\Users\RequestHandlers\UserSaveHandler;
+use WebSK\Utils\HTTP;
 
 /**
  * Class UsersRoutes
@@ -52,7 +53,7 @@ class UsersRoutes
     public static function registerAdmin(App $app)
     {
         $app->group('/users', function (App $app) {
-            $app->get('', UserListHandler::class)
+            $app->map([HTTP::METHOD_GET, HTTP::METHOD_POST], '', UserListHandler::class)
                 ->setName(self::ROUTE_NAME_ADMIN_USER_LIST);
 
             $app->get('/create', AdminUserEditHandler::class)
@@ -62,7 +63,7 @@ class UsersRoutes
                 ->setName(self::ROUTE_NAME_ADMIN_USER_EDIT);
 
             $app->group('/roles', function (App $app) {
-                $app->get('', RoleListHandler::class)
+                $app->map([HTTP::METHOD_GET, HTTP::METHOD_POST],'', RoleListHandler::class)
                     ->setName(self::ROUTE_NAME_ADMIN_ROLE_LIST);
 
                 $app->get('/create', RoleEditHandler::class)

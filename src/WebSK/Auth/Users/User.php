@@ -14,12 +14,15 @@ class User extends Entity
     const ENTITY_REPOSITORY_CONTAINER_ID = 'users.user_repository';
     const DB_TABLE_NAME = 'users';
 
+    const _NAME = 'name';
     /** @var string */
     protected $name = '';
 
+    const _FIRST_NAME = 'first_name';
     /** @var string */
     protected $first_name = '';
 
+    const _LAST_NAME = 'last_name';
     /** @var string */
     protected $last_name = '';
 
@@ -29,6 +32,7 @@ class User extends Entity
     /** @var string */
     protected $phone = '';
 
+    const _EMAIL = 'email';
     /** @var string */
     protected $email = '';
 
@@ -53,6 +57,7 @@ class User extends Entity
     /** @var string */
     protected $photo = '';
 
+    const _PASSW = 'passw';
     /** @var string */
     protected $passw;
 
@@ -236,6 +241,18 @@ class User extends Entity
         }
 
         return 'user/'. $this->getPhoto();
+    }
+
+    /**
+     * @return string
+     */
+    public function getImageHTML()
+    {
+        if (!$this->getPhoto()) {
+            return '';
+        }
+
+        return '<img src="/files/images/'. $this->getPhotoPath() .'" alt="' . $this->getName() .'" title="' . $this->getName() .'" style="max-width: 75px;">';
     }
 
     /**
