@@ -16,13 +16,13 @@ return [
         'db' => [
             'db_auth' => [
                 'host' => 'localhost',
-                'db_name' => 'php-auth',
+                'db_name' => 'db_auth',
                 'user' => 'root',
                 'password' => 'root',
             ],
             'db_logger' => [
                 'host' => 'localhost',
-                'db_name' => 'php-logger',
+                'db_name' => 'db_logger',
                 'user' => 'root',
                 'password' => 'root',
             ],

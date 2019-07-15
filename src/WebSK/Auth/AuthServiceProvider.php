@@ -28,7 +28,7 @@ class AuthServiceProvider
          * @param ContainerInterface $container
          * @return DBService
          */
-        $container[AuthServiceProvider::DB_SERVICE_CONTAINER_ID] = function (ContainerInterface $container) {
+        $container[self::DB_SERVICE_CONTAINER_ID] = function (ContainerInterface $container) {
             $db_config = $container['settings']['db'][self::DB_ID];
 
             $db_connector = new DBConnectorMySQL(
@@ -103,6 +103,6 @@ class AuthServiceProvider
      */
     public static function getDBService(ContainerInterface $container)
     {
-        return $container->get(AuthServiceProvider::DB_SERVICE_CONTAINER_ID);
+        return $container->get(self::DB_SERVICE_CONTAINER_ID);
     }
 }
