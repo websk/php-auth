@@ -3,11 +3,13 @@
  * @var LayoutDTO $layout_dto
  */
 
+use WebSK\Utils\Assert;
 use WebSK\Utils\Messages;
 use WebSK\Config\ConfWrapper;
+use WebSK\Utils\Sanitize;
+use WebSK\Views\BreadcrumbItemDTO;
 use WebSK\Views\LayoutDTO;
 use WebSK\Utils\Url;
-use WebSK\Views\PhpRender;
 ?>
 <!DOCTYPE html>
 <html lang="ru">
@@ -53,11 +55,20 @@ use WebSK\Views\PhpRender;
     <div>
         <div class="row">
             <div id="content">
+                <ol class="breadcrumb">
+                    <?php
+                    foreach ($layout_dto->getBreadcrumbsDtoArr() as $breadcrumb_item_dto) {
+                        Assert::assert($breadcrumb_item_dto instanceof BreadcrumbItemDTO);
+                        if (!$breadcrumb_item_dto->getUrl()) {
+                            echo '<li class="active">' . $breadcrumb_item_dto->getName() . '</li>';
+                            continue;
+                        }
+
+                        echo '<li><a href="' . Sanitize::sanitizeUrl($breadcrumb_item_dto->getUrl()) . '">' . Sanitize::sanitizeTagContent($breadcrumb_item_dto->getName()) . '</a></li>';
+                    }
+                    ?>
+                </ol>
                 <?php
-                echo PhpRender::renderLocalTemplate(
-                    '../breadcrumbs.tpl.php',
-                    ['breadcrumbs_dto_arr' => $layout_dto->getBreadcrumbsDtoArr()]
-                );
 
                 $current_url_no_query = Url::getUriNoQueryString();
 

@@ -11,4 +11,5 @@
 * composer update
 * cd public
 * php -S localhost:8000
+* open http://localhost:8000
 * login as demo@websk.ru with password 12345
