@@ -8,7 +8,6 @@
 use WebSK\Auth\Users\Role;
 use WebSK\Auth\Users\User;
 use WebSK\Image\ImageManager;
-use WebSK\Logger\LoggerRender;
 use WebSK\Slim\Request;
 use WebSK\Slim\Router;
 use WebSK\Auth\Users\UsersRoutes;
@@ -79,10 +78,6 @@ use WebSK\Auth\Users\UsersRoutes;
                     <a href="<?php echo Router::pathFor(UsersRoutes::ROUTE_NAME_ADMIN_USER_EDIT, ['user_id' => $user_id]); ?>" title="Редактировать"
                        class="btn btn-default btn-sm">
                         <span class="fa fa-edit fa-lg text-warning fa-fw"></span>
-                    </a>
-                    <a href="<?php echo LoggerRender::getLoggerLinkForEntityObj($user_obj); ?>" target="_blank" title="Журнал"
-                       class="btn btn-default btn-sm">
-                        <span class="fa fa-history fa-lg fa-fw"></span>
                     </a>
                     <a href="<?php echo Router::pathFor(UsersRoutes::ROUTE_NAME_USER_DELETE, ['user_id' => $user_id], ['destination' => Request::getUri()->getPath()]); ?>"
                        onClick="return confirm('Вы уверены, что хотите удалить?')" title="Удалить"

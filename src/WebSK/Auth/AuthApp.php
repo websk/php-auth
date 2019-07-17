@@ -13,8 +13,6 @@ use WebSK\Cache\CacheServiceProvider;
 use WebSK\Captcha\CaptchaRoutes;
 use WebSK\CRUD\CRUDServiceProvider;
 use WebSK\DB\DBWrapper;
-use WebSK\Logger\LoggerRoutes;
-use WebSK\Logger\LoggerServiceProvider;
 use WebSK\Slim\Facade;
 use WebSK\Slim\Router;
 
@@ -37,7 +35,6 @@ class AuthApp extends App
         CacheServiceProvider::register($container);
         AuthServiceProvider::register($container);
         UsersServiceProvider::register($container);
-        LoggerServiceProvider::register($container);
         CRUDServiceProvider::register($container);
 
         $this->registerRoutes();
@@ -60,7 +57,6 @@ class AuthApp extends App
 
         $this->group('/admin', function (App $app) {
             UsersRoutes::registerAdmin($app);
-            LoggerRoutes::registerAdmin($app);
         })->add(new CurrentUserIsAdmin());
 
         CaptchaRoutes::register($this);

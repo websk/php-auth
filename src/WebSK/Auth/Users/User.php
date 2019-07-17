@@ -246,18 +246,6 @@ class User extends Entity
     /**
      * @return string
      */
-    public function getImageHTML()
-    {
-        if (!$this->getPhoto()) {
-            return '';
-        }
-
-        return '<img src="/files/images/'. $this->getPhotoPath() .'" alt="' . $this->getName() .'" title="' . $this->getName() .'" style="max-width: 75px;">';
-    }
-
-    /**
-     * @return string
-     */
     public function getCompany(): string
     {
         return $this->company;

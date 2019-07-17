@@ -40,12 +40,13 @@ class UserListHandler extends BaseHandler
      */
     public function __invoke(Request $request, Response $response)
     {
+        $user_service = UsersServiceProvider::getUserService($this->container);
+
         /*
         $role_service = UsersServiceProvider::getRoleService($this->container);
 
         $requested_role_id = $request->getQueryParam('role_id', 0);
 
-        $user_service = UsersServiceProvider::getUserService($this->container);
 
         $user_objs_arr = [];
         $users_ids_arr = UsersUtils::getUsersIdsArr($requested_role_id);
@@ -75,26 +76,32 @@ class UserListHandler extends BaseHandler
                     new CRUDFormRow('Фамилия', new CRUDFormWidgetInput(User::_LAST_NAME)),
                     new CRUDFormRow('Email', new CRUDFormWidgetInput(User::_EMAIL))
                 ],
-                $this->pathFor(UsersRoutes::ROUTE_NAME_ADMIN_USER_EDIT, ['user_id' => '{this->' . User::_ID . '}'])
+                function(User $user_obj) {
+                    return $this->pathFor(UsersRoutes::ROUTE_NAME_ADMIN_USER_EDIT, ['user_id' => $user_obj->getId()]);
+                }
             ),
             [
-                new CRUDTableColumn('ID', new CRUDTableWidgetText('{this->' . User::_ID . '}')),
+                new CRUDTableColumn('ID', new CRUDTableWidgetText(User::_ID)),
                 new CRUDTableColumn(
                     'Логотип',
                     new CRUDTableWidgetHtml(
-                        '{this->getImageHTML()}'
+                        function(User $user_obj) use ($user_service) {
+                            return $user_service->getImageHtml($user_obj);
+                        }
                     )
                 ),
                 new CRUDTableColumn(
                     'Имя',
                     new CRUDTableWidgetTextWithLink(
-                        '{this->' . User::_NAME . '}',
-                        $this->pathFor(UsersRoutes::ROUTE_NAME_ADMIN_USER_EDIT, ['user_id' => '{this->' . User::_ID . '}'])
+                        User::_NAME,
+                        function(User $user_obj) {
+                            return $this->pathFor(UsersRoutes::ROUTE_NAME_ADMIN_USER_EDIT, ['user_id' => $user_obj->getId()]);
+                        }
                     )
                 ),
                 new CRUDTableColumn(
                     'Email',
-                    new CRUDTableWidgetText('{this->' . User::_EMAIL . '}')
+                    new CRUDTableWidgetText(User::_EMAIL)
                 ),
                 new CRUDTableColumn('', new CRUDTableWidgetDelete())
             ],

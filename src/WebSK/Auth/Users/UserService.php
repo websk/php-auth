@@ -146,4 +146,17 @@ class UserService extends EntityService
 
         return false;
     }
+
+    /**
+     * @param User $user_obj
+     * @return string
+     */
+    public function getImageHtml(User $user_obj)
+    {
+        if (!$user_obj->getPhoto()) {
+            return '';
+        }
+
+        return '<img src="/files/images/user/'. $user_obj->getPhoto() .'" alt="' . $user_obj->getName() .'" title="' . $user_obj->getName() .'" style="max-width: 75px;">';
+    }
 }
