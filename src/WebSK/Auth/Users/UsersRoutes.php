@@ -5,10 +5,9 @@ namespace WebSK\Auth\Users;
 use Slim\App;
 use WebSK\Auth\Middleware\CurrentUserHasRightToEditUser;
 use WebSK\Auth\Middleware\CurrentUserIsAdmin;
-use WebSK\Auth\Users\RequestHandlers\Admin\RoleDeleteHandler;
 use WebSK\Auth\Users\RequestHandlers\Admin\RoleEditHandler;
-use WebSK\Auth\Users\RequestHandlers\Admin\RoleSaveHandler;
 use WebSK\Auth\Users\RequestHandlers\Admin\UserEditHandler as AdminUserEditHandler;
+use WebSK\Auth\Users\RequestHandlers\Admin\UserListAjaxHandler;
 use WebSK\Auth\Users\RequestHandlers\Admin\UserListHandler;
 use WebSK\Auth\Users\RequestHandlers\Admin\RoleListHandler;
 use WebSK\Auth\Users\RequestHandlers\UserAddPhotoHandler;
@@ -28,6 +27,7 @@ class UsersRoutes
     const ROUTE_NAME_ADMIN_USER_CREATE = 'admin:users:create';
     const ROUTE_NAME_ADMIN_USER_EDIT = 'admin:users:edit';
     const ROUTE_NAME_ADMIN_USER_LIST = 'admin:users:list';
+    const ROUTE_NAME_ADMIN_USER_LIST_AJAX = 'admin:users:list:ajax';
 
     const ROUTE_NAME_USER_CREATE = 'user:create';
     const ROUTE_NAME_USER_EDIT = 'user:edit';
@@ -41,11 +41,7 @@ class UsersRoutes
     const ROUTE_NAME_USER_DELETE_PHOTO = 'user:delete_photo';
 
     const ROUTE_NAME_ADMIN_ROLE_LIST = 'admin:users:role:list';
-    const ROUTE_NAME_ADMIN_ROLE_CREATE = 'admin:users:role:create';
     const ROUTE_NAME_ADMIN_ROLE_EDIT = 'admin:users:role:edit';
-    const ROUTE_NAME_ADMIN_ROLE_ADD = 'admin:users:role:add';
-    const ROUTE_NAME_ADMIN_ROLE_UPDATE = 'admin:users:role:update';
-    const ROUTE_NAME_ADMIN_ROLE_DELETE = 'admin:users:role:delete';
 
     /**
      * @param App $app
@@ -55,6 +51,9 @@ class UsersRoutes
         $app->group('/users', function (App $app) {
             $app->map([HTTP::METHOD_GET, HTTP::METHOD_POST], '', UserListHandler::class)
                 ->setName(self::ROUTE_NAME_ADMIN_USER_LIST);
+
+            $app->map([HTTP::METHOD_GET, HTTP::METHOD_POST],'/ajax', UserListAjaxHandler::class)
+                ->setName(self::ROUTE_NAME_ADMIN_USER_LIST_AJAX);
 
             $app->get('/create', AdminUserEditHandler::class)
                 ->setName(self::ROUTE_NAME_ADMIN_USER_CREATE);
@@ -66,20 +65,8 @@ class UsersRoutes
                 $app->map([HTTP::METHOD_GET, HTTP::METHOD_POST],'', RoleListHandler::class)
                     ->setName(self::ROUTE_NAME_ADMIN_ROLE_LIST);
 
-                $app->get('/create', RoleEditHandler::class)
-                    ->setName(self::ROUTE_NAME_ADMIN_ROLE_CREATE);
-
-                $app->get('/edit/{role_id:\d+}', RoleEditHandler::class)
+                $app->map([HTTP::METHOD_GET, HTTP::METHOD_POST],'/edit/{role_id:\d+}', RoleEditHandler::class)
                     ->setName(self::ROUTE_NAME_ADMIN_ROLE_EDIT);
-
-                $app->post('/add', RoleSaveHandler::class)
-                    ->setName(self::ROUTE_NAME_ADMIN_ROLE_ADD);
-
-                $app->post('/update/{role_id:\d+}', RoleSaveHandler::class)
-                    ->setName(self::ROUTE_NAME_ADMIN_ROLE_UPDATE);
-
-                $app->get('/delete/{role_id:\d+}', RoleDeleteHandler::class)
-                    ->setName(self::ROUTE_NAME_ADMIN_ROLE_DELETE);
             });
         })->add(new CurrentUserIsAdmin());
     }

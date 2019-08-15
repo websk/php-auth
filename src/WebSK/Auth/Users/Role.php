@@ -16,9 +16,11 @@ class Role extends Entity
 
     const ROLE_ADMIN = 1;
 
+    const _NAME = 'name';
     /** @var string */
     protected $name = '';
 
+    const _DESIGNATION = 'designation';
     /** @var string */
     protected $designation = '';
 

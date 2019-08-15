@@ -18,15 +18,9 @@ class UserRole extends Entity
     /** @var int */
     protected $user_id;
 
+    const _ROLE_ID = 'role_id';
     /** @var int */
     protected $role_id;
-
-    // Зависит от модели
-    public static $depends_on_models_arr = [
-        User::class => [
-            'link_field' => 'user_id',
-        ],
-    ];
 
     /**
      * @return int

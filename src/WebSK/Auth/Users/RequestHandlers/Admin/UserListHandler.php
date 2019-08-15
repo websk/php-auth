@@ -7,7 +7,6 @@ use Slim\Http\Response;
 use WebSK\Auth\Users\User;
 use WebSK\Auth\Users\UsersRoutes;
 use WebSK\Auth\Users\UsersServiceProvider;
-use WebSK\Auth\Users\UsersUtils;
 use WebSK\Config\ConfWrapper;
 use WebSK\CRUD\CRUDServiceProvider;
 use WebSK\CRUD\Form\CRUDFormRow;
@@ -41,29 +40,6 @@ class UserListHandler extends BaseHandler
     public function __invoke(Request $request, Response $response)
     {
         $user_service = UsersServiceProvider::getUserService($this->container);
-
-        /*
-        $role_service = UsersServiceProvider::getRoleService($this->container);
-
-        $requested_role_id = $request->getQueryParam('role_id', 0);
-
-
-        $user_objs_arr = [];
-        $users_ids_arr = UsersUtils::getUsersIdsArr($requested_role_id);
-        foreach ($users_ids_arr as $user_id) {
-            $user_objs_arr[] = $user_service->getById($user_id);
-        }
-
-        $content = PhpRender::renderTemplateForModuleNamespace(
-            'WebSK' . DIRECTORY_SEPARATOR . 'Auth' . DIRECTORY_SEPARATOR . 'Users',
-            'users_list.tpl.php',
-            [
-                'requested_role_id' => $requested_role_id,
-                'role_objs_arr' => $role_service->getAllRoles(),
-                'user_objs_arr' => $user_objs_arr
-            ]
-        );
-        */
 
         $crud_table_obj = CRUDServiceProvider::getCrud($this->container)->createTable(
             User::class,
