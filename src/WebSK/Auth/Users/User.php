@@ -26,6 +26,7 @@ class User extends Entity
     /** @var string */
     protected $last_name = '';
 
+    const _BIRTHDAY = 'birthday';
     /** @var string */
     protected $birthday = '';
 

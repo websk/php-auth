@@ -16,46 +16,6 @@ class UsersUtils
 {
 
     /**
-     * @param int|null $role_id
-     * @return array
-     */
-    public static function getUsersIdsArr($role_id = null)
-    {
-        $param_arr = [];
-
-        $query = "SELECT u.id FROM " . User::DB_TABLE_NAME . " u";
-        if ($role_id) {
-            $query .= " JOIN users_roles ur ON (ur.user_id=u.id) WHERE ur.role_id=?";
-            $param_arr[] = $role_id;
-        }
-        $query .= " ORDER BY u.name";
-
-        return DBWrapper::readColumn($query, $param_arr);
-    }
-
-    /**
-     * Проверка даты рождения
-     * @param $birthday
-     * @return bool
-     */
-    public static function checkBirthDay($birthday)
-    {
-        $day = substr($birthday, 0, 2);
-        $mon = substr($birthday, 3, 2);
-        $year = substr($birthday, 6, 10);
-
-        if ((substr($birthday, 2, 1) == '.') && (substr($birthday, 5, 1) == '.')) {
-            if (($day >= 1) && ($day <= 31) && ($mon >= 1) && ($mon <= 12) && ($year >= 1900) && ($year <= date('Y'))) {
-                if (is_numeric($day) and is_numeric($mon) and is_numeric($year)) {
-                    return true;
-                }
-            }
-        }
-
-        return false;
-    }
-
-    /**
      * Генератор пароля
      * @param $number
      * @return string

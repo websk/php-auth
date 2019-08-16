@@ -5,8 +5,18 @@ namespace WebSK\Auth\Users\RequestHandlers;
 use Slim\Http\Request;
 use Slim\Http\Response;
 use Slim\Http\StatusCode;
+use WebSK\Auth\Users\Role;
 use WebSK\Auth\Users\UsersComponents;
 use WebSK\Config\ConfWrapper;
+use WebSK\CRUD\CRUDServiceProvider;
+use WebSK\CRUD\Form\CRUDFormRow;
+use WebSK\CRUD\Form\Widgets\CRUDFormWidgetInput;
+use WebSK\CRUD\Table\CRUDTable;
+use WebSK\CRUD\Table\CRUDTableColumn;
+use WebSK\CRUD\Table\Filters\CRUDTableFilterLikeInline;
+use WebSK\CRUD\Table\Widgets\CRUDTableWidgetDelete;
+use WebSK\CRUD\Table\Widgets\CRUDTableWidgetText;
+use WebSK\CRUD\Table\Widgets\CRUDTableWidgetTextWithLink;
 use WebSK\Views\BreadcrumbItemDTO;
 use WebSK\Views\LayoutDTO;
 use WebSK\Slim\RequestHandlers\BaseHandler;
@@ -47,11 +57,11 @@ class UserEditHandler extends BaseHandler
             $user_roles_ids_arr = $user_service->getRoleIdsArrByUserId($user_id);
         }
 
-        $content = UsersComponents::renderEditForm($user_obj, $user_roles_ids_arr, $save_handler_url);
+        $content_html = UsersComponents::renderEditForm($user_obj, $user_roles_ids_arr, $save_handler_url);
 
         $layout_dto = new LayoutDTO();
         $layout_dto->setTitle('Редактирование профиля');
-        $layout_dto->setContentHtml($content);
+        $layout_dto->setContentHtml($content_html);
 
         $breadcrumbs_arr = [
             new BreadcrumbItemDTO('Главная', '/'),

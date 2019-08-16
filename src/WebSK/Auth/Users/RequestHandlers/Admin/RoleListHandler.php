@@ -5,7 +5,6 @@ namespace WebSK\Auth\Users\RequestHandlers\Admin;
 use Slim\Http\Request;
 use Slim\Http\Response;
 use WebSK\Auth\Users\Role;
-use WebSK\Auth\Users\UsersServiceProvider;
 use WebSK\Config\ConfWrapper;
 use WebSK\CRUD\CRUDServiceProvider;
 use WebSK\CRUD\Form\CRUDFormRow;
@@ -37,8 +36,6 @@ class RoleListHandler extends BaseHandler
      */
     public function __invoke(Request $request, Response $response)
     {
-        $role_service = UsersServiceProvider::getRoleService($this->container);
-
         $crud_table_obj = CRUDServiceProvider::getCrud($this->container)->createTable(
             Role::class,
             CRUDServiceProvider::getCrud($this->container)->createForm(

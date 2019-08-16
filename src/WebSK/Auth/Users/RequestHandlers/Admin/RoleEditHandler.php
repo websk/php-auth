@@ -56,7 +56,7 @@ class RoleEditHandler extends BaseHandler
             $role_obj,
             [
                 new CRUDFormRow(
-                    'Комментарий',
+                    'Название',
                     new CRUDFormWidgetInput(Role::_NAME, false, true)
                 ),
                 new CRUDFormRow(
@@ -96,10 +96,7 @@ class RoleEditHandler extends BaseHandler
                             true
                         )
                     ),
-                ],
-                function(UserRole $user_role_obj) {
-                    return $this->pathFor(UsersRoutes::ROUTE_NAME_ADMIN_ROLE_EDIT, ['role_id' => $user_role_obj->getRoleId()]);
-                }
+                ]
             ),
             [
                 new CRUDTableColumn(
