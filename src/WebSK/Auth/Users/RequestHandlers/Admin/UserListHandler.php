@@ -59,7 +59,7 @@ class UserListHandler extends BaseHandler
             [
                 new CRUDTableColumn('ID', new CRUDTableWidgetText(User::_ID)),
                 new CRUDTableColumn(
-                    'Логотип',
+                    'Фото',
                     new CRUDTableWidgetHtml(
                         function(User $user_obj) use ($user_service) {
                             return $user_service->getImageHtml($user_obj);

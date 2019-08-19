@@ -17,7 +17,6 @@ use WebSK\CRUD\Form\Widgets\CRUDFormWidgetReferenceAjax;
 use WebSK\CRUD\Table\CRUDTable;
 use WebSK\CRUD\Table\CRUDTableColumn;
 use WebSK\CRUD\Table\Widgets\CRUDTableWidgetDelete;
-use WebSK\CRUD\Table\Widgets\CRUDTableWidgetText;
 use WebSK\CRUD\Table\Widgets\CRUDTableWidgetTextWithLink;
 use WebSK\Views\LayoutDTO;
 use WebSK\Slim\RequestHandlers\BaseHandler;
@@ -47,7 +46,6 @@ class UserEditHandler extends BaseHandler
         if (is_null($user_id)) {
             $user_obj = new User();
             $save_handler_url = $this->pathFor(UsersRoutes::ROUTE_NAME_USER_ADD);
-            $user_roles_ids_arr = [];
         } else {
             $user_obj = $user_service->getById($user_id, false);
 
@@ -56,19 +54,19 @@ class UserEditHandler extends BaseHandler
             }
 
             $save_handler_url = $this->pathFor(UsersRoutes::ROUTE_NAME_USER_UPDATE, ['user_id' => $user_id]);
-            $user_roles_ids_arr = $user_service->getRoleIdsArrByUserId($user_id);
         }
 
-        $content_html = UsersComponents::renderEditForm($user_obj, $user_roles_ids_arr, $save_handler_url);
+        $content_html = UsersComponents::renderEditForm($user_obj, $save_handler_url);
 
+        $role_service = UsersServiceProvider::getRoleService($this->container);
 
         $crud_table_obj = CRUDServiceProvider::getCrud($this->container)->createTable(
             UserRole::class,
             CRUDServiceProvider::getCrud($this->container)->createForm(
-                'user_create_rand435345',
+                'user_role_create_rand23432',
                 new UserRole(),
                 [
-                    new CRUDFormInvisibleRow(new CRUDFormWidgetInput(UserRole::_ROLE_ID)),
+                    new CRUDFormInvisibleRow(new CRUDFormWidgetInput(UserRole::_USER_ID)),
                     new CRUDFormRow(
                         'Роль',
                         new CRUDFormWidgetReferenceAjax(
@@ -83,31 +81,26 @@ class UserEditHandler extends BaseHandler
                             true
                         )
                     ),
-                ],
-                function(Role $role_obj) {
-                    return $this->pathFor(UsersRoutes::ROUTE_NAME_ADMIN_ROLE_EDIT, ['role_id' => $role_obj->getId()]);
-                }
+                ]
             ),
             [
-                new CRUDTableColumn('ID', new CRUDTableWidgetText(Role::_ID)),
                 new CRUDTableColumn(
                     'Название',
                     new CRUDTableWidgetTextWithLink(
-                        Role::_NAME,
-                        function(Role $role_obj) {
-                            return $this->pathFor(UsersRoutes::ROUTE_NAME_ADMIN_ROLE_EDIT, ['role_id' => $role_obj->getId()]);
+                        function(UserRole $user_role_obj) use ($role_service) {
+                            $role_obj = $role_service->getById($user_role_obj->getRoleId());
+                            return $role_obj->getName();
+                        },
+                        function(UserRole $user_role_obj) {
+                            return $this->pathFor(UsersRoutes::ROUTE_NAME_ADMIN_ROLE_EDIT, ['role_id' => $user_role_obj->getRoleId()]);
                         }
                     )
-                ),
-                new CRUDTableColumn(
-                    'Обозначение',
-                    new CRUDTableWidgetText(Role::_DESIGNATION)
                 ),
                 new CRUDTableColumn('', new CRUDTableWidgetDelete())
             ],
             [],
-            Role::_NAME,
-            'roles_list_324324',
+            UserRole::_ID,
+            'user_roles_list_324324',
             CRUDTable::FILTERS_POSITION_INLINE
         );
 

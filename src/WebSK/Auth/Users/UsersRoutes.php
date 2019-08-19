@@ -6,6 +6,7 @@ use Slim\App;
 use WebSK\Auth\Middleware\CurrentUserHasRightToEditUser;
 use WebSK\Auth\Middleware\CurrentUserIsAdmin;
 use WebSK\Auth\Users\RequestHandlers\Admin\RoleEditHandler;
+use WebSK\Auth\Users\RequestHandlers\Admin\RoleListAjaxHandler;
 use WebSK\Auth\Users\RequestHandlers\Admin\UserEditHandler as AdminUserEditHandler;
 use WebSK\Auth\Users\RequestHandlers\Admin\UserListAjaxHandler;
 use WebSK\Auth\Users\RequestHandlers\Admin\UserListHandler;
@@ -42,6 +43,7 @@ class UsersRoutes
 
     const ROUTE_NAME_ADMIN_ROLE_LIST = 'admin:users:role:list';
     const ROUTE_NAME_ADMIN_ROLE_EDIT = 'admin:users:role:edit';
+    const ROUTE_NAME_ADMIN_ROLE_LIST_AJAX = 'admin:users:role:list:ajax';
 
     /**
      * @param App $app
@@ -58,14 +60,17 @@ class UsersRoutes
             $app->get('/create', AdminUserEditHandler::class)
                 ->setName(self::ROUTE_NAME_ADMIN_USER_CREATE);
 
-            $app->get('/edit/{user_id:\d+}', AdminUserEditHandler::class)
+            $app->map([HTTP::METHOD_GET, HTTP::METHOD_POST],'/{user_id:\d+}', AdminUserEditHandler::class)
                 ->setName(self::ROUTE_NAME_ADMIN_USER_EDIT);
 
             $app->group('/roles', function (App $app) {
                 $app->map([HTTP::METHOD_GET, HTTP::METHOD_POST],'', RoleListHandler::class)
                     ->setName(self::ROUTE_NAME_ADMIN_ROLE_LIST);
 
-                $app->map([HTTP::METHOD_GET, HTTP::METHOD_POST],'/edit/{role_id:\d+}', RoleEditHandler::class)
+                $app->map([HTTP::METHOD_GET, HTTP::METHOD_POST],'ajax', RoleListAjaxHandler::class)
+                    ->setName(self::ROUTE_NAME_ADMIN_ROLE_LIST_AJAX);
+
+                $app->map([HTTP::METHOD_GET, HTTP::METHOD_POST],'/{role_id:\d+}', RoleEditHandler::class)
                     ->setName(self::ROUTE_NAME_ADMIN_ROLE_EDIT);
             });
         })->add(new CurrentUserIsAdmin());
@@ -80,7 +85,7 @@ class UsersRoutes
             $app->get('/create', UserEditHandler::class)
                 ->setName(self::ROUTE_NAME_USER_CREATE);
 
-            $app->get('/edit/{user_id:\d+}', UserEditHandler::class)
+            $app->get('/{user_id:\d+}', UserEditHandler::class)
                 ->setName(self::ROUTE_NAME_USER_EDIT);
 
             $app->post('/add', UserSaveHandler::class)

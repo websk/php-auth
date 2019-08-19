@@ -5,18 +5,8 @@ namespace WebSK\Auth\Users\RequestHandlers;
 use Slim\Http\Request;
 use Slim\Http\Response;
 use Slim\Http\StatusCode;
-use WebSK\Auth\Users\Role;
 use WebSK\Auth\Users\UsersComponents;
 use WebSK\Config\ConfWrapper;
-use WebSK\CRUD\CRUDServiceProvider;
-use WebSK\CRUD\Form\CRUDFormRow;
-use WebSK\CRUD\Form\Widgets\CRUDFormWidgetInput;
-use WebSK\CRUD\Table\CRUDTable;
-use WebSK\CRUD\Table\CRUDTableColumn;
-use WebSK\CRUD\Table\Filters\CRUDTableFilterLikeInline;
-use WebSK\CRUD\Table\Widgets\CRUDTableWidgetDelete;
-use WebSK\CRUD\Table\Widgets\CRUDTableWidgetText;
-use WebSK\CRUD\Table\Widgets\CRUDTableWidgetTextWithLink;
 use WebSK\Views\BreadcrumbItemDTO;
 use WebSK\Views\LayoutDTO;
 use WebSK\Slim\RequestHandlers\BaseHandler;
@@ -45,7 +35,6 @@ class UserEditHandler extends BaseHandler
         if (is_null($user_id)) {
             $user_obj = new User();
             $save_handler_url = $this->pathFor(UsersRoutes::ROUTE_NAME_USER_ADD);
-            $user_roles_ids_arr = [];
         } else {
             $user_obj = $user_service->getById($user_id, false);
 
@@ -54,10 +43,9 @@ class UserEditHandler extends BaseHandler
             }
 
             $save_handler_url = $this->pathFor(UsersRoutes::ROUTE_NAME_USER_UPDATE, ['user_id' => $user_id]);
-            $user_roles_ids_arr = $user_service->getRoleIdsArrByUserId($user_id);
         }
 
-        $content_html = UsersComponents::renderEditForm($user_obj, $user_roles_ids_arr, $save_handler_url);
+        $content_html = UsersComponents::renderEditForm($user_obj, $save_handler_url);
 
         $layout_dto = new LayoutDTO();
         $layout_dto->setTitle('Редактирование профиля');

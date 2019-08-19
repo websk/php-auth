@@ -1,12 +1,9 @@
 <?php
 /**
  * @var User $user_obj
- * @var Role[] $role_objs_arr
- * @var array $user_roles_ids_arr
  * @var string $save_handler_url
  */
 
-use WebSK\Auth\Users\Role;
 use WebSK\Image\ImageManager;
 use WebSK\Slim\Router;
 use WebSK\Auth\Auth;
@@ -51,29 +48,6 @@ $destination = Url::getUriNoQueryString();
         <?php
         if (Auth::currentUserIsAdmin()) {
             ?>
-            <div class="form-group">
-                <label class="col-md-4 control-label">Роль</label>
-
-                <div class="col-md-8">
-                    <div>
-                        <?php
-                        foreach ($role_objs_arr as $role_obj) {
-                            $role_id = $role_obj->getId();
-                            ?>
-                            <div class="checkbox">
-                                <label for="roles_<?php echo $role_id; ?>">
-                                    <input value="<?php echo $role_id; ?>" id="roles_<?php echo $role_id; ?>"
-                                           type="checkbox"
-                                           name="roles[]"<?php echo(in_array($role_id, $user_roles_ids_arr) ? ' checked' : '') ?>>
-                                    <?php echo $role_obj->getName(); ?>
-                                </label>
-                            </div>
-                            <?php
-                        }
-                        ?>
-                    </div>
-                </div>
-            </div>
             <div class="form-group">
                 <div class="col-md-offset-4 col-md-8">
                     <div class="checkbox">

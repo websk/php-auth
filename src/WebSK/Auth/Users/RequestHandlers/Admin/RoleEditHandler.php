@@ -108,7 +108,7 @@ class RoleEditHandler extends BaseHandler
                     )
                 ),
                 new CRUDTableColumn(
-                    'Логотип',
+                    'Фото',
                     new CRUDTableWidgetHtml(
                         function(UserRole $user_role_obj) use ($user_service) {
                             $user_obj = $user_service->getById($user_role_obj->getUserId());
