@@ -94,9 +94,6 @@ class UsersRoutes
             $app->post('/update/{user_id:\d+}', UserSaveHandler::class)
                 ->setName(self::ROUTE_NAME_USER_UPDATE);
 
-            $app->get('/delete/{user_id:\d+}', UserDeleteHandler::class)
-                ->setName(self::ROUTE_NAME_USER_DELETE);
-
             $app->get('/create_password/{user_id:\d+}', UserCreatePasswordHandler::class)
                 ->setName(self::ROUTE_NAME_USER_CREATE_PASSWORD);
 
