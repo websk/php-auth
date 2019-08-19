@@ -13,7 +13,6 @@ use WebSK\Auth\Users\RequestHandlers\Admin\UserListHandler;
 use WebSK\Auth\Users\RequestHandlers\Admin\RoleListHandler;
 use WebSK\Auth\Users\RequestHandlers\UserAddPhotoHandler;
 use WebSK\Auth\Users\RequestHandlers\UserCreatePasswordHandler;
-use WebSK\Auth\Users\RequestHandlers\UserDeleteHandler;
 use WebSK\Auth\Users\RequestHandlers\UserDeletePhotoHandler;
 use WebSK\Auth\Users\RequestHandlers\UserEditHandler;
 use WebSK\Auth\Users\RequestHandlers\UserSaveHandler;

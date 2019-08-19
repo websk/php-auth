@@ -16,6 +16,8 @@ use WebSK\CRUD\Form\Widgets\CRUDFormWidgetInput;
 use WebSK\CRUD\Form\Widgets\CRUDFormWidgetReferenceAjax;
 use WebSK\CRUD\Table\CRUDTable;
 use WebSK\CRUD\Table\CRUDTableColumn;
+use WebSK\CRUD\Table\Filters\CRUDTableFilterEqualInvisible;
+use WebSK\CRUD\Table\Filters\CRUDTableFilterInInvisible;
 use WebSK\CRUD\Table\Widgets\CRUDTableWidgetDelete;
 use WebSK\CRUD\Table\Widgets\CRUDTableWidgetTextWithLink;
 use WebSK\Views\LayoutDTO;
@@ -98,7 +100,9 @@ class UserEditHandler extends BaseHandler
                 ),
                 new CRUDTableColumn('', new CRUDTableWidgetDelete())
             ],
-            [],
+            [
+                new CRUDTableFilterEqualInvisible(UserRole::_USER_ID, $user_id)
+            ],
             UserRole::_ID,
             'user_roles_list_324324',
             CRUDTable::FILTERS_POSITION_INLINE

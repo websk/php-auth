@@ -3,7 +3,6 @@
 namespace WebSK\Auth\Users\RequestHandlers;
 
 use Slim\Http\StatusCode;
-use WebSK\Auth\Users\UserRole;
 use WebSK\Image\ImageConstants;
 use WebSK\Image\ImageController;
 use Slim\Http\Request;
@@ -49,7 +48,6 @@ class UserSaveHandler extends BaseHandler
         $name = $request->getParam('name', '');
         $first_name = $request->getParam('first_name', '');
         $last_name = $request->getParam('last_name', '');
-        $roles_ids_arr = $request->getParam('roles', null);
         $confirm = $request->getParam('confirm', false);
         $birthday = $request->getParam('birthday', '');
         $email = $request->getParam('email', '');
@@ -117,22 +115,6 @@ class UserSaveHandler extends BaseHandler
 
         $user_id = $user_obj->getId();
 
-        // Roles
-        if (Auth::currentUserIsAdmin()) {
-            $user_service->deleteUserRolesForUserId($user_id);
-
-            if ($roles_ids_arr) {
-                $user_role_service = UsersServiceProvider::getUserRoleService($this->container);
-
-                foreach ($roles_ids_arr as $role_id) {
-                    $user_role_obj = new UserRole();
-                    $user_role_obj->setUserId($user_obj->getId());
-                    $user_role_obj->setRoleId($role_id);
-                    $user_role_service->save($user_role_obj);
-                }
-            }
-        }
-
         // Image
         if (array_key_exists('image_file', $_FILES)) {
             $file = $_FILES['image_file'];
@@ -152,7 +134,7 @@ class UserSaveHandler extends BaseHandler
 
         Messages::setMessage('Информация о пользователе была успешно сохранена');
 
-        $destination = str_replace('/create', '/edit/' . $user_id, $destination);
+        $destination = str_replace('/create', '/' . $user_id, $destination);
 
         return $response->withRedirect($destination);
     }
