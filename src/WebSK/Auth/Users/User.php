@@ -52,6 +52,7 @@ class User extends Entity
     /** @var int */
     protected $confirm = false;
 
+    const _CONFIRM_CODE = 'confirm_code';
     /** @var string */
     protected $confirm_code;
 

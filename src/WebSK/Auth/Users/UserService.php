@@ -2,6 +2,7 @@
 
 namespace WebSK\Auth\Users;
 
+use WebSK\Auth\Auth;
 use WebSK\Image\ImageConstants;
 use WebSK\Image\ImageManager;
 use WebSK\Cache\CacheService;
@@ -9,6 +10,7 @@ use WebSK\Entity\EntityRepository;
 use WebSK\Entity\EntityService;
 use WebSK\Entity\InterfaceEntity;
 use WebSK\Config\ConfWrapper;
+use WebSK\Utils\Filters;
 
 /**
  * Class UserService
@@ -22,6 +24,9 @@ class UserService extends EntityService
 
     /** @var UserRoleService */
     protected $user_role_service;
+
+    /** @var UserRepository */
+    protected $repository;
 
     public function __construct(
         string $entity_class_name,
@@ -158,5 +163,118 @@ class UserService extends EntityService
         }
 
         return '<img src="/files/images/user/'. $user_obj->getPhoto() .'" alt="' . $user_obj->getName() .'" title="' . $user_obj->getName() .'" style="max-width: 75px;">';
+    }
+
+    /**
+     * Смена и отправка пароля пользователю
+     * @param $user_id
+     * @return string
+     */
+    public function createAndSendPasswordToUser(int $user_id)
+    {
+        $new_password = $this->generatePassword(8);
+
+        $user_obj = $this->getById($user_id);
+        $user_obj->setPassw(Auth::getHash($new_password));
+        $this->save($user_obj);
+
+        if ($user_obj->getEmail()) {
+            $site_email = ConfWrapper::value('site_email');
+            $site_domain = ConfWrapper::value('site_domain');
+            $site_name = ConfWrapper::value('site_name');
+
+            $mail_message = "<p>Добрый день, " . $user_obj->getName() . "</p>";
+            $mail_message .= "<p>Вы воспользовались формой восстановления пароля на сайте " . $site_name . "</p>";
+            $mail_message .= "<p>Ваш новый пароль: " . $new_password . "<br>";
+            $mail_message .= "Ваш email для входа: " . $user_obj->getEmail() . "</p>";
+            $mail_message .= "<p>Рекомендуем сменить пароль после входа на сайт.</p>";
+            $mail_message .= '<p>' . $site_domain . "</p>";
+
+            $subject = "Смена пароля на сайте " . ConfWrapper::value('site_name');
+
+            $mail = new \PHPMailer;
+            $mail->CharSet = "utf-8";
+            $mail->setFrom($site_email, $site_name);
+            $mail->addAddress($user_obj->getEmail());
+            $mail->isHTML(true);
+            $mail->Subject = $subject;
+            $mail->Body = $mail_message;
+            $mail->AltBody = Filters::checkPlain($mail_message);
+            $mail->send();
+        }
+
+        return $new_password;
+    }
+
+    /**
+     * ID пользователя по его email
+     * @param $email
+     * @return int|null
+     */
+    public function getUserIdByEmail(string $email)
+    {
+        $user_id = $this->repository->findUserIdByEmail($email);
+
+        return $user_id ?? null;
+    }
+
+    /**
+     * @param $email
+     * @return bool
+     */
+    public function hasUserByEmail($email)
+    {
+        $has_user_id = $this->getUserIdByEmail($email);
+        if ($has_user_id) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * ID пользователя по коду подтверждения регистрации на сайте
+     * @param string $confirm_code
+     * @return int|null
+     */
+    public function getUserIdByConfirmCode(string $confirm_code)
+    {
+        $user_id = $this->repository->findUserIdByConfirmCode($confirm_code);
+
+        return $user_id ?? null;
+    }
+
+    /**
+     * Генератор пароля
+     * @param $number
+     * @return string
+     */
+    public function generatePassword($number)
+    {
+        $arr = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'r', 's', 't', 'u', 'v', 'x', 'y', 'z',
+            'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'R', 'S', 'T', 'U', 'V', 'X', 'Y', 'Z',
+            '1', '2', '3', '4', '5', '6', '7', '8', '9', '0'];
+
+        $pass = '';
+        for ($i = 0; $i < $number; $i++) {
+            $index = rand(0, count($arr) - 1);
+            $pass .= $arr[$index];
+        }
+
+        return $pass;
+    }
+
+    /**
+     * Генератор кода подтверждения регистрации на сайте
+     * @return string
+     */
+    public function generateConfirmCode()
+    {
+        $salt = ConfWrapper::value('salt');
+        $salt .= $salt;
+
+        $confirm_code = md5($salt . time() . uniqid());
+
+        return $confirm_code;
     }
 }

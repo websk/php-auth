@@ -15,7 +15,6 @@ use WebSK\Auth\Auth;
 use WebSK\Auth\Users\User;
 use WebSK\Auth\Users\UserRole;
 use WebSK\Auth\Users\UsersServiceProvider;
-use WebSK\Auth\Users\UsersUtils;
 
 /**
  * Class RegistrationHandler
@@ -60,7 +59,9 @@ class RegistrationHandler extends BaseHandler
             return $response->withRedirect($error_destination);
         }
 
-        $has_user_id = UsersUtils::hasUserByEmail($email);
+        $user_service = UsersServiceProvider::getUserService($this->container);
+
+        $has_user_id = $user_service->hasUserByEmail($email);
         if ($has_user_id) {
             Messages::setError(
                 'Ошибка! Пользователь с таким адресом электронной почты ' . $email . ' уже зарегистрирован.'
@@ -80,8 +81,6 @@ class RegistrationHandler extends BaseHandler
             }
         }
 
-        $user_service = UsersServiceProvider::getUserService($this->container);
-
         $user_obj = new User();
 
         $user_obj->setName($name);
@@ -94,7 +93,7 @@ class RegistrationHandler extends BaseHandler
         $user_obj->setEmail($email);
         $user_obj->setPassw(Auth::getHash($new_password_first));
 
-        $confirm_code = UsersUtils::generateConfirmCode();
+        $confirm_code = $user_service->generateConfirmCode();
         $user_obj->setConfirmCode($confirm_code);
 
         $user_service->save($user_obj);

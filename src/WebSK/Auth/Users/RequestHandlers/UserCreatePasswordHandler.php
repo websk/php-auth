@@ -4,10 +4,10 @@ namespace WebSK\Auth\Users\RequestHandlers;
 
 use Slim\Http\Request;
 use Slim\Http\Response;
+use WebSK\Auth\Users\UsersServiceProvider;
 use WebSK\Utils\Messages;
 use WebSK\Slim\RequestHandlers\BaseHandler;
 use WebSK\Auth\Users\UsersRoutes;
-use WebSK\Auth\Users\UsersUtils;
 
 /**
  * Class UserCreatePasswordHandler
@@ -25,7 +25,9 @@ class UserCreatePasswordHandler extends BaseHandler
     {
         $destination = $request->getQueryParam('destination', $this->pathFor(UsersRoutes::ROUTE_NAME_USER_EDIT, ['user_id' => $user_id]));
 
-        $new_password = UsersUtils::createAndSendPasswordToUser($user_id);
+        $user_service = UsersServiceProvider::getUserService($this->container);
+
+        $new_password = $user_service->createAndSendPasswordToUser($user_id);
 
         Messages::setMessage('Новый пароль' . $new_password);
 

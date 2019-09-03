@@ -5,10 +5,10 @@ namespace WebSK\Auth\RequestHandlers;
 use Slim\Http\Request;
 use Slim\Http\Response;
 use WebSK\Auth\AuthRoutes;
+use WebSK\Auth\Users\UsersServiceProvider;
 use WebSK\Captcha\Captcha;
 use WebSK\Utils\Messages;
 use WebSK\Slim\RequestHandlers\BaseHandler;
-use WebSK\Auth\Users\UsersUtils;
 
 /**
  * Class ForgotPasswordHandler
@@ -40,14 +40,16 @@ class ForgotPasswordHandler extends BaseHandler
             return $response->withRedirect($destination);
         }
 
-        if (!UsersUtils::hasUserByEmail($email)) {
+        $user_service = UsersServiceProvider::getUserService($this->container);
+
+        if (!$user_service->hasUserByEmail($email)) {
             Messages::setError('Ошибка! Пользователь с таким адресом электронной почты не зарегистрирован на сайте.');
             return $response->withRedirect($destination);
         }
 
-        $user_id = UsersUtils::getUserIdByEmail($email);
+        $user_id = $user_service->getUserIdByEmail($email);
 
-        UsersUtils::createAndSendPasswordToUser($user_id);
+        $user_service->createAndSendPasswordToUser($user_id);
 
         $message = 'Временный пароль отправлен на указанный вами адрес электронной почты.';
 

@@ -8,7 +8,6 @@ use WebSK\Auth\AuthRoutes;
 use WebSK\Utils\Messages;
 use WebSK\Slim\RequestHandlers\BaseHandler;
 use WebSK\Auth\Users\UsersServiceProvider;
-use WebSK\Auth\Users\UsersUtils;
 
 /**
  * Class ConfirmRegistrationHandler
@@ -25,7 +24,9 @@ class ConfirmRegistrationHandler extends BaseHandler
      */
     public function __invoke(Request $request, Response $response, string $confirm_code)
     {
-        $user_id = UsersUtils::getUserIdByConfirmCode($confirm_code);
+        $user_service = UsersServiceProvider::getUserService($this->container);
+
+        $user_id = $user_service->getUserIdByConfirmCode($confirm_code);
 
         $destination = $this->pathFor(AuthRoutes::ROUTE_NAME_AUTH_LOGIN_FORM);
 
@@ -35,8 +36,6 @@ class ConfirmRegistrationHandler extends BaseHandler
             );
             return $response->withRedirect($destination);
         }
-
-        $user_service = UsersServiceProvider::getUserService($this->container);
 
         $user_obj = $user_service->getById($user_id);
         $user_obj->setConfirm(1);

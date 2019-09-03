@@ -5,6 +5,10 @@ namespace WebSK\Auth\Users;
 use WebSK\Entity\EntityRepository;
 use WebSK\Utils\Sanitize;
 
+/**
+ * Class UserRoleRepository
+ * @package WebSK\Auth\Users
+ */
 class UserRoleRepository extends EntityRepository
 {
     /**

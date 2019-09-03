@@ -13,7 +13,6 @@ use WebSK\Auth\Auth;
 use WebSK\Auth\Users\User;
 use WebSK\Auth\Users\UsersRoutes;
 use WebSK\Auth\Users\UsersServiceProvider;
-use WebSK\Auth\Users\UsersUtils;
 
 /**
  * Class UserSaveHandler
@@ -68,21 +67,15 @@ class UserSaveHandler extends BaseHandler
             return $response->withRedirect($destination);
         }
 
-        if ($user_id == 'new') {
-            $has_user_id = UsersUtils::hasUserByEmail($email);
-            if ($has_user_id) {
-                Messages::setError('Ошибка! Пользователь с таким адресом электронной почты ' . $email . ' уже существует.');
-                return $response->withRedirect($destination);
-            }
+        $has_user_id = $user_service->hasUserByEmail($email);
+        if ($has_user_id) {
+            Messages::setError('Ошибка! Пользователь с таким адресом электронной почты ' . $email . ' уже существует.');
+            return $response->withRedirect($destination);
+        }
 
+        if ($user_id == 'new') {
             if (!$new_password_first && !$new_password_second) {
                 Messages::setError('Ошибка! Не введен пароль.');
-                return $response->withRedirect($destination);
-            }
-        } else {
-            $has_user_id = UsersUtils::hasUserByEmail($email, $user_id);
-            if ($has_user_id) {
-                Messages::setError('Ошибка! Пользователь с таким адресом электронной почты ' . $email . ' уже существует.');
                 return $response->withRedirect($destination);
             }
         }

@@ -10,7 +10,6 @@ use WebSK\Captcha\Captcha;
 use WebSK\Utils\Messages;
 use WebSK\Slim\RequestHandlers\BaseHandler;
 use WebSK\Auth\Users\UsersServiceProvider;
-use WebSK\Auth\Users\UsersUtils;
 
 /**
  * Class SendConfirmCodeHandler
@@ -42,14 +41,14 @@ class SendConfirmCodeHandler extends BaseHandler
             return $response->withRedirect($destination);
         }
 
-        if (!UsersUtils::hasUserByEmail($email)) {
+        $user_service = UsersServiceProvider::getUserService($this->container);
+
+        if (!$user_service->hasUserByEmail($email)) {
             Messages::setError('Ошибка! Пользователь с таким адресом электронной почты не зарегистрирован на сайте.');
             return $response->withRedirect($destination);
         }
 
-        $user_id = UsersUtils::getUserIdByEmail($email);
-
-        $user_service = UsersServiceProvider::getUserService($this->container);
+        $user_id = $user_service->getUserIdByEmail($email);
 
         $user_obj = $user_service->getById($user_id);
 
@@ -58,7 +57,7 @@ class SendConfirmCodeHandler extends BaseHandler
             return $response->withRedirect($destination);
         }
 
-        $confirm_code = UsersUtils::generateConfirmCode();
+        $confirm_code = $user_service->generateConfirmCode();
 
         $auth_service = AuthServiceProvider::getAuthService($this->container);
         $auth_service->sendConfirmMail($user_obj->getName(), $email, $confirm_code);

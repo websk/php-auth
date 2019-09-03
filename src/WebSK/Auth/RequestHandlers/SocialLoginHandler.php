@@ -4,10 +4,10 @@ namespace WebSK\Auth\RequestHandlers;
 
 use Slim\Http\Request;
 use Slim\Http\Response;
+use WebSK\Auth\Users\UsersServiceProvider;
 use WebSK\Utils\Messages;
 use WebSK\Slim\RequestHandlers\BaseHandler;
 use WebSK\Auth\Auth;
-use WebSK\Auth\Users\UsersUtils;
 
 /**
  * Class SocialLoginHandler
@@ -44,10 +44,12 @@ class SocialLoginHandler extends BaseHandler
             $user_profile->identifier
         );
 
+        $user_service = UsersServiceProvider::getUserService($this->container);
+
         // Пользователь не найден в базе, регистрируем
         if (!$user_id) {
             if ($user_profile->email) {
-                $user_id = UsersUtils::getUserIdByEmail($user_profile->email);
+                $user_id = $user_service->getUserIdByEmail($user_profile->email);
 
                 if ($user_id) {
                     Messages::setError("Пользователь с таким адресом электронной почты " . $user_profile->email . ' уже зарегистрирован');
