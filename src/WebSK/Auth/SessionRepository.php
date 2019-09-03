@@ -6,10 +6,10 @@ use WebSK\Entity\EntityRepository;
 use WebSK\Utils\Sanitize;
 
 /**
- * Class SessionsRepository
+ * Class SessionRepository
  * @package WebSK\Auth
  */
-class SessionsRepository extends EntityRepository
+class SessionRepository extends EntityRepository
 {
 
     /**

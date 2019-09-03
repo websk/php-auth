@@ -5,13 +5,13 @@ namespace WebSK\Auth;
 use WebSK\Entity\Entity;
 
 /**
- * Class Sessions
+ * Class Session
  * @package WebSK\Auth
  */
-class Sessions extends Entity
+class Session extends Entity
 {
-    const ENTITY_SERVICE_CONTAINER_ID = 'auth.sessions_service';
-    const ENTITY_REPOSITORY_CONTAINER_ID = 'auth.sessions_repository';
+    const ENTITY_SERVICE_CONTAINER_ID = 'auth.session_service';
+    const ENTITY_REPOSITORY_CONTAINER_ID = 'auth.session_repository';
     const DB_TABLE_NAME = 'sessions';
 
     const SESSION_LIFE_TIME = 31536000; // 1 год

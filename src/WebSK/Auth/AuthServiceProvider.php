@@ -57,23 +57,23 @@ class AuthServiceProvider
 
         /**
          * @param ContainerInterface $container
-         * @return SessionsService
+         * @return SessionService
          */
-        $container[Sessions::ENTITY_SERVICE_CONTAINER_ID] = function (ContainerInterface $container) {
-            return new SessionsService(
-                Sessions::class,
-                $container->get(Sessions::ENTITY_REPOSITORY_CONTAINER_ID),
+        $container[Session::ENTITY_SERVICE_CONTAINER_ID] = function (ContainerInterface $container) {
+            return new SessionService(
+                Session::class,
+                $container->get(Session::ENTITY_REPOSITORY_CONTAINER_ID),
                 CacheServiceProvider::getCacheService($container)
             );
         };
 
         /**
          * @param ContainerInterface $container
-         * @return SessionsRepository
+         * @return SessionRepository
          */
-        $container[Sessions::ENTITY_REPOSITORY_CONTAINER_ID] = function (ContainerInterface $container) {
-            return new SessionsRepository(
-                Sessions::class,
+        $container[Session::ENTITY_REPOSITORY_CONTAINER_ID] = function (ContainerInterface $container) {
+            return new SessionRepository(
+                Session::class,
                 $container->get(self::DB_SERVICE_CONTAINER_ID)
             );
         };
@@ -90,11 +90,11 @@ class AuthServiceProvider
 
     /**
      * @param ContainerInterface $container
-     * @return SessionsService
+     * @return SessionService
      */
     public static function getSessionService(ContainerInterface $container)
     {
-        return $container->get(Sessions::ENTITY_SERVICE_CONTAINER_ID);
+        return $container->get(Session::ENTITY_SERVICE_CONTAINER_ID);
     }
 
     /**

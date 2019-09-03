@@ -5,12 +5,12 @@ namespace WebSK\Auth;
 use WebSK\Entity\EntityService;
 
 /**
- * Class SessionsService
+ * Class SessionService
  * @package WebSK\Auth
  */
-class SessionsService extends EntityService
+class SessionService extends EntityService
 {
-    /** @var SessionsRepository */
+    /** @var SessionRepository */
     protected $repository;
 
     /**
@@ -33,7 +33,7 @@ class SessionsService extends EntityService
      */
     protected function clearOldSessionsByUserId($user_id)
     {
-        $delta = time() - Sessions::SESSION_LIFE_TIME;
+        $delta = time() - Session::SESSION_LIFE_TIME;
         $this->repository->clearOldSessionsByUserId($user_id, $delta);
     }
 
