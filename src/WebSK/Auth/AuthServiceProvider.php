@@ -51,7 +51,8 @@ class AuthServiceProvider
          */
         $container[self::AUTH_SERVICE_CONTAINER_ID] = function (ContainerInterface $container) {
             return new AuthService(
-                UsersServiceProvider::getUserService($container)
+                UsersServiceProvider::getUserService($container),
+                self::getSessionService($container)
             );
         };
 

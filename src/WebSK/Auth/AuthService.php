@@ -18,13 +18,21 @@ class AuthService
     /** @var UserService */
     protected $user_service;
 
+    /** @var SessionService */
+    protected $session_service;
+
     /**
      * AuthService constructor.
      * @param UserService $user_service
+     * @param SessionService $session_service
      */
-    public function __construct(UserService $user_service)
+    public function __construct(
+        UserService $user_service,
+        SessionService $session_service
+    )
     {
         $this->user_service = $user_service;
+        $this->session_service = $session_service;
     }
 
     /**
@@ -54,12 +62,12 @@ class AuthService
 
         $delta = null;
         if ($save_auth) {
-            $delta = time() + Auth::SESSION_LIFE_TIME;
+            $delta = time() + Session::SESSION_LIFE_TIME;
         }
 
         $session = sha1(time() . $user_id);
 
-        Auth::storeUserSession($user_id, $session, $delta);
+        $this->session_service->storeUserSession($user_id, $session, $delta);
 
         return true;
     }

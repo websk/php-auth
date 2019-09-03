@@ -41,4 +41,27 @@ class SessionService extends EntityService
     {
         setcookie('auth_session', '', time() - 3600, '/');
     }
+
+    /**
+     * @param int $user_id
+     * @param string $session_hash
+     * @param $delta
+     * @throws \Exception
+     */
+    public function storeUserSession(int $user_id, string $session_hash, $delta)
+    {
+        $time = time();
+
+        $session = new Session();
+
+        $session->setUserId($user_id);
+        $session->setSession($session_hash);
+        $session->setHostname($_SERVER['REMOTE_ADDR']);
+        $session->setTimestamp($time);
+        $this->save($session);
+
+        setcookie('auth_session', $session, $delta, '/');
+
+        $this->clearOldSessionsByUserId($user_id);
+    }
 }

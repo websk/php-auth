@@ -14,38 +14,6 @@ use WebSK\Auth\Users\UsersServiceProvider;
  */
 class Auth
 {
-    const SESSION_LIFE_TIME = 31536000; // 1 год
-
-    /**
-     * @param int $user_id
-     * @param string $session
-     * @param int $delta
-     * @throws \Exception
-     */
-    public static function storeUserSession($user_id, $session, $delta)
-    {
-        $time = time();
-
-        $query = "INSERT INTO sessions SET user_id=?, session=?, hostname=?, timestamp=?";
-        DBWrapper::query($query, [$user_id, $session, $_SERVER['REMOTE_ADDR'], $time]);
-
-        setcookie('auth_session', $session, $delta, '/');
-
-        self::clearOldSessionsByUserId($user_id);
-    }
-
-    /**
-     * Удаляем просроченные сессии
-     * @param $user_id
-     * @throws \Exception
-     */
-    protected static function clearOldSessionsByUserId($user_id)
-    {
-        $delta = time() - self::SESSION_LIFE_TIME;
-        $query = "DELETE FROM sessions WHERE user_id=? AND timestamp<=?";
-        DBWrapper::query($query, array($user_id, $delta));
-    }
-
     /**
      * Хеш пароля
      * @param $password
@@ -58,21 +26,6 @@ class Auth
         $hash = md5($salt . $password);
 
         return $hash;
-    }
-
-    public static function clearUserSession($user_id)
-    {
-        $query = "DELETE FROM sessions WHERE session=?";
-        DBWrapper::query($query, array($_COOKIE['auth_session']));
-
-        self::clearOldSessionsByUserId($user_id);
-
-        self::clearAuthCookie();
-    }
-
-    public static function clearAuthCookie()
-    {
-        setcookie('auth_session', '', time() - 3600, '/');
     }
 
     /**

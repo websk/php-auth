@@ -4,11 +4,12 @@ namespace WebSK\Auth\RequestHandlers;
 
 use Slim\Http\Request;
 use Slim\Http\Response;
+use WebSK\Auth\AuthServiceProvider;
 use WebSK\Auth\HybridAuth;
+use WebSK\Auth\Session;
 use WebSK\Auth\Users\UsersServiceProvider;
 use WebSK\Utils\Messages;
 use WebSK\Slim\RequestHandlers\BaseHandler;
-use WebSK\Auth\Auth;
 
 /**
  * Class SocialLoginHandler
@@ -70,9 +71,10 @@ class SocialLoginHandler extends BaseHandler
         }
 
         $session = sha1(time() . $user_id);
-        $delta = time() + Auth::SESSION_LIFE_TIME;
+        $delta = time() + Session::SESSION_LIFE_TIME;
 
-        Auth::storeUserSession($user_id, $session, $delta);
+        $session_service = AuthServiceProvider::getSessionService($this->container);
+        $session_service->storeUserSession($user_id, $session, $delta);
 
         return $response->withRedirect($destination);
     }
