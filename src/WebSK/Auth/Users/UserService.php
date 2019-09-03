@@ -60,7 +60,7 @@ class UserService extends EntityService
      * @return array
      * @throws \Exception
      */
-    public function getRoleIdsArrByUserId(int $user_id)
+    public function getRoleIdsArrByUserId(int $user_id): array
     {
         $user_roles_ids_arr = $this->user_role_service->getIdsArrByUserId($user_id);
 
@@ -117,7 +117,7 @@ class UserService extends EntityService
      * @return bool
      * @throws \Exception
      */
-    public function hasRoleAdminByUserId(int $user_id)
+    public function hasRoleAdminByUserId(int $user_id): bool
     {
         if (in_array(Role::ROLE_ADMIN, $this->getRoleIdsArrByUserId($user_id))) {
             return true;
@@ -133,7 +133,7 @@ class UserService extends EntityService
      * @return bool
      * @throws \Exception
      */
-    public function hasRoleByUserIdAndDesignation(int $user_id, string $designation)
+    public function hasRoleByUserIdAndDesignation(int $user_id, string $designation): bool
     {
         $roles_ids_arr = $this->getRoleIdsArrByUserId($user_id);
 
@@ -156,7 +156,7 @@ class UserService extends EntityService
      * @param User $user_obj
      * @return string
      */
-    public function getImageHtml(User $user_obj)
+    public function getImageHtml(User $user_obj): string
     {
         if (!$user_obj->getPhoto()) {
             return '';
@@ -170,7 +170,7 @@ class UserService extends EntityService
      * @param $user_id
      * @return string
      */
-    public function createAndSendPasswordToUser(int $user_id)
+    public function createAndSendPasswordToUser(int $user_id): string
     {
         $new_password = $this->generatePassword(8);
 
@@ -211,7 +211,7 @@ class UserService extends EntityService
      * @param $email
      * @return int|null
      */
-    public function getUserIdByEmail(string $email)
+    public function getUserIdByEmail(string $email): ?int
     {
         $user_id = $this->repository->findUserIdByEmail($email);
 
@@ -222,7 +222,7 @@ class UserService extends EntityService
      * @param $email
      * @return bool
      */
-    public function hasUserByEmail($email)
+    public function hasUserByEmail($email): bool
     {
         $has_user_id = $this->getUserIdByEmail($email);
         if ($has_user_id) {
@@ -237,7 +237,7 @@ class UserService extends EntityService
      * @param string $confirm_code
      * @return int|null
      */
-    public function getUserIdByConfirmCode(string $confirm_code)
+    public function getUserIdByConfirmCode(string $confirm_code): ?int
     {
         $user_id = $this->repository->findUserIdByConfirmCode($confirm_code);
 
@@ -249,7 +249,7 @@ class UserService extends EntityService
      * @param $number
      * @return string
      */
-    public function generatePassword($number)
+    public function generatePassword($number): string
     {
         $arr = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'r', 's', 't', 'u', 'v', 'x', 'y', 'z',
             'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'R', 'S', 'T', 'U', 'V', 'X', 'Y', 'Z',
@@ -268,13 +268,24 @@ class UserService extends EntityService
      * Генератор кода подтверждения регистрации на сайте
      * @return string
      */
-    public function generateConfirmCode()
+    public function generateConfirmCode(): string
     {
-        $salt = ConfWrapper::value('salt');
-        $salt .= $salt;
+        $confirm_code = time() . uniqid();
 
-        $confirm_code = md5($salt . time() . uniqid());
+        $confirm_code = Auth::getHash($confirm_code);
 
         return $confirm_code;
+    }
+
+    /**
+     * @param string $provider_name
+     * @param string $provider_uid
+     * @return int|null
+     */
+    public function getUserIdIfExistByProvider(string $provider_name, string $provider_uid): ?int
+    {
+        $user_id = $this->repository->findUserIdIfExistByProvider($provider_name, $provider_uid);
+
+        return $user_id ?? null;
     }
 }

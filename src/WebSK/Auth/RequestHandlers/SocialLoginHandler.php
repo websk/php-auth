@@ -4,6 +4,7 @@ namespace WebSK\Auth\RequestHandlers;
 
 use Slim\Http\Request;
 use Slim\Http\Response;
+use WebSK\Auth\HybridAuth;
 use WebSK\Auth\Users\UsersServiceProvider;
 use WebSK\Utils\Messages;
 use WebSK\Slim\RequestHandlers\BaseHandler;
@@ -23,7 +24,7 @@ class SocialLoginHandler extends BaseHandler
         }
 
 
-        $provider = Auth::socialLogin($provider_name, $destination);
+        $provider = HybridAuth::socialLogin($provider_name, $destination);
         if (!$provider) {
             return $response->withRedirect($destination);
         }
@@ -39,12 +40,12 @@ class SocialLoginHandler extends BaseHandler
          */
         $user_profile = $provider->getUserProfile();
 
-        $user_id = Auth::getUserIdIfExistByProvider(
+        $user_service = UsersServiceProvider::getUserService($this->container);
+
+        $user_id = $user_service->getUserIdIfExistByProvider(
             $provider_name,
             $user_profile->identifier
         );
-
-        $user_service = UsersServiceProvider::getUserService($this->container);
 
         // Пользователь не найден в базе, регистрируем
         if (!$user_id) {
@@ -57,7 +58,7 @@ class SocialLoginHandler extends BaseHandler
                 }
             }
 
-            $user_id = Auth::registerUserByHybridAuthProfile(
+            $user_id = HybridAuth::registerUserByHybridAuthProfile(
                 $user_profile,
                 $provider_name
             );

@@ -4,6 +4,7 @@ namespace WebSK\Auth\RequestHandlers;
 
 use Slim\Http\Request;
 use Slim\Http\Response;
+use WebSK\Auth\HybridAuth;
 use WebSK\Config\ConfWrapper;
 use WebSK\Slim\RequestHandlers\BaseHandler;
 use WebSK\Slim\Router;
@@ -35,7 +36,7 @@ class RegistrationFormHandler extends BaseHandler
 
         $content = '';
 
-        if (Auth::useSocialLogin()) {
+        if (HybridAuth::useSocialLogin()) {
             $content .= PhpRender::renderTemplateForModuleNamespace(
                 'WebSK' . DIRECTORY_SEPARATOR .  'Auth',
                 'social_buttons.tpl.php'

@@ -63,12 +63,15 @@ class User extends Entity
     /** @var string */
     protected $passw;
 
+    const _PROVIDER = 'provider';
     /** @var string */
     protected $provider = '';
 
+    const _PROVIDER_UID = 'provider_uid';
     /** @var string */
     protected $provider_uid = '';
 
+    const _PROFILE_URL = 'profile_url';
     /** @var string */
     protected $profile_url = '';
 
