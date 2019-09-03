@@ -17,7 +17,6 @@ use WebSK\CRUD\Form\Widgets\CRUDFormWidgetReferenceAjax;
 use WebSK\CRUD\Table\CRUDTable;
 use WebSK\CRUD\Table\CRUDTableColumn;
 use WebSK\CRUD\Table\Filters\CRUDTableFilterEqualInvisible;
-use WebSK\CRUD\Table\Filters\CRUDTableFilterInInvisible;
 use WebSK\CRUD\Table\Widgets\CRUDTableWidgetDelete;
 use WebSK\CRUD\Table\Widgets\CRUDTableWidgetTextWithLink;
 use WebSK\Views\LayoutDTO;
@@ -62,11 +61,14 @@ class UserEditHandler extends BaseHandler
 
         $role_service = UsersServiceProvider::getRoleService($this->container);
 
+        $new_user_role = new UserRole();
+        $new_user_role->setUserId($user_id);
+
         $crud_table_obj = CRUDServiceProvider::getCrud($this->container)->createTable(
             UserRole::class,
             CRUDServiceProvider::getCrud($this->container)->createForm(
-                'user_role_create_rand23432',
-                new UserRole(),
+                'user_role_create',
+                $new_user_role,
                 [
                     new CRUDFormInvisibleRow(new CRUDFormWidgetInput(UserRole::_USER_ID)),
                     new CRUDFormRow(
