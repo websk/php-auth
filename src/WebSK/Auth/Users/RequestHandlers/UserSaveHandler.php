@@ -67,10 +67,12 @@ class UserSaveHandler extends BaseHandler
             return $response->withRedirect($destination);
         }
 
-        $has_user_id = $user_service->hasUserByEmail($email);
-        if ($has_user_id) {
-            Messages::setError('Ошибка! Пользователь с таким адресом электронной почты ' . $email . ' уже существует.');
-            return $response->withRedirect($destination);
+        if ($email != $user_obj->getEmail()) {
+            $has_user_id = $user_service->hasUserByEmail($email);
+            if ($has_user_id) {
+                Messages::setError('Ошибка! Пользователь с таким адресом электронной почты ' . $email . ' уже существует.');
+                return $response->withRedirect($destination);
+            }
         }
 
         if ($user_id == 'new') {

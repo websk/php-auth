@@ -64,7 +64,8 @@ class AuthServiceProvider
             return new SessionService(
                 Session::class,
                 $container->get(Session::ENTITY_REPOSITORY_CONTAINER_ID),
-                CacheServiceProvider::getCacheService($container)
+                CacheServiceProvider::getCacheService($container),
+                UsersServiceProvider::getUserService($container)
             );
         };
 

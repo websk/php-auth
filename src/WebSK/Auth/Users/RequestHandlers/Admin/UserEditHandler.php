@@ -7,13 +7,14 @@ use Slim\Http\Response;
 use Slim\Http\StatusCode;
 use WebSK\Auth\Users\Role;
 use WebSK\Auth\Users\UserRole;
-use WebSK\Auth\Users\UsersComponents;
 use WebSK\Config\ConfWrapper;
 use WebSK\CRUD\CRUDServiceProvider;
 use WebSK\CRUD\Form\CRUDFormInvisibleRow;
 use WebSK\CRUD\Form\CRUDFormRow;
 use WebSK\CRUD\Form\Widgets\CRUDFormWidgetInput;
+use WebSK\CRUD\Form\Widgets\CRUDFormWidgetRadios;
 use WebSK\CRUD\Form\Widgets\CRUDFormWidgetReferenceAjax;
+use WebSK\CRUD\Form\Widgets\CRUDFormWidgetTextarea;
 use WebSK\CRUD\Table\CRUDTable;
 use WebSK\CRUD\Table\CRUDTableColumn;
 use WebSK\CRUD\Table\Filters\CRUDTableFilterEqualInvisible;
@@ -44,20 +45,39 @@ class UserEditHandler extends BaseHandler
     {
         $user_service = UsersServiceProvider::getUserService($this->container);
 
-        if (is_null($user_id)) {
-            $user_obj = new User();
-            $save_handler_url = $this->pathFor(UsersRoutes::ROUTE_NAME_USER_ADD);
-        } else {
-            $user_obj = $user_service->getById($user_id, false);
+        $user_obj = $user_service->getById($user_id, false);
 
-            if (!$user_obj) {
-                return $response->withStatus(StatusCode::HTTP_NOT_FOUND);
-            }
-
-            $save_handler_url = $this->pathFor(UsersRoutes::ROUTE_NAME_USER_UPDATE, ['user_id' => $user_id]);
+        if (!$user_obj) {
+            return $response->withStatus(StatusCode::HTTP_NOT_FOUND);
         }
 
-        $content_html = UsersComponents::renderEditForm($user_obj, $save_handler_url);
+        $crud_form = CRUDServiceProvider::getCrud($this->container)->createForm(
+            'user_create',
+            $user_obj,
+            [
+                new CRUDFormRow('Имя на сайте', new CRUDFormWidgetInput(User::_NAME, false, true)),
+                new CRUDFormRow('Имя', new CRUDFormWidgetInput(User::_FIRST_NAME)),
+                new CRUDFormRow('Фамилия', new CRUDFormWidgetInput(User::_LAST_NAME)),
+                new CRUDFormRow('Email', new CRUDFormWidgetInput(User::_EMAIL, false, true)),
+                new CRUDFormRow('Регистрация подтверждена', new CRUDFormWidgetRadios(User::_IS_CONFIRM, [0 => 'Нет', 1 =>  'Да'])),
+                new CRUDFormRow('Дата рождения', new CRUDFormWidgetInput(User::_BIRTHDAY)),
+                new CRUDFormRow('Телефон', new CRUDFormWidgetInput(User::_PHONE)),
+                new CRUDFormRow('Город', new CRUDFormWidgetInput(User::_CITY)),
+                new CRUDFormRow('Адрес', new CRUDFormWidgetInput(User::_ADDRESS)),
+                new CRUDFormRow('Дополнительная информация', new CRUDFormWidgetTextarea(User::_COMMENT)),
+            ],
+            function(User $user_obj) {
+                return $this->pathFor(UsersRoutes::ROUTE_NAME_ADMIN_USER_EDIT, ['user_id' => $user_obj->getId()]);
+            }
+        );
+
+        $crud_form_response = $crud_form->processRequest($request, $response);
+        if ($crud_form_response instanceof Response) {
+            return $crud_form_response;
+        }
+
+        $content_html = $crud_form->html();
+
 
         $role_service = UsersServiceProvider::getRoleService($this->container);
 

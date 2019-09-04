@@ -30,6 +30,7 @@ class User extends Entity
     /** @var string */
     protected $birthday = '';
 
+    const _PHONE = 'phone';
     /** @var string */
     protected $phone = '';
 
@@ -37,18 +38,23 @@ class User extends Entity
     /** @var string */
     protected $email = '';
 
+    const _CITY = 'city';
     /** @var string */
     protected $city = '';
 
+    const _ADDRESS = 'address';
     /** @var string */
     protected $address = '';
 
+    const _COMPANY = 'company';
     /** @var string */
     protected $company = '';
 
+    const _COMMENT = 'comment';
     /** @var string */
     protected $comment = '';
 
+    const _IS_CONFIRM = 'confirm';
     /** @var int */
     protected $confirm = false;
 
@@ -56,6 +62,7 @@ class User extends Entity
     /** @var string */
     protected $confirm_code;
 
+    const _PHOTO = 'photo';
     /** @var string */
     protected $photo = '';
 

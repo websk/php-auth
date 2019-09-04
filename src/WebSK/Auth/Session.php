@@ -16,15 +16,19 @@ class Session extends Entity
 
     const SESSION_LIFE_TIME = 31536000; // 1 год
 
+    const _USER_ID = 'user_id';
     /** @var int */
     protected $user_id;
 
+    const _SESSION = 'session';
     /** @var string */
     protected $session;
 
+    const _HOSTNAME = 'hostname';
     /** @var string */
     protected $hostname;
 
+    const _TIMESTAMP = 'timestamp';
     /** @var int */
     protected $timestamp;
 

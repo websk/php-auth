@@ -44,7 +44,7 @@ class UserListHandler extends BaseHandler
         $crud_table_obj = CRUDServiceProvider::getCrud($this->container)->createTable(
             User::class,
             CRUDServiceProvider::getCrud($this->container)->createForm(
-                'user_create_rand435345',
+                'user_create',
                 new User(),
                 [
                     new CRUDFormRow('Имя на сайте', new CRUDFormWidgetInput(User::_NAME)),
@@ -86,7 +86,7 @@ class UserListHandler extends BaseHandler
                 new CRUDTableFilterLikeInline(self::FILTER_EMAIL, 'Email', User::_EMAIL),
             ],
             User::_CREATED_AT_TS . ' DESC',
-            'users_list_rand234324',
+            'users_list',
             CRUDTable::FILTERS_POSITION_INLINE
         );
 

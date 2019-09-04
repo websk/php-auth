@@ -2,6 +2,10 @@
 
 namespace WebSK\Auth;
 
+use WebSK\Auth\Users\User;
+use WebSK\Auth\Users\UserService;
+use WebSK\Cache\CacheService;
+use WebSK\Entity\EntityRepository;
 use WebSK\Entity\EntityService;
 
 /**
@@ -12,6 +16,28 @@ class SessionService extends EntityService
 {
     /** @var SessionRepository */
     protected $repository;
+
+    /** @var UserService */
+    protected $user_service;
+
+    /**
+     * SessionService constructor.
+     * @param string $entity_class_name
+     * @param EntityRepository $repository
+     * @param CacheService $cache_service
+     * @param UserService $user_service
+     */
+    public function __construct(
+        string $entity_class_name,
+        EntityRepository $repository,
+        CacheService $cache_service,
+        UserService $user_service
+    )
+    {
+        $this->user_service = $user_service;
+
+        parent::__construct($entity_class_name, $repository, $cache_service);
+    }
 
     /**
      * @param $user_id
@@ -63,5 +89,77 @@ class SessionService extends EntityService
         setcookie('auth_session', $session, $delta, '/');
 
         $this->clearOldSessionsByUserId($user_id);
+    }
+
+    /**
+     * UserID авторизованного пользователя
+     * @return int|null
+     */
+    public function getCurrentUserId()
+    {
+        static $user_session_unique_id;
+
+        if (isset($user_session_unique_id)) {
+            return $user_session_unique_id;
+        }
+
+        if (!array_key_exists('auth_session', $_COOKIE)) {
+            return null;
+        }
+
+        $auth_session = $_COOKIE['auth_session'];
+
+        $user_session_unique_id = $this->repository->findCurrentUserId($auth_session);
+
+        return $user_session_unique_id;
+    }
+
+    /**
+     * @return bool|User
+     */
+    public function getCurrentUserObj()
+    {
+        $user_id = $this->getCurrentUserId();
+        if (!$user_id) {
+            return false;
+        }
+
+        return $this->user_service->getById($user_id, false);
+    }
+
+    /**
+     * @return bool
+     */
+    public function currentUserIsAdmin()
+    {
+        $user_obj = $this->getCurrentUserObj();
+        if (!$user_obj) {
+            return false;
+        }
+
+        $user_id = $user_obj->getId();
+        if ($this->user_service->hasRoleAdminByUserId($user_id)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Есть ли у пользователя роль, по обозначению роли
+     * @param $role_designation
+     * @return bool
+     */
+    public function currentUserHasAccessByRoleDesignation(string $role_designation)
+    {
+        $user_id = $this->getCurrentUserId();
+
+        if ($user_id) {
+            if ($this->user_service->hasRoleByUserIdAndDesignation($user_id, $role_designation)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

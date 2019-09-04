@@ -56,9 +56,6 @@ class UsersRoutes
             $app->map([HTTP::METHOD_GET, HTTP::METHOD_POST],'/ajax', UserListAjaxHandler::class)
                 ->setName(self::ROUTE_NAME_ADMIN_USER_LIST_AJAX);
 
-            $app->get('/create', AdminUserEditHandler::class)
-                ->setName(self::ROUTE_NAME_ADMIN_USER_CREATE);
-
             $app->map([HTTP::METHOD_GET, HTTP::METHOD_POST],'/{user_id:\d+}', AdminUserEditHandler::class)
                 ->setName(self::ROUTE_NAME_ADMIN_USER_EDIT);
 
