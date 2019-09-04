@@ -42,6 +42,49 @@ class UserService extends EntityService
     }
 
     /**
+     * @param InterfaceEntity|User $entity_obj
+     */
+    public function beforeSave(InterfaceEntity $entity_obj)
+    {
+        if (!$entity_obj->getEmail()) {
+            throw new \Exception('Ошибка! Не указан Email.');
+        }
+
+        if (!$entity_obj->getName()) {
+            throw new \Exception('Ошибка! Не указаны Фамилия Имя Отчество.');
+        }
+
+        $exist_user_obj = null;
+        $email = '';
+        if ($entity_obj->getId()) {
+            $exist_user_obj = $this->getById($entity_obj->getId());
+            $email = $exist_user_obj->getEmail();
+        }
+
+        if ($email != $entity_obj->getEmail()) {
+            $has_user_id = $this->hasUserByEmail($email);
+            if ($has_user_id) {
+                throw new \Exception('Ошибка! Пользователь с таким адресом электронной почты ' . $email . ' уже существует.');
+            }
+        }
+
+        if (!$new_password_first && !$new_password_second) {
+            throw new \Exception('Ошибка! Не введен пароль.');
+        }
+
+        // Пароль
+        if ($new_password_first || $new_password_second) {
+            if ($new_password_first != $new_password_second) {
+                throw new \Exception('Ошибка! Пароль не подтвержден, либо подтвержден неверно.');
+            }
+
+            $user_obj->setPassw(Auth::getHash($new_password_first));
+        }
+
+        parent::beforeSave($entity_obj);
+    }
+
+    /**
      * @param int $user_id
      * @throws \Exception
      */
