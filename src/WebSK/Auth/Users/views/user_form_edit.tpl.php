@@ -98,47 +98,6 @@ $destination = Url::getUriNoQueryString();
                 <textarea name="comment" rows="7" class="form-control"><?= $user_obj->getComment() ?></textarea>
             </div>
         </div>
-
-        <?php
-        if ($user_obj->getId()) {
-            ?>
-            <div class="form-group">
-                <div class="col-md-offset-4 col-md-8">
-                    <h3>Смена пароля</h3>
-
-                    <div class="help-block">Заполняется, если Вы хотите изменить пароль</div>
-                </div>
-            </div>
-            <?php
-        }
-        ?>
-        <div>
-            <div class="form-group">
-                <label class="col-md-4 control-label">Пароль</label>
-                <div class="col-md-8">
-                    <input type="password" name="new_password_first" class="form-control" autocomplete="new-password">
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="col-md-4 control-label">Подтверждение пароля</label>
-                <div class="col-md-8">
-                    <input type="password" name="new_password_second" class="form-control">
-                </div>
-            </div>
-
-            <?php
-            if ($user_obj->getId() && Auth::currentUserIsAdmin()) {
-                ?>
-                <div class="form-group">
-                    <div class="col-md-offset-4 col-md-8">
-                        <a href="<?php echo Router::pathFor(UsersRoutes::ROUTE_NAME_USER_CREATE_PASSWORD, ['user_id' => $user_obj->getId()], ['destination' => $destination]) ?>">Сгенерировать
-                            пароль и выслать пользователю</a>
-                    </div>
-                </div>
-                <?php
-            }
-            ?>
-        </div>
     </div>
 
     <div class="form-group">
