@@ -1,17 +1,17 @@
 <?php
 
-namespace WebSK\Auth\Users;
+namespace WebSK\Auth\User;
 
 use WebSK\Entity\Entity;
 
 /**
  * Class UserRole
- * @package WebSK\Auth\Users
+ * @package WebSK\Auth\User
  */
 class UserRole extends Entity
 {
-    const ENTITY_SERVICE_CONTAINER_ID = 'users.user_role_service';
-    const ENTITY_REPOSITORY_CONTAINER_ID = 'users.user_role_repository';
+    const ENTITY_SERVICE_CONTAINER_ID = 'user.user_role_service';
+    const ENTITY_REPOSITORY_CONTAINER_ID = 'user.user_role_repository';
     const DB_TABLE_NAME = 'users_roles';
 
     const _USER_ID = 'user_id';

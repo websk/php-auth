@@ -7,7 +7,7 @@ use Slim\Http\Response;
 use WebSK\Auth\AuthServiceProvider;
 use WebSK\Auth\HybridAuth;
 use WebSK\Auth\Session;
-use WebSK\Auth\Users\UsersServiceProvider;
+use WebSK\Auth\User\UserServiceProvider;
 use WebSK\Utils\Messages;
 use WebSK\Slim\RequestHandlers\BaseHandler;
 
@@ -41,7 +41,7 @@ class SocialLoginHandler extends BaseHandler
          */
         $user_profile = $provider->getUserProfile();
 
-        $user_service = UsersServiceProvider::getUserService($this->container);
+        $user_service = UserServiceProvider::getUserService($this->container);
 
         $user_id = $user_service->getUserIdIfExistByProvider(
             $provider_name,

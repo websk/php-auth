@@ -2,9 +2,9 @@
 
 namespace WebSK\Auth;
 
-use WebSK\Auth\Users\User;
-use WebSK\Auth\Users\UserRole;
-use WebSK\Auth\Users\UsersServiceProvider;
+use WebSK\Auth\User\User;
+use WebSK\Auth\User\UserRole;
+use WebSK\Auth\User\UserServiceProvider;
 use WebSK\Config\ConfWrapper;
 use WebSK\Image\ImageManager;
 use WebSK\Slim\Container;
@@ -137,7 +137,7 @@ class HybridAuth
 
         $container = Container::self();
 
-        $user_service = UsersServiceProvider::getUserService($container);
+        $user_service = UserServiceProvider::getUserService($container);
         $user_service->save($user_obj);
 
         if (!$user_obj->getId()) {
@@ -151,7 +151,7 @@ class HybridAuth
         $user_role_obj->setUserId($user_obj->getId());
         $user_role_obj->setRoleId($role_id);
 
-        $user_role_service = UsersServiceProvider::getUserRoleService($container);
+        $user_role_service = UserServiceProvider::getUserRoleService($container);
         $user_role_service->save($user_role_obj);
 
         return $user_obj->getId();

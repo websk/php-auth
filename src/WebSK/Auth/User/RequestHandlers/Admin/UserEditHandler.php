@@ -1,12 +1,12 @@
 <?php
 
-namespace WebSK\Auth\Users\RequestHandlers\Admin;
+namespace WebSK\Auth\User\RequestHandlers\Admin;
 
 use Slim\Http\Request;
 use Slim\Http\Response;
 use Slim\Http\StatusCode;
-use WebSK\Auth\Users\Role;
-use WebSK\Auth\Users\UserRole;
+use WebSK\Auth\User\Role;
+use WebSK\Auth\User\UserRole;
 use WebSK\Config\ConfWrapper;
 use WebSK\CRUD\CRUDServiceProvider;
 use WebSK\CRUD\Form\CRUDFormInvisibleRow;
@@ -22,15 +22,15 @@ use WebSK\CRUD\Table\Widgets\CRUDTableWidgetDelete;
 use WebSK\CRUD\Table\Widgets\CRUDTableWidgetTextWithLink;
 use WebSK\Views\LayoutDTO;
 use WebSK\Slim\RequestHandlers\BaseHandler;
-use WebSK\Auth\Users\User;
-use WebSK\Auth\Users\UsersRoutes;
-use WebSK\Auth\Users\UsersServiceProvider;
+use WebSK\Auth\User\User;
+use WebSK\Auth\User\UserRoutes;
+use WebSK\Auth\User\UserServiceProvider;
 use WebSK\Views\BreadcrumbItemDTO;
 use WebSK\Views\PhpRender;
 
 /**
  * Class UserEditHandler
- * @package WebSK\Auth\Users\RequestHandlers\Admin
+ * @package WebSK\Auth\User\RequestHandlers\Admin
  */
 class UserEditHandler extends BaseHandler
 {
@@ -43,7 +43,7 @@ class UserEditHandler extends BaseHandler
      */
     public function __invoke(Request $request, Response $response, ?int $user_id = null)
     {
-        $user_service = UsersServiceProvider::getUserService($this->container);
+        $user_service = UserServiceProvider::getUserService($this->container);
 
         $user_obj = $user_service->getById($user_id, false);
 
@@ -67,7 +67,7 @@ class UserEditHandler extends BaseHandler
                 new CRUDFormRow('Дополнительная информация', new CRUDFormWidgetTextarea(User::_COMMENT)),
             ],
             function(User $user_obj) {
-                return $this->pathFor(UsersRoutes::ROUTE_NAME_ADMIN_USER_EDIT, ['user_id' => $user_obj->getId()]);
+                return $this->pathFor(UserRoutes::ROUTE_NAME_ADMIN_USER_EDIT, ['user_id' => $user_obj->getId()]);
             }
         );
 
@@ -79,7 +79,7 @@ class UserEditHandler extends BaseHandler
         $content_html = $crud_form->html();
 
 
-        $role_service = UsersServiceProvider::getRoleService($this->container);
+        $role_service = UserServiceProvider::getRoleService($this->container);
 
         $new_user_role = new UserRole();
         $new_user_role->setUserId($user_id);
@@ -97,9 +97,9 @@ class UserEditHandler extends BaseHandler
                             UserRole::_ROLE_ID,
                             Role::class,
                             Role::_NAME,
-                            $this->pathFor(UsersRoutes::ROUTE_NAME_ADMIN_ROLE_LIST_AJAX),
+                            $this->pathFor(UserRoutes::ROUTE_NAME_ADMIN_ROLE_LIST_AJAX),
                             $this->pathFor(
-                                UsersRoutes::ROUTE_NAME_ADMIN_ROLE_EDIT,
+                                UserRoutes::ROUTE_NAME_ADMIN_ROLE_EDIT,
                                 ['role_id' => CRUDFormWidgetReferenceAjax::REFERENCED_ID_PLACEHOLDER]
                             ),
                             true
@@ -116,7 +116,7 @@ class UserEditHandler extends BaseHandler
                             return $role_obj->getName();
                         },
                         function(UserRole $user_role_obj) {
-                            return $this->pathFor(UsersRoutes::ROUTE_NAME_ADMIN_ROLE_EDIT, ['role_id' => $user_role_obj->getRoleId()]);
+                            return $this->pathFor(UserRoutes::ROUTE_NAME_ADMIN_ROLE_EDIT, ['role_id' => $user_role_obj->getRoleId()]);
                         }
                     )
                 ),
@@ -144,7 +144,7 @@ class UserEditHandler extends BaseHandler
 
         $breadcrumbs_arr = [
             new BreadcrumbItemDTO('Главная', '/admin'),
-            new BreadcrumbItemDTO('Пользователи', '/admin/users'),
+            new BreadcrumbItemDTO('Пользователи', $this->pathFor(UserRoutes::ROUTE_NAME_ADMIN_USER_LIST)),
         ];
         $layout_dto->setBreadcrumbsDtoArr($breadcrumbs_arr);
 

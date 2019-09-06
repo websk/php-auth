@@ -7,7 +7,7 @@ use WebSK\Cache\CacheServiceProvider;
 use WebSK\DB\DBConnectorMySQL;
 use WebSK\DB\DBService;
 use WebSK\DB\DBSettings;
-use WebSK\Auth\Users\UsersServiceProvider;
+use WebSK\Auth\User\UserServiceProvider;
 
 /**
  * Class AuthServiceProvider
@@ -51,7 +51,7 @@ class AuthServiceProvider
          */
         $container[self::AUTH_SERVICE_CONTAINER_ID] = function (ContainerInterface $container) {
             return new AuthService(
-                UsersServiceProvider::getUserService($container),
+                UserServiceProvider::getUserService($container),
                 self::getSessionService($container)
             );
         };
@@ -65,7 +65,7 @@ class AuthServiceProvider
                 Session::class,
                 $container->get(Session::ENTITY_REPOSITORY_CONTAINER_ID),
                 CacheServiceProvider::getCacheService($container),
-                UsersServiceProvider::getUserService($container)
+                UserServiceProvider::getUserService($container)
             );
         };
 

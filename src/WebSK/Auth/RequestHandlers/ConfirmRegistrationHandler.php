@@ -7,7 +7,7 @@ use Slim\Http\Response;
 use WebSK\Auth\AuthRoutes;
 use WebSK\Utils\Messages;
 use WebSK\Slim\RequestHandlers\BaseHandler;
-use WebSK\Auth\Users\UsersServiceProvider;
+use WebSK\Auth\User\UserServiceProvider;
 
 /**
  * Class ConfirmRegistrationHandler
@@ -24,7 +24,7 @@ class ConfirmRegistrationHandler extends BaseHandler
      */
     public function __invoke(Request $request, Response $response, string $confirm_code)
     {
-        $user_service = UsersServiceProvider::getUserService($this->container);
+        $user_service = UserServiceProvider::getUserService($this->container);
 
         $user_id = $user_service->getUserIdByConfirmCode($confirm_code);
 

@@ -1,33 +1,33 @@
 <?php
 
-namespace WebSK\Auth\Users;
+namespace WebSK\Auth\User;
 
 use Slim\App;
 use WebSK\Auth\Middleware\CurrentUserHasRightToEditUser;
 use WebSK\Auth\Middleware\CurrentUserIsAdmin;
-use WebSK\Auth\Users\RequestHandlers\Admin\RoleEditHandler;
-use WebSK\Auth\Users\RequestHandlers\Admin\RoleListAjaxHandler;
-use WebSK\Auth\Users\RequestHandlers\Admin\UserEditHandler as AdminUserEditHandler;
-use WebSK\Auth\Users\RequestHandlers\Admin\UserListAjaxHandler;
-use WebSK\Auth\Users\RequestHandlers\Admin\UserListHandler;
-use WebSK\Auth\Users\RequestHandlers\Admin\RoleListHandler;
-use WebSK\Auth\Users\RequestHandlers\UserAddPhotoHandler;
-use WebSK\Auth\Users\RequestHandlers\UserCreatePasswordHandler;
-use WebSK\Auth\Users\RequestHandlers\UserDeletePhotoHandler;
-use WebSK\Auth\Users\RequestHandlers\UserEditHandler;
-use WebSK\Auth\Users\RequestHandlers\UserSaveHandler;
+use WebSK\Auth\User\RequestHandlers\Admin\RoleEditHandler;
+use WebSK\Auth\User\RequestHandlers\Admin\RoleListAjaxHandler;
+use WebSK\Auth\User\RequestHandlers\Admin\UserEditHandler as AdminUserEditHandler;
+use WebSK\Auth\User\RequestHandlers\Admin\UserListAjaxHandler;
+use WebSK\Auth\User\RequestHandlers\Admin\UserListHandler;
+use WebSK\Auth\User\RequestHandlers\Admin\RoleListHandler;
+use WebSK\Auth\User\RequestHandlers\UserAddPhotoHandler;
+use WebSK\Auth\User\RequestHandlers\UserCreatePasswordHandler;
+use WebSK\Auth\User\RequestHandlers\UserDeletePhotoHandler;
+use WebSK\Auth\User\RequestHandlers\UserEditHandler;
+use WebSK\Auth\User\RequestHandlers\UserSaveHandler;
 use WebSK\Utils\HTTP;
 
 /**
- * Class UsersRoutes
- * @package WebSK\Auth\Users
+ * Class UserRoutes
+ * @package WebSK\Auth\User
  */
-class UsersRoutes
+class UserRoutes
 {
-    const ROUTE_NAME_ADMIN_USER_CREATE = 'admin:users:create';
-    const ROUTE_NAME_ADMIN_USER_EDIT = 'admin:users:edit';
-    const ROUTE_NAME_ADMIN_USER_LIST = 'admin:users:list';
-    const ROUTE_NAME_ADMIN_USER_LIST_AJAX = 'admin:users:list:ajax';
+    const ROUTE_NAME_ADMIN_USER_CREATE = 'admin:user:create';
+    const ROUTE_NAME_ADMIN_USER_EDIT = 'admin:user:edit';
+    const ROUTE_NAME_ADMIN_USER_LIST = 'admin:user:list';
+    const ROUTE_NAME_ADMIN_USER_LIST_AJAX = 'admin:user:list:ajax';
 
     const ROUTE_NAME_USER_CREATE = 'user:create';
     const ROUTE_NAME_USER_EDIT = 'user:edit';
@@ -40,16 +40,16 @@ class UsersRoutes
     const ROUTE_NAME_USER_ADD_PHOTO = 'user:add_photo';
     const ROUTE_NAME_USER_DELETE_PHOTO = 'user:delete_photo';
 
-    const ROUTE_NAME_ADMIN_ROLE_LIST = 'admin:users:role:list';
-    const ROUTE_NAME_ADMIN_ROLE_EDIT = 'admin:users:role:edit';
-    const ROUTE_NAME_ADMIN_ROLE_LIST_AJAX = 'admin:users:role:list:ajax';
+    const ROUTE_NAME_ADMIN_ROLE_LIST = 'admin:user:role:list';
+    const ROUTE_NAME_ADMIN_ROLE_EDIT = 'admin:user:role:edit';
+    const ROUTE_NAME_ADMIN_ROLE_LIST_AJAX = 'admin:user:role:list:ajax';
 
     /**
      * @param App $app
      */
     public static function registerAdmin(App $app)
     {
-        $app->group('/users', function (App $app) {
+        $app->group('/user', function (App $app) {
             $app->map([HTTP::METHOD_GET, HTTP::METHOD_POST], '', UserListHandler::class)
                 ->setName(self::ROUTE_NAME_ADMIN_USER_LIST);
 

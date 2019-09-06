@@ -1,13 +1,13 @@
 <?php
 
-namespace WebSK\Auth\Users;
+namespace WebSK\Auth\User;
 
 use WebSK\Entity\EntityRepository;
 use WebSK\Utils\Sanitize;
 
 /**
  * Class UserRepository
- * @package WebSK\Auth\Users
+ * @package WebSK\Auth\User
  */
 class UserRepository extends EntityRepository
 {

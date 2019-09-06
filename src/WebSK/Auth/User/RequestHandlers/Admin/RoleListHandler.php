@@ -1,10 +1,10 @@
 <?php
 
-namespace WebSK\Auth\Users\RequestHandlers\Admin;
+namespace WebSK\Auth\User\RequestHandlers\Admin;
 
 use Slim\Http\Request;
 use Slim\Http\Response;
-use WebSK\Auth\Users\Role;
+use WebSK\Auth\User\Role;
 use WebSK\Config\ConfWrapper;
 use WebSK\CRUD\CRUDServiceProvider;
 use WebSK\CRUD\Form\CRUDFormRow;
@@ -17,13 +17,13 @@ use WebSK\CRUD\Table\Widgets\CRUDTableWidgetText;
 use WebSK\CRUD\Table\Widgets\CRUDTableWidgetTextWithLink;
 use WebSK\Views\LayoutDTO;
 use WebSK\Slim\RequestHandlers\BaseHandler;
-use WebSK\Auth\Users\UsersRoutes;
+use WebSK\Auth\User\UserRoutes;
 use WebSK\Views\BreadcrumbItemDTO;
 use WebSK\Views\PhpRender;
 
 /**
  * Class RoleListHandler
- * @package WebSK\Auth\Users\RequestHandlers\Admin
+ * @package WebSK\Auth\User\RequestHandlers\Admin
  */
 class RoleListHandler extends BaseHandler
 {
@@ -46,7 +46,7 @@ class RoleListHandler extends BaseHandler
                     new CRUDFormRow('Обозначение', new CRUDFormWidgetInput(Role::_DESIGNATION)),
                 ],
                 function(Role $role_obj) {
-                    return $this->pathFor(UsersRoutes::ROUTE_NAME_ADMIN_ROLE_EDIT, ['role_id' => $role_obj->getId()]);
+                    return $this->pathFor(UserRoutes::ROUTE_NAME_ADMIN_ROLE_EDIT, ['role_id' => $role_obj->getId()]);
                 }
             ),
             [
@@ -56,7 +56,7 @@ class RoleListHandler extends BaseHandler
                     new CRUDTableWidgetTextWithLink(
                         Role::_NAME,
                         function(Role $role_obj) {
-                            return $this->pathFor(UsersRoutes::ROUTE_NAME_ADMIN_ROLE_EDIT, ['role_id' => $role_obj->getId()]);
+                            return $this->pathFor(UserRoutes::ROUTE_NAME_ADMIN_ROLE_EDIT, ['role_id' => $role_obj->getId()]);
                         }
                     )
                 ),
@@ -87,7 +87,7 @@ class RoleListHandler extends BaseHandler
 
         $breadcrumbs_arr = [
             new BreadcrumbItemDTO('Главная', '/admin'),
-            new BreadcrumbItemDTO('Пользователи', $this->pathFor(UsersRoutes::ROUTE_NAME_ADMIN_USER_LIST)),
+            new BreadcrumbItemDTO('Пользователи', $this->pathFor(UserRoutes::ROUTE_NAME_ADMIN_USER_LIST)),
         ];
         $layout_dto->setBreadcrumbsDtoArr($breadcrumbs_arr);
 

@@ -2,8 +2,8 @@
 
 namespace WebSK\Auth;
 
-use WebSK\Auth\Users\User;
-use WebSK\Auth\Users\UserService;
+use WebSK\Auth\User\User;
+use WebSK\Auth\User\UserService;
 use WebSK\Cache\CacheService;
 use WebSK\Entity\EntityRepository;
 use WebSK\Entity\EntityService;

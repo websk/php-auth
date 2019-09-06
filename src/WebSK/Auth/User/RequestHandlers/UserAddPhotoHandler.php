@@ -1,6 +1,6 @@
 <?php
 
-namespace WebSK\Auth\Users\RequestHandlers;
+namespace WebSK\Auth\User\RequestHandlers;
 
 use Slim\Http\StatusCode;
 use WebSK\Image\ImageConstants;
@@ -9,11 +9,11 @@ use Slim\Http\Request;
 use Slim\Http\Response;
 use WebSK\Utils\Messages;
 use WebSK\Slim\RequestHandlers\BaseHandler;
-use WebSK\Auth\Users\UsersServiceProvider;
+use WebSK\Auth\User\UserServiceProvider;
 
 /**
  * Class UserAddPhotoHandler
- * @package WebSK\Auth\Users\RequestHandlers
+ * @package WebSK\Auth\User\RequestHandlers
  */
 class UserAddPhotoHandler extends BaseHandler
 {
@@ -26,7 +26,7 @@ class UserAddPhotoHandler extends BaseHandler
      */
     public function __invoke(Request $request, Response $response, int $user_id)
     {
-        $user_service = UsersServiceProvider::getUserService($this->container);
+        $user_service = UserServiceProvider::getUserService($this->container);
 
         $user_obj = $user_service->getById($user_id, false);
 

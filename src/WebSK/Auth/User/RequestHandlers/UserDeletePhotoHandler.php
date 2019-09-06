@@ -1,18 +1,18 @@
 <?php
 
-namespace WebSK\Auth\Users\RequestHandlers;
+namespace WebSK\Auth\User\RequestHandlers;
 
 use Slim\Http\Request;
 use Slim\Http\Response;
 use Slim\Http\StatusCode;
 use WebSK\Utils\Messages;
 use WebSK\Slim\RequestHandlers\BaseHandler;
-use WebSK\Auth\Users\UsersRoutes;
-use WebSK\Auth\Users\UsersServiceProvider;
+use WebSK\Auth\User\UserRoutes;
+use WebSK\Auth\User\UserServiceProvider;
 
 /**
  * Class UserDeletePhotoHandler
- * @package WebSK\Auth\Users\RequestHandlers
+ * @package WebSK\Auth\User\RequestHandlers
  */
 class UserDeletePhotoHandler extends BaseHandler
 {
@@ -25,7 +25,7 @@ class UserDeletePhotoHandler extends BaseHandler
      */
     public function __invoke(Request $request, Response $response, int $user_id)
     {
-        $user_service = UsersServiceProvider::getUserService($this->container);
+        $user_service = UserServiceProvider::getUserService($this->container);
 
         $user_obj = $user_service->getById($user_id, false);
 
@@ -33,7 +33,7 @@ class UserDeletePhotoHandler extends BaseHandler
             return $response->withStatus(StatusCode::HTTP_NOT_FOUND);
         }
 
-        $destination = $request->getQueryParam('destination', $this->pathFor(UsersRoutes::ROUTE_NAME_USER_EDIT, ['user_id' => $user_id]));
+        $destination = $request->getQueryParam('destination', $this->pathFor(UserRoutes::ROUTE_NAME_USER_EDIT, ['user_id' => $user_id]));
 
         if (!$user_service->deletePhoto($user_obj)) {
             Messages::setError('Не удалось удалить фотографию.');

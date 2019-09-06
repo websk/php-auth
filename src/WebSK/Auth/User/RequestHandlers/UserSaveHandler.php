@@ -1,6 +1,6 @@
 <?php
 
-namespace WebSK\Auth\Users\RequestHandlers;
+namespace WebSK\Auth\User\RequestHandlers;
 
 use Slim\Http\StatusCode;
 use WebSK\Image\ImageConstants;
@@ -10,13 +10,13 @@ use Slim\Http\Response;
 use WebSK\Utils\Messages;
 use WebSK\Slim\RequestHandlers\BaseHandler;
 use WebSK\Auth\Auth;
-use WebSK\Auth\Users\User;
-use WebSK\Auth\Users\UsersRoutes;
-use WebSK\Auth\Users\UsersServiceProvider;
+use WebSK\Auth\User\User;
+use WebSK\Auth\User\UserRoutes;
+use WebSK\Auth\User\UserServiceProvider;
 
 /**
  * Class UserSaveHandler
- * @package WebSK\Auth\Users\RequestHandlers
+ * @package WebSK\Auth\User\RequestHandlers
  */
 class UserSaveHandler extends BaseHandler
 {
@@ -29,7 +29,7 @@ class UserSaveHandler extends BaseHandler
      */
     public function __invoke(Request $request, Response $response, ?int $user_id = null)
     {
-        $user_service = UsersServiceProvider::getUserService($this->container);
+        $user_service = UserServiceProvider::getUserService($this->container);
 
         if (!is_null($user_id)) {
             $user_obj = $user_service->getById($user_id, false);
@@ -38,10 +38,10 @@ class UserSaveHandler extends BaseHandler
                 return $response->withStatus(StatusCode::HTTP_NOT_FOUND);
             }
 
-            $destination = $request->getParam('destination', $this->pathFor(UsersRoutes::ROUTE_NAME_USER_EDIT, ['user_id' => $user_id]));
+            $destination = $request->getParam('destination', $this->pathFor(UserRoutes::ROUTE_NAME_USER_EDIT, ['user_id' => $user_id]));
         } else {
             $user_obj = new User();
-            $destination = $request->getParam('destination', $this->pathFor(UsersRoutes::ROUTE_NAME_USER_CREATE));
+            $destination = $request->getParam('destination', $this->pathFor(UserRoutes::ROUTE_NAME_USER_CREATE));
         }
 
         $name = $request->getParam('name', '');

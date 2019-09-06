@@ -3,15 +3,15 @@
 namespace WebSK\Auth;
 
 use WebSK\Config\ConfWrapper;
-use WebSK\Auth\Users\User;
-use WebSK\Auth\Users\UserService;
+use WebSK\Auth\User\User;
+use WebSK\Auth\User\UserService;
 use WebSK\DB\DBWrapper;
 use WebSK\Slim\Router;
 use WebSK\Utils\Filters;
 
 /**
  * Class AuthService
- * @package WebSK\Auth\Users
+ * @package WebSK\Auth\User
  */
 class AuthService
 {

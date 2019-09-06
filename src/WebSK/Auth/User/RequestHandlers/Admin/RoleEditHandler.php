@@ -1,12 +1,12 @@
 <?php
 
-namespace WebSK\Auth\Users\RequestHandlers\Admin;
+namespace WebSK\Auth\User\RequestHandlers\Admin;
 
 use Slim\Http\Request;
 use Slim\Http\Response;
 use Slim\Http\StatusCode;
-use WebSK\Auth\Users\User;
-use WebSK\Auth\Users\UserRole;
+use WebSK\Auth\User\User;
+use WebSK\Auth\User\UserRole;
 use WebSK\Config\ConfWrapper;
 use WebSK\CRUD\CRUDServiceProvider;
 use WebSK\CRUD\Form\CRUDFormInvisibleRow;
@@ -22,15 +22,15 @@ use WebSK\CRUD\Table\Widgets\CRUDTableWidgetText;
 use WebSK\CRUD\Table\Widgets\CRUDTableWidgetTextWithLink;
 use WebSK\Views\LayoutDTO;
 use WebSK\Slim\RequestHandlers\BaseHandler;
-use WebSK\Auth\Users\Role;
-use WebSK\Auth\Users\UsersRoutes;
-use WebSK\Auth\Users\UsersServiceProvider;
+use WebSK\Auth\User\Role;
+use WebSK\Auth\User\UserRoutes;
+use WebSK\Auth\User\UserServiceProvider;
 use WebSK\Views\BreadcrumbItemDTO;
 use WebSK\Views\PhpRender;
 
 /**
  * Class RoleEditHandler
- * @package WebSK\Auth\Users\RequestHandlers\Admin
+ * @package WebSK\Auth\User\RequestHandlers\Admin
  */
 class RoleEditHandler extends BaseHandler
 {
@@ -45,7 +45,7 @@ class RoleEditHandler extends BaseHandler
      */
     public function __invoke(Request $request, Response $response, int $role_id)
     {
-        $role_service = UsersServiceProvider::getRoleService($this->container);
+        $role_service = UserServiceProvider::getRoleService($this->container);
 
         $role_obj = $role_service->getById($role_id, false);
         if (!$role_obj) {
@@ -74,7 +74,7 @@ class RoleEditHandler extends BaseHandler
 
         $content_html = $crud_form->html();
 
-        $user_service = UsersServiceProvider::getUserService($this->container);
+        $user_service = UserServiceProvider::getUserService($this->container);
 
         $crud_table_obj = CRUDServiceProvider::getCrud($this->container)->createTable(
             UserRole::class,
@@ -89,9 +89,9 @@ class RoleEditHandler extends BaseHandler
                             UserRole::_USER_ID,
                             User::class,
                             User::_NAME,
-                            $this->pathFor(UsersRoutes::ROUTE_NAME_ADMIN_USER_LIST_AJAX),
+                            $this->pathFor(UserRoutes::ROUTE_NAME_ADMIN_USER_LIST_AJAX),
                             $this->pathFor(
-                                UsersRoutes::ROUTE_NAME_ADMIN_USER_EDIT,
+                                UserRoutes::ROUTE_NAME_ADMIN_USER_EDIT,
                                 ['user_id' => CRUDFormWidgetReferenceAjax::REFERENCED_ID_PLACEHOLDER]
                             ),
                             true
@@ -125,7 +125,7 @@ class RoleEditHandler extends BaseHandler
                             return $user_obj->getName();
                         },
                         function(UserRole $user_role_obj) {
-                            return $this->pathFor(UsersRoutes::ROUTE_NAME_ADMIN_USER_EDIT, ['user_id' => $user_role_obj->getUserId()]);
+                            return $this->pathFor(UserRoutes::ROUTE_NAME_ADMIN_USER_EDIT, ['user_id' => $user_role_obj->getUserId()]);
                         }
                     )
                 ),
@@ -144,7 +144,7 @@ class RoleEditHandler extends BaseHandler
                 new CRUDTableFilterEqualInvisible(UserRole::_ROLE_ID, $role_id)
             ],
             UserRole::_CREATED_AT_TS . ' DESC',
-            'users_role_list_rand3244',
+            'user_role_list',
             CRUDTable::FILTERS_POSITION_INLINE
         );
 
@@ -162,8 +162,8 @@ class RoleEditHandler extends BaseHandler
 
         $breadcrumbs_arr = [
             new BreadcrumbItemDTO('Главная', '/admin'),
-            new BreadcrumbItemDTO('Пользователи', $this->pathFor(UsersRoutes::ROUTE_NAME_ADMIN_USER_LIST)),
-            new BreadcrumbItemDTO('Роли пользователей', $this->pathFor(UsersRoutes::ROUTE_NAME_ADMIN_ROLE_LIST)),
+            new BreadcrumbItemDTO('Пользователи', $this->pathFor(UserRoutes::ROUTE_NAME_ADMIN_USER_LIST)),
+            new BreadcrumbItemDTO('Роли пользователей', $this->pathFor(UserRoutes::ROUTE_NAME_ADMIN_ROLE_LIST)),
         ];
         $layout_dto->setBreadcrumbsDtoArr($breadcrumbs_arr);
 

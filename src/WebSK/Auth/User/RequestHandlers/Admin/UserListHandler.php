@@ -1,12 +1,12 @@
 <?php
 
-namespace WebSK\Auth\Users\RequestHandlers\Admin;
+namespace WebSK\Auth\User\RequestHandlers\Admin;
 
 use Slim\Http\Request;
 use Slim\Http\Response;
-use WebSK\Auth\Users\User;
-use WebSK\Auth\Users\UsersRoutes;
-use WebSK\Auth\Users\UsersServiceProvider;
+use WebSK\Auth\User\User;
+use WebSK\Auth\User\UserRoutes;
+use WebSK\Auth\User\UserServiceProvider;
 use WebSK\Config\ConfWrapper;
 use WebSK\CRUD\CRUDServiceProvider;
 use WebSK\CRUD\Form\CRUDFormRow;
@@ -25,7 +25,7 @@ use WebSK\Views\BreadcrumbItemDTO;
 
 /**
  * Class UserListHandler
- * @package WebSK\Auth\Users\RequestHandlers\Admin
+ * @package WebSK\Auth\User\RequestHandlers\Admin
  */
 class UserListHandler extends BaseHandler
 {
@@ -39,7 +39,7 @@ class UserListHandler extends BaseHandler
      */
     public function __invoke(Request $request, Response $response)
     {
-        $user_service = UsersServiceProvider::getUserService($this->container);
+        $user_service = UserServiceProvider::getUserService($this->container);
 
         $crud_table_obj = CRUDServiceProvider::getCrud($this->container)->createTable(
             User::class,
@@ -53,7 +53,7 @@ class UserListHandler extends BaseHandler
                     new CRUDFormRow('Email', new CRUDFormWidgetInput(User::_EMAIL))
                 ],
                 function(User $user_obj) {
-                    return $this->pathFor(UsersRoutes::ROUTE_NAME_ADMIN_USER_EDIT, ['user_id' => $user_obj->getId()]);
+                    return $this->pathFor(UserRoutes::ROUTE_NAME_ADMIN_USER_EDIT, ['user_id' => $user_obj->getId()]);
                 }
             ),
             [
@@ -71,7 +71,7 @@ class UserListHandler extends BaseHandler
                     new CRUDTableWidgetTextWithLink(
                         User::_NAME,
                         function(User $user_obj) {
-                            return $this->pathFor(UsersRoutes::ROUTE_NAME_ADMIN_USER_EDIT, ['user_id' => $user_obj->getId()]);
+                            return $this->pathFor(UserRoutes::ROUTE_NAME_ADMIN_USER_EDIT, ['user_id' => $user_obj->getId()]);
                         }
                     )
                 ),

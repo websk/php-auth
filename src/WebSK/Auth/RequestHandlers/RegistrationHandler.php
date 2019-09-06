@@ -12,9 +12,9 @@ use WebSK\Utils\Messages;
 use WebSK\Slim\RequestHandlers\BaseHandler;
 use WebSK\Slim\Router;
 use WebSK\Auth\Auth;
-use WebSK\Auth\Users\User;
-use WebSK\Auth\Users\UserRole;
-use WebSK\Auth\Users\UsersServiceProvider;
+use WebSK\Auth\User\User;
+use WebSK\Auth\User\UserRole;
+use WebSK\Auth\User\UserServiceProvider;
 
 /**
  * Class RegistrationHandler
@@ -59,7 +59,7 @@ class RegistrationHandler extends BaseHandler
             return $response->withRedirect($error_destination);
         }
 
-        $user_service = UsersServiceProvider::getUserService($this->container);
+        $user_service = UserServiceProvider::getUserService($this->container);
 
         $has_user_id = $user_service->hasUserByEmail($email);
         if ($has_user_id) {
@@ -101,7 +101,7 @@ class RegistrationHandler extends BaseHandler
         // Roles
         $role_id = ConfWrapper::value('user.default_role_id', 0);
 
-        $user_role_service = UsersServiceProvider::getUserRoleService($this->container);
+        $user_role_service = UserServiceProvider::getUserRoleService($this->container);
 
         $user_role_obj = new UserRole();
         $user_role_obj->setUserId($user_obj->getId());

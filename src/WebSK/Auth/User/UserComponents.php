@@ -1,14 +1,14 @@
 <?php
 
-namespace WebSK\Auth\Users;
+namespace WebSK\Auth\User;
 
 use WebSK\Views\PhpRender;
 
 /**
  * Class UsersComponents
- * @package WebSK\Auth\Users
+ * @package WebSK\Auth\User
  */
-class UsersComponents
+class UserComponents
 {
     /**
      * @param User $user_obj
@@ -18,7 +18,7 @@ class UsersComponents
     public static function renderEditForm(User $user_obj, string $save_handler_url)
     {
         $content = PhpRender::renderTemplateForModuleNamespace(
-            'WebSK' . DIRECTORY_SEPARATOR . 'Auth' . DIRECTORY_SEPARATOR . 'Users',
+            'WebSK' . DIRECTORY_SEPARATOR . 'Auth' . DIRECTORY_SEPARATOR . 'User',
             'user_form_edit.tpl.php',
             [
                 'user_obj' => $user_obj,

@@ -12,7 +12,7 @@ use WebSK\Slim\Facade;
  * @method static getCurrentUserObj()
  * @method static currentUserIsAdmin()
  * @method static currentUserHasAccessByRoleDesignation(string $role_designation)
- * @package WebSK\Auth\Users
+ * @package WebSK\Auth\User
  */
 class Auth extends Facade
 {

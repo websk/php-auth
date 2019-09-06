@@ -3,7 +3,7 @@
 use WebSK\Auth\AuthRoutes;
 use WebSK\Captcha\CaptchaRoutes;
 use WebSK\Slim\Router;
-use WebSK\Auth\Users\User;
+use WebSK\Auth\User\User;
 
 $destination = Router::pathFor(AuthRoutes::ROUTE_NAME_AUTH_LOGIN_FORM);
 

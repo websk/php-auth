@@ -9,7 +9,7 @@ use WebSK\Auth\Auth;
 
 /**
  * Class CurrentUserIsAdmin
- * @package WebSK\Auth\Users\Middleware
+ * @package WebSK\Auth\User\Middleware
  */
 class CurrentUserIsAdmin
 {

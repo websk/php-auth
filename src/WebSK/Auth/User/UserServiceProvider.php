@@ -1,6 +1,6 @@
 <?php
 
-namespace WebSK\Auth\Users;
+namespace WebSK\Auth\User;
 
 use Psr\Container\ContainerInterface;
 use WebSK\Auth\AuthServiceProvider;
@@ -8,9 +8,9 @@ use WebSK\Cache\CacheServiceProvider;
 
 /**
  * Class UsersServiceProvider
- * @package WebSK\Auth\Users
+ * @package WebSK\Auth\User
  */
-class UsersServiceProvider
+class UserServiceProvider
 {
     /**
      * @param ContainerInterface $container

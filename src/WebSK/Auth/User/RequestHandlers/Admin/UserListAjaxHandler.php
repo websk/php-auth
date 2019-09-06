@@ -1,11 +1,11 @@
 <?php
 
-namespace WebSK\Auth\Users\RequestHandlers\Admin;
+namespace WebSK\Auth\User\RequestHandlers\Admin;
 
 use Psr\Http\Message\ResponseInterface;
 use Slim\Http\Request;
 use Slim\Http\Response;
-use WebSK\Auth\Users\User;
+use WebSK\Auth\User\User;
 use WebSK\CRUD\CRUDServiceProvider;
 use WebSK\CRUD\Table\CRUDTable;
 use WebSK\CRUD\Table\CRUDTableColumn;
@@ -16,7 +16,7 @@ use WebSK\Slim\RequestHandlers\BaseHandler;
 
 /**
  * Class UserListAjaxHandler
- * @package WebSK\Auth\Users\RequestHandlers\Admin
+ * @package WebSK\Auth\User\RequestHandlers\Admin
  */
 class UserListAjaxHandler extends BaseHandler
 {

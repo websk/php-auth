@@ -6,8 +6,8 @@
 
 use WebSK\Image\ImageManager;
 use WebSK\Slim\Router;
-use WebSK\Auth\Users\User;
-use WebSK\Auth\Users\UsersRoutes;
+use WebSK\Auth\User\User;
+use WebSK\Auth\User\UserRoutes;
 use WebSK\Utils\Url;
 
 $destination = Url::getUriNoQueryString();
@@ -40,7 +40,7 @@ $destination = Url::getUriNoQueryString();
                 </a>
 
                 <div>
-                    <a href="<?php echo Router::pathFor(UsersRoutes::ROUTE_NAME_USER_DELETE_PHOTO, ['user_id' => $user_obj->getId()], ['destination' => $destination]); ?>"
+                    <a href="<?php echo Router::pathFor(UserRoutes::ROUTE_NAME_USER_DELETE_PHOTO, ['user_id' => $user_obj->getId()], ['destination' => $destination]); ?>"
                        class="btn btn-default">Удалить фото</a>
                 </div>
                 <?php

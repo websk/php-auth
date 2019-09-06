@@ -1,13 +1,13 @@
 <?php
 
-namespace WebSK\Auth\Users;
+namespace WebSK\Auth\User;
 
 use WebSK\Entity\EntityService;
 
 /**
  * Class RoleService
  * @method Role getById($entity_id, $exception_if_not_loaded = true)
- * @package WebSK\Auth\Users
+ * @package WebSK\Auth\User
  */
 class RoleService extends EntityService
 {

@@ -7,8 +7,8 @@ use Slim\Handlers\Strategies\RequestResponseArgs;
 use Slim\Http\Request;
 use Slim\Http\Response;
 use WebSK\Auth\Middleware\CurrentUserIsAdmin;
-use WebSK\Auth\Users\UsersRoutes;
-use WebSK\Auth\Users\UsersServiceProvider;
+use WebSK\Auth\User\UserRoutes;
+use WebSK\Auth\User\UserServiceProvider;
 use WebSK\Cache\CacheServiceProvider;
 use WebSK\Captcha\CaptchaRoutes;
 use WebSK\CRUD\CRUDServiceProvider;
@@ -34,7 +34,7 @@ class AuthApp extends App
 
         CacheServiceProvider::register($container);
         AuthServiceProvider::register($container);
-        UsersServiceProvider::register($container);
+        UserServiceProvider::register($container);
         CRUDServiceProvider::register($container);
 
         $this->registerRoutes();
@@ -52,16 +52,16 @@ class AuthApp extends App
                 return $response->withRedirect(Router::pathFor(AuthRoutes::ROUTE_NAME_AUTH_LOGIN_FORM));
             }
 
-            return $response->withRedirect(Router::pathFor(UsersRoutes::ROUTE_NAME_ADMIN_USER_LIST));
+            return $response->withRedirect(Router::pathFor(UserRoutes::ROUTE_NAME_ADMIN_USER_LIST));
         });
 
         $this->group('/admin', function (App $app) {
-            UsersRoutes::registerAdmin($app);
+            UserRoutes::registerAdmin($app);
         })->add(new CurrentUserIsAdmin());
 
         CaptchaRoutes::register($this);
 
-        UsersRoutes::register($this);
+        UserRoutes::register($this);
         AuthRoutes::register($this);
 
         /** Use facade */

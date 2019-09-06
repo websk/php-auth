@@ -1,17 +1,17 @@
 <?php
 
-namespace WebSK\Auth\Users\RequestHandlers;
+namespace WebSK\Auth\User\RequestHandlers;
 
 use Slim\Http\Request;
 use Slim\Http\Response;
-use WebSK\Auth\Users\UsersServiceProvider;
+use WebSK\Auth\User\UserServiceProvider;
 use WebSK\Utils\Messages;
 use WebSK\Slim\RequestHandlers\BaseHandler;
-use WebSK\Auth\Users\UsersRoutes;
+use WebSK\Auth\User\UserRoutes;
 
 /**
  * Class UserCreatePasswordHandler
- * @package WebSK\Auth\Users\RequestHandlers
+ * @package WebSK\Auth\User\RequestHandlers
  */
 class UserCreatePasswordHandler extends BaseHandler
 {
@@ -23,9 +23,9 @@ class UserCreatePasswordHandler extends BaseHandler
      */
     public function __invoke(Request $request, Response $response, int $user_id)
     {
-        $destination = $request->getQueryParam('destination', $this->pathFor(UsersRoutes::ROUTE_NAME_USER_EDIT, ['user_id' => $user_id]));
+        $destination = $request->getQueryParam('destination', $this->pathFor(UserRoutes::ROUTE_NAME_USER_EDIT, ['user_id' => $user_id]));
 
-        $user_service = UsersServiceProvider::getUserService($this->container);
+        $user_service = UserServiceProvider::getUserService($this->container);
 
         $new_password = $user_service->createAndSendPasswordToUser($user_id);
 

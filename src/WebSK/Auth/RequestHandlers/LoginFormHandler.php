@@ -7,7 +7,7 @@ use Slim\Http\Response;
 use WebSK\Auth\HybridAuth;
 use WebSK\Config\ConfWrapper;
 use WebSK\Auth\Auth;
-use WebSK\Auth\Users\UsersRoutes;
+use WebSK\Auth\User\UserRoutes;
 use WebSK\Slim\RequestHandlers\BaseHandler;
 use WebSK\Views\BreadcrumbItemDTO;
 use WebSK\Views\LayoutDTO;
@@ -29,7 +29,7 @@ class LoginFormHandler extends BaseHandler
         $current_user_id = Auth::getCurrentUserId();
         if ($current_user_id) {
             return $response->withRedirect(
-                $this->pathFor(UsersRoutes::ROUTE_NAME_ADMIN_USER_EDIT, ['user_id' => $current_user_id])
+                $this->pathFor(UserRoutes::ROUTE_NAME_ADMIN_USER_EDIT, ['user_id' => $current_user_id])
             );
         }
 

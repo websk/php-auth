@@ -9,7 +9,7 @@ use WebSK\Config\ConfWrapper;
 use WebSK\Slim\RequestHandlers\BaseHandler;
 use WebSK\Slim\Router;
 use WebSK\Auth\Auth;
-use WebSK\Auth\Users\UsersRoutes;
+use WebSK\Auth\User\UserRoutes;
 use WebSK\Views\BreadcrumbItemDTO;
 use WebSK\Views\LayoutDTO;
 use WebSK\Views\PhpRender;
@@ -30,7 +30,7 @@ class RegistrationFormHandler extends BaseHandler
         $current_user_id = Auth::getCurrentUserId();
         if ($current_user_id) {
             return $response->withRedirect(
-                Router::pathFor(UsersRoutes::ROUTE_NAME_ADMIN_USER_EDIT, ['user_id' => $current_user_id])
+                Router::pathFor(UserRoutes::ROUTE_NAME_ADMIN_USER_EDIT, ['user_id' => $current_user_id])
             );
         }
 

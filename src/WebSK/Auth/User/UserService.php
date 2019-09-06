@@ -1,6 +1,6 @@
 <?php
 
-namespace WebSK\Auth\Users;
+namespace WebSK\Auth\User;
 
 use WebSK\Auth\Auth;
 use WebSK\Image\ImageConstants;
@@ -15,7 +15,7 @@ use WebSK\Utils\Filters;
 /**
  * Class UserService
  * @method User getById($entity_id, $exception_if_not_loaded = true)
- * @package WebSK\Auth\Users
+ * @package WebSK\Auth\User
  */
 class UserService extends EntityService
 {

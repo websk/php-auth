@@ -6,8 +6,8 @@
 
 use WebSK\Slim\Router;
 use WebSK\Auth\Auth;
-use WebSK\Auth\Users\User;
-use WebSK\Auth\Users\UsersRoutes;
+use WebSK\Auth\User\User;
+use WebSK\Auth\User\UserRoutes;
 use WebSK\Utils\Url;
 
 $destination = Url::getUriNoQueryString();
@@ -40,7 +40,7 @@ $destination = Url::getUriNoQueryString();
             ?>
             <div class="form-group">
                 <div class="col-md-offset-4 col-md-8">
-                    <a href="<?php echo Router::pathFor(UsersRoutes::ROUTE_NAME_USER_CREATE_PASSWORD, ['user_id' => $user_obj->getId()], ['destination' => $destination]) ?>">Сгенерировать
+                    <a href="<?php echo Router::pathFor(UserRoutes::ROUTE_NAME_USER_CREATE_PASSWORD, ['user_id' => $user_obj->getId()], ['destination' => $destination]) ?>">Сгенерировать
                         пароль и выслать пользователю</a>
                 </div>
             </div>

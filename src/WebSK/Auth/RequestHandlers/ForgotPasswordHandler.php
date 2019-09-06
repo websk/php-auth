@@ -5,7 +5,7 @@ namespace WebSK\Auth\RequestHandlers;
 use Slim\Http\Request;
 use Slim\Http\Response;
 use WebSK\Auth\AuthRoutes;
-use WebSK\Auth\Users\UsersServiceProvider;
+use WebSK\Auth\User\UserServiceProvider;
 use WebSK\Captcha\Captcha;
 use WebSK\Utils\Messages;
 use WebSK\Slim\RequestHandlers\BaseHandler;
@@ -40,7 +40,7 @@ class ForgotPasswordHandler extends BaseHandler
             return $response->withRedirect($destination);
         }
 
-        $user_service = UsersServiceProvider::getUserService($this->container);
+        $user_service = UserServiceProvider::getUserService($this->container);
 
         if (!$user_service->hasUserByEmail($email)) {
             Messages::setError('Ошибка! Пользователь с таким адресом электронной почты не зарегистрирован на сайте.');
