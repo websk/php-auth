@@ -1,18 +1,19 @@
 <?php
 /**
  * @var User $user_obj
- * @var string $save_handler_url
- * @var string $redirect_destination_url
+  * @var string $redirect_destination_url
  */
 
 use WebSK\Auth\Auth;
 use WebSK\Auth\User\User;
+use WebSK\Auth\User\UserRoutes;
+use WebSK\Slim\Router;
 use WebSK\Utils\Url;
 
 $destination = $redirect_destination_url ?: Url::getUriNoQueryString();
 
 ?>
-<form id="profile_form" action="<?php echo $save_handler_url; ?>" autocomplete="off" method="post"
+<form id="profile_form" action="<?php echo Router::pathFor(UserRoutes::ROUTE_NAME_USER_UPDATE, ['user_id' => $user_obj->getId()]); ?>" autocomplete="off" method="post"
       class="form-horizontal" enctype="multipart/form-data">
     <div xmlns="http://www.w3.org/1999/html">
         <div class="form-group has-warning">

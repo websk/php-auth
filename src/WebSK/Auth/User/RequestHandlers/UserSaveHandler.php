@@ -8,7 +8,6 @@ use Slim\Http\Response;
 use WebSK\Utils\Messages;
 use WebSK\Slim\RequestHandlers\BaseHandler;
 use WebSK\Auth\Auth;
-use WebSK\Auth\User\User;
 use WebSK\Auth\User\UserRoutes;
 use WebSK\Auth\User\UserServiceProvider;
 
@@ -29,18 +28,16 @@ class UserSaveHandler extends BaseHandler
     {
         $user_service = UserServiceProvider::getUserService($this->container);
 
-        if (!is_null($user_id)) {
-            $user_obj = $user_service->getById($user_id, false);
-
-            if (!$user_obj) {
-                return $response->withStatus(StatusCode::HTTP_NOT_FOUND);
-            }
-
-            $destination = $request->getParam('destination', $this->pathFor(UserRoutes::ROUTE_NAME_USER_EDIT, ['user_id' => $user_id]));
-        } else {
-            $user_obj = new User();
-            $destination = $request->getParam('destination', $this->pathFor(UserRoutes::ROUTE_NAME_USER_CREATE));
+        $user_obj = $user_service->getById($user_id, false);
+        if (!$user_obj) {
+            return $response->withStatus(StatusCode::HTTP_NOT_FOUND);
         }
+
+        if (($user_id != Auth::getCurrentUserId()) && !Auth::currentUserIsAdmin()) {
+            return $response->withStatus(StatusCode::HTTP_FORBIDDEN);
+        }
+
+        $destination = $request->getParam('destination', $this->pathFor(UserRoutes::ROUTE_NAME_USER_EDIT, ['user_id' => $user_id]));
 
         $name = $request->getParam('name', '');
         $first_name = $request->getParam('first_name', '');

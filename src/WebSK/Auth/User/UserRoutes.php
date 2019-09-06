@@ -79,14 +79,8 @@ class UserRoutes
     public static function register(App $app)
     {
         $app->group('/user', function (App $app) {
-            $app->get('/create', UserEditHandler::class)
-                ->setName(self::ROUTE_NAME_USER_CREATE);
-
             $app->get('/{user_id:\d+}', UserEditHandler::class)
                 ->setName(self::ROUTE_NAME_USER_EDIT);
-
-            $app->post('/add', UserSaveHandler::class)
-                ->setName(self::ROUTE_NAME_USER_ADD);
 
             $app->post('/update/{user_id:\d+}', UserSaveHandler::class)
                 ->setName(self::ROUTE_NAME_USER_UPDATE);
