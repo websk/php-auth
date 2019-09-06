@@ -162,4 +162,38 @@ class SessionService extends EntityService
 
         return false;
     }
+
+    /**
+     * Авторизация на сайте
+     * @param string $email
+     * @param string $password
+     * @param bool $save_auth
+     * @return bool
+     */
+    public function processAuthorization(string $email, string $password, bool $save_auth = false)
+    {
+        $user_id = $this->user_service->getUserIdByEmailAndPassword($email, $password);
+
+        if (!$user_id) {
+            return false;
+        }
+
+        $user_obj = $this->user_service->getById($user_id);
+
+        // Регистрация не подтверждена
+        if (!$user_obj->isConfirm()) {
+            return false;
+        }
+
+        $delta = null;
+        if ($save_auth) {
+            $delta = time() + Session::SESSION_LIFE_TIME;
+        }
+
+        $session = sha1(time() . $user_id);
+
+        $this->storeUserSession($user_id, $session, $delta);
+
+        return true;
+    }
 }

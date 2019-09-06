@@ -4,6 +4,7 @@ namespace WebSK\Auth\RequestHandlers;
 
 use Slim\Http\Request;
 use Slim\Http\Response;
+use WebSK\Auth\Auth;
 use WebSK\Auth\AuthRoutes;
 use WebSK\Auth\AuthServiceProvider;
 use WebSK\Captcha\Captcha;
@@ -59,8 +60,7 @@ class SendConfirmCodeHandler extends BaseHandler
 
         $confirm_code = $user_service->generateConfirmCode();
 
-        $auth_service = AuthServiceProvider::getAuthService($this->container);
-        $auth_service->sendConfirmMail($user_obj->getName(), $email, $confirm_code);
+        Auth::sendConfirmMail($user_obj->getName(), $email, $confirm_code);
 
         $message = 'Для завершения процедуры регистрации, на указанный вами адрес электронной почты, отправлено письмо с ссылкой для подтверждения.';
 

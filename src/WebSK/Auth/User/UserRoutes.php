@@ -12,6 +12,7 @@ use WebSK\Auth\User\RequestHandlers\Admin\UserListAjaxHandler;
 use WebSK\Auth\User\RequestHandlers\Admin\UserListHandler;
 use WebSK\Auth\User\RequestHandlers\Admin\RoleListHandler;
 use WebSK\Auth\User\RequestHandlers\UserAddPhotoHandler;
+use WebSK\Auth\User\RequestHandlers\UserChangePasswordHandler;
 use WebSK\Auth\User\RequestHandlers\UserCreatePasswordHandler;
 use WebSK\Auth\User\RequestHandlers\UserDeletePhotoHandler;
 use WebSK\Auth\User\RequestHandlers\UserEditHandler;
@@ -35,6 +36,7 @@ class UserRoutes
     const ROUTE_NAME_USER_UPDATE = 'user:update';
     const ROUTE_NAME_USER_DELETE = 'user:delete';
 
+    const ROUTE_NAME_USER_CHANGE_PASSWORD = 'user:change_password';
     const ROUTE_NAME_USER_CREATE_PASSWORD = 'user:create_password';
 
     const ROUTE_NAME_USER_ADD_PHOTO = 'user:add_photo';
@@ -92,6 +94,9 @@ class UserRoutes
 
             $app->get('/create_password/{user_id:\d+}', UserCreatePasswordHandler::class)
                 ->setName(self::ROUTE_NAME_USER_CREATE_PASSWORD);
+
+            $app->post('/change_password/{user_id:\d+}', UserChangePasswordHandler::class)
+                ->setName(self::ROUTE_NAME_USER_CHANGE_PASSWORD);
 
             $app->get('/add_photo/{user_id:\d+}', UserAddPhotoHandler::class)
                 ->setName(self::ROUTE_NAME_USER_ADD_PHOTO);

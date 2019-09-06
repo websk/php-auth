@@ -26,10 +26,10 @@ class LoginHandler extends BaseHandler
             return $response->withRedirect($this->pathFor(AuthRoutes::ROUTE_NAME_AUTH_LOGIN_FORM));
         }
 
-        $auth_service = AuthServiceProvider::getAuthService($this->container);
+        $session_service = AuthServiceProvider::getSessionService($this->container);
 
         $save_auth = ((int)$request->getParam('save_auth') == 1) ? true : false;
-        $is_authenticated = $auth_service
+        $is_authenticated = $session_service
             ->processAuthorization($request->getParam('email'), $request->getParam('password'), $save_auth);
 
         if (!$is_authenticated) {

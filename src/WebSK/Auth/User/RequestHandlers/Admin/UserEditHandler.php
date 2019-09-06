@@ -6,6 +6,7 @@ use Slim\Http\Request;
 use Slim\Http\Response;
 use Slim\Http\StatusCode;
 use WebSK\Auth\User\Role;
+use WebSK\Auth\User\UserComponents;
 use WebSK\Auth\User\UserRole;
 use WebSK\Config\ConfWrapper;
 use WebSK\CRUD\CRUDServiceProvider;
@@ -134,6 +135,8 @@ class UserEditHandler extends BaseHandler
         if ($crud_form_response instanceof Response) {
             return $crud_form_response;
         }
+
+        $content_html .= UserComponents::renderPasswordForm($user_obj, $this->pathFor(UserRoutes::ROUTE_NAME_ADMIN_USER_EDIT, ['user_id' => $user_id]));
 
         $content_html .= '<h3>Роли пользователя</h3>';
         $content_html .= $crud_table_obj->html($request);

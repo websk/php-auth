@@ -1,19 +1,19 @@
 <?php
 /**
  * @var User $user_obj
- * @var string $save_handler_url
+ * @var string $redirect_destination_url
  */
 
+use WebSK\Auth\User\User;
 use WebSK\Slim\Router;
 use WebSK\Auth\Auth;
-use WebSK\Auth\User\User;
 use WebSK\Auth\User\UserRoutes;
 use WebSK\Utils\Url;
 
-$destination = Url::getUriNoQueryString();
+$destination = $redirect_destination_url ?: Url::getUriNoQueryString();
 
 ?>
-<form id="profile_form" action="<?php echo $save_handler_url; ?>" autocomplete="off" method="post" class="form-horizontal">
+<form id="profile_form" action="<?php echo Router::pathFor(UserRoutes::ROUTE_NAME_USER_CHANGE_PASSWORD, ['user_id' => $user_obj->getId()]); ?>" autocomplete="off" method="post" class="form-horizontal">
 
     <div class="form-group">
         <div class="col-md-offset-4 col-md-8">
@@ -23,7 +23,7 @@ $destination = Url::getUriNoQueryString();
 
     <div>
         <div class="form-group">
-            <label class="col-md-4 control-label">Пароль</label>
+            <label class="col-md-4 control-label">Новый пароль</label>
             <div class="col-md-8">
                 <input type="password" name="new_password_first" class="form-control" autocomplete="new-password">
             </div>
@@ -52,7 +52,7 @@ $destination = Url::getUriNoQueryString();
     <div class="form-group">
         <div class="col-md-offset-4 col-md-8">
             <input type="hidden" name="destination" value="<?php echo $destination; ?>">
-            <input type="submit" value="Сохранить изменения" class="btn btn-primary">
+            <input type="submit" value="Изменить пароль" class="btn btn-primary">
         </div>
     </div>
 </form>

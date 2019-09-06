@@ -68,19 +68,6 @@ class UserService extends EntityService
             }
         }
 
-        if (!$new_password_first && !$new_password_second) {
-            throw new \Exception('Ошибка! Не введен пароль.');
-        }
-
-        // Пароль
-        if ($new_password_first || $new_password_second) {
-            if ($new_password_first != $new_password_second) {
-                throw new \Exception('Ошибка! Пароль не подтвержден, либо подтвержден неверно.');
-            }
-
-            $user_obj->setPassw(Auth::getHash($new_password_first));
-        }
-
         parent::beforeSave($entity_obj);
     }
 
@@ -328,6 +315,20 @@ class UserService extends EntityService
     public function getUserIdIfExistByProvider(string $provider_name, string $provider_uid): ?int
     {
         $user_id = $this->repository->findUserIdIfExistByProvider($provider_name, $provider_uid);
+
+        return $user_id ?? null;
+    }
+
+    /**
+     * @param string $email
+     * @param string $password
+     * @return int|null
+     */
+    public function getUserIdByEmailAndPassword(string $email, string $password): ?int
+    {
+        $salt_password = Auth::getHash($password);
+
+        $user_id = $this->repository->findUserIdByEmailAndPassword($email, $salt_password);
 
         return $user_id ?? null;
     }

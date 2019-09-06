@@ -58,4 +58,21 @@ class UserRepository extends EntityRepository
             [$provider_name, $provider_uid]
         );
     }
+
+    /**
+     * @param string $email
+     * @param string $salt_password
+     * @return false|mixed
+     */
+    public function findUserIdByEmailAndPassword(string $email, string $salt_password)
+    {
+        $query = "SELECT " . Sanitize::sanitizeSqlColumnName($this->getIdFieldName())
+            . " FROM " . Sanitize::sanitizeSqlColumnName($this->getTableName())
+            . " WHERE " .  Sanitize::sanitizeSqlColumnName(User::_EMAIL). "=?"
+            . " AND " .  Sanitize::sanitizeSqlColumnName(User::_PASSW). "=?"
+            . " LIMIT 1";
+        $param_arr = [$email, $salt_password];
+
+        return $this->db_service->readField($query, $param_arr);
+    }
 }

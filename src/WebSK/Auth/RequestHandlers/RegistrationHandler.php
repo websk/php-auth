@@ -5,7 +5,6 @@ namespace WebSK\Auth\RequestHandlers;
 use Slim\Http\Request;
 use Slim\Http\Response;
 use WebSK\Auth\AuthRoutes;
-use WebSK\Auth\AuthServiceProvider;
 use WebSK\Captcha\Captcha;
 use WebSK\Config\ConfWrapper;
 use WebSK\Utils\Messages;
@@ -108,8 +107,7 @@ class RegistrationHandler extends BaseHandler
         $user_role_obj->setRoleId($role_id);
         $user_role_service->save($user_role_obj);
 
-        $auth_service = AuthServiceProvider::getAuthService($this->container);
-        $auth_service->sendConfirmMail($name, $email, $confirm_code);
+        Auth::sendConfirmMail($name, $email, $confirm_code);
 
         $message = 'Вы успешно зарегистрированы на сайте. ';
         $message .= 'Для завершения процедуры регистрации, на указанный вами адрес электронной почты, отправлено письмо с ссылкой для подтверждения.';

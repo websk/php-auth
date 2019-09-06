@@ -47,17 +47,6 @@ class AuthServiceProvider
 
         /**
          * @param ContainerInterface $container
-         * @return AuthService
-         */
-        $container[self::AUTH_SERVICE_CONTAINER_ID] = function (ContainerInterface $container) {
-            return new AuthService(
-                UserServiceProvider::getUserService($container),
-                self::getSessionService($container)
-            );
-        };
-
-        /**
-         * @param ContainerInterface $container
          * @return SessionService
          */
         $container[Session::ENTITY_SERVICE_CONTAINER_ID] = function (ContainerInterface $container) {
@@ -79,15 +68,6 @@ class AuthServiceProvider
                 $container->get(self::DB_SERVICE_CONTAINER_ID)
             );
         };
-    }
-
-    /**
-     * @param ContainerInterface $container
-     * @return AuthService
-     */
-    public static function getAuthService(ContainerInterface $container)
-    {
-        return $container->get(self::AUTH_SERVICE_CONTAINER_ID);
     }
 
     /**
