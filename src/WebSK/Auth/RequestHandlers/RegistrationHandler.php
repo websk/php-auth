@@ -48,25 +48,7 @@ class RegistrationHandler extends BaseHandler
             return $response->withRedirect($error_destination);
         }
 
-        if (empty($email)) {
-            Messages::setError('Ошибка! Не указан Email.');
-            return $response->withRedirect($error_destination);
-        }
-
-        if (empty($name)) {
-            Messages::setError('Ошибка! Не указано Имя.');
-            return $response->withRedirect($error_destination);
-        }
-
         $user_service = UserServiceProvider::getUserService($this->container);
-
-        $has_user_id = $user_service->hasUserByEmail($email);
-        if ($has_user_id) {
-            Messages::setError(
-                'Ошибка! Пользователь с таким адресом электронной почты ' . $email . ' уже зарегистрирован.'
-            );
-            return $response->withRedirect($error_destination);
-        }
 
         if (!$new_password_first && !$new_password_second) {
             Messages::setError('Ошибка! Не введен пароль.');
@@ -95,7 +77,12 @@ class RegistrationHandler extends BaseHandler
         $confirm_code = $user_service->generateConfirmCode();
         $user_obj->setConfirmCode($confirm_code);
 
-        $user_service->save($user_obj);
+        try {
+            $user_service->save($user_obj);
+        } catch (\Exception $e) {
+            Messages::setError($e->getMessage());
+            return $response->withRedirect($destination);
+        }
 
         // Roles
         $role_id = ConfWrapper::value('user.default_role_id', 0);

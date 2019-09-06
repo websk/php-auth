@@ -38,7 +38,7 @@ class ConfirmRegistrationHandler extends BaseHandler
         }
 
         $user_obj = $user_service->getById($user_id);
-        $user_obj->setConfirm(1);
+        $user_obj->setConfirm(true);
         $user_obj->setConfirmCode('');
         $user_service->save($user_obj);
 

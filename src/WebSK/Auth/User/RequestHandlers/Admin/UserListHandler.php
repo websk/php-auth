@@ -18,6 +18,7 @@ use WebSK\CRUD\Table\Widgets\CRUDTableWidgetDelete;
 use WebSK\CRUD\Table\Widgets\CRUDTableWidgetHtml;
 use WebSK\CRUD\Table\Widgets\CRUDTableWidgetText;
 use WebSK\CRUD\Table\Widgets\CRUDTableWidgetTextWithLink;
+use WebSK\Utils\Messages;
 use WebSK\Views\LayoutDTO;
 use WebSK\Views\PhpRender;
 use WebSK\Slim\RequestHandlers\BaseHandler;
@@ -90,12 +91,19 @@ class UserListHandler extends BaseHandler
             CRUDTable::FILTERS_POSITION_INLINE
         );
 
-        $crud_form_response = $crud_table_obj->processRequest($request, $response);
-        if ($crud_form_response instanceof Response) {
-            return $crud_form_response;
+        $content_html = '';
+
+        try {
+            $crud_form_response = $crud_table_obj->processRequest($request, $response);
+            if ($crud_form_response instanceof Response) {
+                return $crud_form_response;
+            }
+        } catch (\Exception $e) {
+            Messages::setError($e->getMessage());
+            return $response->withRedirect($this->pathFor(UserRoutes::ROUTE_NAME_ADMIN_USER_LIST));
         }
 
-        $content_html = $crud_table_obj->html($request);
+        $content_html .= $crud_table_obj->html($request);
 
         $layout_dto = new LayoutDTO();
         $layout_dto->setTitle('Пользователи');

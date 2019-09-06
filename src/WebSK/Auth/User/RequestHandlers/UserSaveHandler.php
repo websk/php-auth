@@ -42,7 +42,6 @@ class UserSaveHandler extends BaseHandler
         $name = $request->getParam('name', '');
         $first_name = $request->getParam('first_name', '');
         $last_name = $request->getParam('last_name', '');
-        $confirm = $request->getParam('confirm', false);
         $birthday = $request->getParam('birthday', '');
         $email = $request->getParam('email', '');
         $phone = $request->getParam('phone', '');
@@ -50,25 +49,8 @@ class UserSaveHandler extends BaseHandler
         $address = $request->getParam('address', '');
         $comment = $request->getParam('comment', '');
 
-        if (empty($email)) {
-            Messages::setError('Ошибка! Не указан Email.');
-            return $response->withRedirect($destination);
-        }
-
-        if (empty($name)) {
-            Messages::setError('Ошибка! Не указаны Фамилия Имя Отчество.');
-            return $response->withRedirect($destination);
-        }
-
-        if ($email != $user_obj->getEmail()) {
-            $has_user_id = $user_service->hasUserByEmail($email);
-            if ($has_user_id) {
-                Messages::setError('Ошибка! Пользователь с таким адресом электронной почты ' . $email . ' уже существует.');
-                return $response->withRedirect($destination);
-            }
-        }
-
         if (Auth::currentUserIsAdmin()) {
+            $confirm = $request->getParam('confirm', false);
             $user_obj->setConfirm($confirm);
         }
 
@@ -82,7 +64,12 @@ class UserSaveHandler extends BaseHandler
         $user_obj->setAddress($address);
         $user_obj->setComment($comment);
 
-        $user_service->save($user_obj);
+        try {
+            $user_service->save($user_obj);
+        } catch (\Exception $e) {
+            Messages::setError($e->getMessage());
+            return $response->withRedirect($destination);
+        }
 
         $user_id = $user_obj->getId();
 
