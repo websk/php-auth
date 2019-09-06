@@ -3,6 +3,8 @@
 namespace WebSK\Auth\User\RequestHandlers;
 
 use Slim\Http\StatusCode;
+use WebSK\Auth\Auth;
+use WebSK\Auth\User\UserRoutes;
 use WebSK\Image\ImageConstants;
 use WebSK\Image\ImageController;
 use Slim\Http\Request;
@@ -34,7 +36,11 @@ class UserAddPhotoHandler extends BaseHandler
             return $response->withStatus(StatusCode::HTTP_NOT_FOUND);
         }
 
-        $destination = $request->getParam('destination', $this->pathFor(UserEditHandler::class, ['user_id' => $user_id]));
+        if (($user_id != Auth::getCurrentUserId()) && !Auth::currentUserIsAdmin()) {
+            return $response->withStatus(StatusCode::HTTP_FORBIDDEN);
+        }
+
+        $destination = $request->getParam('destination', $this->pathFor(UserRoutes::ROUTE_NAME_USER_EDIT, ['user_id' => $user_id]));
 
         $root_images_folder = ImageConstants::IMG_ROOT_FOLDER;
         $file = $_FILES['image_file'];

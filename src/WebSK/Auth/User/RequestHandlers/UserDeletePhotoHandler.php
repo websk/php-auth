@@ -5,6 +5,7 @@ namespace WebSK\Auth\User\RequestHandlers;
 use Slim\Http\Request;
 use Slim\Http\Response;
 use Slim\Http\StatusCode;
+use WebSK\Auth\Auth;
 use WebSK\Utils\Messages;
 use WebSK\Slim\RequestHandlers\BaseHandler;
 use WebSK\Auth\User\UserRoutes;
@@ -31,6 +32,10 @@ class UserDeletePhotoHandler extends BaseHandler
 
         if (!$user_obj) {
             return $response->withStatus(StatusCode::HTTP_NOT_FOUND);
+        }
+
+        if (($user_id != Auth::getCurrentUserId()) && !Auth::currentUserIsAdmin()) {
+            return $response->withStatus(StatusCode::HTTP_FORBIDDEN);
         }
 
         $destination = $request->getQueryParam('destination', $this->pathFor(UserRoutes::ROUTE_NAME_USER_EDIT, ['user_id' => $user_id]));

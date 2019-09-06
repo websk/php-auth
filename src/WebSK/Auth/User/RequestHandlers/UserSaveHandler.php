@@ -3,8 +3,6 @@
 namespace WebSK\Auth\User\RequestHandlers;
 
 use Slim\Http\StatusCode;
-use WebSK\Image\ImageConstants;
-use WebSK\Image\ImageController;
 use Slim\Http\Request;
 use Slim\Http\Response;
 use WebSK\Utils\Messages;
@@ -54,8 +52,6 @@ class UserSaveHandler extends BaseHandler
         $city = $request->getParam('city', '');
         $address = $request->getParam('address', '');
         $comment = $request->getParam('comment', '');
-        $new_password_first = $request->getParam('new_password_first', '');
-        $new_password_second = $request->getParam('new_password_second', '');
 
         if (empty($email)) {
             Messages::setError('Ошибка! Не указан Email.');
@@ -75,23 +71,6 @@ class UserSaveHandler extends BaseHandler
             }
         }
 
-        if ($user_id == 'new') {
-            if (!$new_password_first && !$new_password_second) {
-                Messages::setError('Ошибка! Не введен пароль.');
-                return $response->withRedirect($destination);
-            }
-        }
-
-        // Пароль
-        if ($new_password_first || $new_password_second) {
-            if ($new_password_first != $new_password_second) {
-                Messages::setError('Ошибка! Пароль не подтвержден, либо подтвержден неверно.');
-                return $response->withRedirect($destination);
-            }
-
-            $user_obj->setPassw(Auth::getHash($new_password_first));
-        }
-
         if (Auth::currentUserIsAdmin()) {
             $user_obj->setConfirm($confirm);
         }
@@ -109,23 +88,6 @@ class UserSaveHandler extends BaseHandler
         $user_service->save($user_obj);
 
         $user_id = $user_obj->getId();
-
-        // Image
-        if (array_key_exists('image_file', $_FILES)) {
-            $file = $_FILES['image_file'];
-            if (array_key_exists('name', $file) && !empty($file['name'])) {
-                $root_images_folder = ImageConstants::IMG_ROOT_FOLDER;
-                $file_name = ImageController::processUpload($file, 'user', $root_images_folder);
-                if (!$file_name) {
-                    Messages::setError('Не удалось загрузить фотографию.');
-                    return $response->withRedirect($destination);
-                }
-
-                $user_obj = $user_service->getById($user_id);
-                $user_obj->setPhoto($file_name);
-                $user_service->save($user_obj);
-            }
-        }
 
         Messages::setMessage('Информация о пользователе была успешно сохранена');
 

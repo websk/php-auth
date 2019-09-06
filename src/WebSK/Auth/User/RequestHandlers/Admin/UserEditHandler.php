@@ -136,7 +136,9 @@ class UserEditHandler extends BaseHandler
             return $crud_form_response;
         }
 
-        $content_html .= UserComponents::renderPasswordForm($user_obj, $this->pathFor(UserRoutes::ROUTE_NAME_ADMIN_USER_EDIT, ['user_id' => $user_id]));
+        $content_html .= UserComponents::renderUserPhotoForm($user_obj);
+
+        $content_html .= UserComponents::renderPasswordForm($user_obj);
 
         $content_html .= '<h3>Роли пользователя</h3>';
         $content_html .= $crud_table_obj->html($request);

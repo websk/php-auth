@@ -47,6 +47,10 @@ class UserEditHandler extends BaseHandler
 
         $content_html = UserComponents::renderEditForm($user_obj, $save_handler_url);
 
+        $content_html .= UserComponents::renderUserPhotoForm($user_obj);
+
+        $content_html .= UserComponents::renderPasswordForm($user_obj);
+
         $layout_dto = new LayoutDTO();
         $layout_dto->setTitle('Редактирование профиля');
         $layout_dto->setContentHtml($content_html);

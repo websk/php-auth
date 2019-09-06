@@ -25,7 +25,6 @@ use WebSK\Utils\HTTP;
  */
 class UserRoutes
 {
-    const ROUTE_NAME_ADMIN_USER_CREATE = 'admin:user:create';
     const ROUTE_NAME_ADMIN_USER_EDIT = 'admin:user:edit';
     const ROUTE_NAME_ADMIN_USER_LIST = 'admin:user:list';
     const ROUTE_NAME_ADMIN_USER_LIST_AJAX = 'admin:user:list:ajax';
@@ -98,7 +97,7 @@ class UserRoutes
             $app->post('/change_password/{user_id:\d+}', UserChangePasswordHandler::class)
                 ->setName(self::ROUTE_NAME_USER_CHANGE_PASSWORD);
 
-            $app->get('/add_photo/{user_id:\d+}', UserAddPhotoHandler::class)
+            $app->post('/add_photo/{user_id:\d+}', UserAddPhotoHandler::class)
                 ->setName(self::ROUTE_NAME_USER_ADD_PHOTO);
 
             $app->get('/delete_photo/{user_id:\d+}', UserDeletePhotoHandler::class)
