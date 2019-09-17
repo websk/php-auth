@@ -9,7 +9,7 @@ use WebSK\Utils\Filters;
 
 /**
  * Class Auth
- * @see LoggerEntryService
+ * @see SessionService
  * @method static getCurrentUserId()
  * @method static getCurrentUserObj()
  * @method static currentUserIsAdmin()
