@@ -21,6 +21,7 @@ use WebSK\CRUD\Table\CRUDTableColumn;
 use WebSK\CRUD\Table\Filters\CRUDTableFilterEqualInvisible;
 use WebSK\CRUD\Table\Widgets\CRUDTableWidgetDelete;
 use WebSK\CRUD\Table\Widgets\CRUDTableWidgetTextWithLink;
+use WebSK\Utils\Messages;
 use WebSK\Views\LayoutDTO;
 use WebSK\Slim\RequestHandlers\BaseHandler;
 use WebSK\Auth\User\User;
@@ -72,9 +73,14 @@ class UserEditHandler extends BaseHandler
             }
         );
 
-        $crud_form_response = $crud_form->processRequest($request, $response);
-        if ($crud_form_response instanceof Response) {
-            return $crud_form_response;
+        try {
+            $crud_form_response = $crud_form->processRequest($request, $response);
+            if ($crud_form_response instanceof Response) {
+                return $crud_form_response;
+            }
+        } catch (\Exception $e) {
+            Messages::setError($e->getMessage());
+            return $response->withRedirect($this->pathFor(UserRoutes::ROUTE_NAME_ADMIN_USER_EDIT, ['user_id' => $user_id]));
         }
 
         $content_html = $crud_form->html();

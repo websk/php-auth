@@ -45,7 +45,7 @@ class SessionService extends EntityService
      */
     public function clearUserSession($user_id)
     {
-        $this->repository->deleteBySession($_COOKIE['auth_session']);
+        $this->repository->deleteBySession($_COOKIE[Session::AUTH_COOKIE_NAME]);
 
         $this->clearOldSessionsByUserId($user_id);
 
@@ -65,7 +65,7 @@ class SessionService extends EntityService
 
     public function clearAuthCookie()
     {
-        setcookie('auth_session', '', time() - 3600, '/');
+        setcookie(Session::AUTH_COOKIE_NAME, '', time() - 3600, '/');
     }
 
     /**
@@ -86,7 +86,7 @@ class SessionService extends EntityService
         $session->setTimestamp($time);
         $this->save($session);
 
-        setcookie('auth_session', $session, $delta, '/');
+        setcookie(Session::AUTH_COOKIE_NAME, $session, $delta, '/');
 
         $this->clearOldSessionsByUserId($user_id);
     }
@@ -103,11 +103,11 @@ class SessionService extends EntityService
             return $user_session_unique_id;
         }
 
-        if (!array_key_exists('auth_session', $_COOKIE)) {
+        if (!array_key_exists(Session::AUTH_COOKIE_NAME, $_COOKIE)) {
             return null;
         }
 
-        $auth_session = $_COOKIE['auth_session'];
+        $auth_session = $_COOKIE[Session::AUTH_COOKIE_NAME];
 
         $user_session_unique_id = $this->repository->findCurrentUserId($auth_session);
 

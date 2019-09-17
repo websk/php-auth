@@ -14,6 +14,8 @@ class Session extends Entity
     const ENTITY_REPOSITORY_CONTAINER_ID = 'auth.session_repository';
     const DB_TABLE_NAME = 'sessions';
 
+    const AUTH_COOKIE_NAME = 'auth_session';
+
     const SESSION_LIFE_TIME = 31536000; // 1 год
 
     const _USER_ID = 'user_id';

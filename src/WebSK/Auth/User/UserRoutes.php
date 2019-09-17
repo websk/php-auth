@@ -16,7 +16,6 @@ use WebSK\Auth\User\RequestHandlers\UserChangePasswordHandler;
 use WebSK\Auth\User\RequestHandlers\UserCreatePasswordHandler;
 use WebSK\Auth\User\RequestHandlers\UserDeletePhotoHandler;
 use WebSK\Auth\User\RequestHandlers\UserEditHandler;
-use WebSK\Auth\User\RequestHandlers\UserSaveHandler;
 use WebSK\Utils\HTTP;
 
 /**
@@ -29,11 +28,7 @@ class UserRoutes
     const ROUTE_NAME_ADMIN_USER_LIST = 'admin:user:list';
     const ROUTE_NAME_ADMIN_USER_LIST_AJAX = 'admin:user:list:ajax';
 
-    const ROUTE_NAME_USER_CREATE = 'user:create';
     const ROUTE_NAME_USER_EDIT = 'user:edit';
-    const ROUTE_NAME_USER_ADD = 'user:add';
-    const ROUTE_NAME_USER_UPDATE = 'user:update';
-    const ROUTE_NAME_USER_DELETE = 'user:delete';
 
     const ROUTE_NAME_USER_CHANGE_PASSWORD = 'user:change_password';
     const ROUTE_NAME_USER_CREATE_PASSWORD = 'user:create_password';
@@ -79,11 +74,8 @@ class UserRoutes
     public static function register(App $app)
     {
         $app->group('/user', function (App $app) {
-            $app->get('/{user_id:\d+}', UserEditHandler::class)
+            $app->map([HTTP::METHOD_GET, HTTP::METHOD_POST],'/{user_id:\d+}', UserEditHandler::class)
                 ->setName(self::ROUTE_NAME_USER_EDIT);
-
-            $app->post('/update/{user_id:\d+}', UserSaveHandler::class)
-                ->setName(self::ROUTE_NAME_USER_UPDATE);
 
             $app->get('/create_password/{user_id:\d+}', UserCreatePasswordHandler::class)
                 ->setName(self::ROUTE_NAME_USER_CREATE_PASSWORD);
