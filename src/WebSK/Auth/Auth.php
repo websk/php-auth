@@ -33,7 +33,7 @@ class Auth extends Facade
      */
     public static function getHash(string $password)
     {
-        $salt = ConfWrapper::value('salt');
+        $salt = AuthConfig::getSalt();
 
         $hash = md5($salt . $password);
 

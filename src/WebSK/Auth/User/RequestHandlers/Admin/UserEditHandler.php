@@ -5,10 +5,10 @@ namespace WebSK\Auth\User\RequestHandlers\Admin;
 use Slim\Http\Request;
 use Slim\Http\Response;
 use Slim\Http\StatusCode;
+use WebSK\Auth\AuthConfig;
 use WebSK\Auth\User\Role;
 use WebSK\Auth\User\UserComponents;
 use WebSK\Auth\User\UserRole;
-use WebSK\Config\ConfWrapper;
 use WebSK\CRUD\CRUDServiceProvider;
 use WebSK\CRUD\Form\CRUDFormInvisibleRow;
 use WebSK\CRUD\Form\CRUDFormRow;
@@ -154,11 +154,11 @@ class UserEditHandler extends BaseHandler
         $layout_dto->setContentHtml($content_html);
 
         $breadcrumbs_arr = [
-            new BreadcrumbItemDTO('Главная', '/admin'),
+            new BreadcrumbItemDTO('Главная', AuthConfig::getSkifMainPageUrl()),
             new BreadcrumbItemDTO('Пользователи', $this->pathFor(UserRoutes::ROUTE_NAME_ADMIN_USER_LIST)),
         ];
         $layout_dto->setBreadcrumbsDtoArr($breadcrumbs_arr);
 
-        return PhpRender::renderLayout($response, ConfWrapper::value('layout.admin'), $layout_dto);
+        return PhpRender::renderLayout($response, AuthConfig::getSkifLayout(), $layout_dto);
     }
 }

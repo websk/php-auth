@@ -4,8 +4,8 @@ namespace WebSK\Auth\RequestHandlers;
 
 use Slim\Http\Request;
 use Slim\Http\Response;
+use WebSK\Auth\AuthConfig;
 use WebSK\Auth\HybridAuth;
-use WebSK\Config\ConfWrapper;
 use WebSK\Slim\RequestHandlers\BaseHandler;
 use WebSK\Slim\Router;
 use WebSK\Auth\Auth;
@@ -53,10 +53,10 @@ class RegistrationFormHandler extends BaseHandler
         $layout_dto->setContentHtml($content);
 
         $breadcrumbs_arr = [
-            new BreadcrumbItemDTO('Главная', '/'),
+            new BreadcrumbItemDTO('Главная', AuthConfig::getMainPageUrl()),
         ];
         $layout_dto->setBreadcrumbsDtoArr($breadcrumbs_arr);
 
-        return PhpRender::renderLayout($response, ConfWrapper::value('layout.main'), $layout_dto);
+        return PhpRender::renderLayout($response, AuthConfig::getMainLayout(), $layout_dto);
     }
 }

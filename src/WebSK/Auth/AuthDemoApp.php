@@ -20,7 +20,7 @@ use WebSK\Slim\Router;
  * Class PhpAuthApp
  * @package WebSK\Auth
  */
-class AuthApp extends App
+class AuthDemoApp extends App
 {
     /**
      * SkifApp constructor.
@@ -47,12 +47,16 @@ class AuthApp extends App
             return new RequestResponseArgs();
         };
 
+        // Demo routing. Redirects
         $this->get('/', function (Request $request, Response $response) {
             if (!Auth::getCurrentUserId()) {
                 return $response->withRedirect(Router::pathFor(AuthRoutes::ROUTE_NAME_AUTH_LOGIN_FORM));
             }
+            if (Auth::currentUserIsAdmin()) {
+                return $response->withRedirect(Router::pathFor(UserRoutes::ROUTE_NAME_ADMIN_USER_LIST));
+            }
 
-            return $response->withRedirect(Router::pathFor(UserRoutes::ROUTE_NAME_ADMIN_USER_LIST));
+            return $response->withRedirect(Router::pathFor(UserRoutes::ROUTE_NAME_USER_EDIT, ['user_id' => Auth::getCurrentUserId()]));
         });
 
         $this->group('/admin', function (App $app) {

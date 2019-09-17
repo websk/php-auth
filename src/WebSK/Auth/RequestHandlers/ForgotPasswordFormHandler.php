@@ -4,7 +4,7 @@ namespace WebSK\Auth\RequestHandlers;
 
 use Slim\Http\Request;
 use Slim\Http\Response;
-use WebSK\Config\ConfWrapper;
+use WebSK\Auth\AuthConfig;
 use WebSK\Slim\RequestHandlers\BaseHandler;
 use WebSK\Views\BreadcrumbItemDTO;
 use WebSK\Views\LayoutDTO;
@@ -33,10 +33,10 @@ class ForgotPasswordFormHandler extends BaseHandler
         $layout_dto->setContentHtml($content);
 
         $breadcrumbs_arr = [
-            new BreadcrumbItemDTO('Главная', '/'),
+            new BreadcrumbItemDTO('Главная', AuthConfig::getMainPageUrl()),
         ];
         $layout_dto->setBreadcrumbsDtoArr($breadcrumbs_arr);
 
-        return PhpRender::renderLayout($response, ConfWrapper::value('layout.main'), $layout_dto);
+        return PhpRender::renderLayout($response, AuthConfig::getMainLayout(), $layout_dto);
     }
 }

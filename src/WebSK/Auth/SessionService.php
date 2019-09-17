@@ -86,7 +86,7 @@ class SessionService extends EntityService
         $session->setTimestamp($time);
         $this->save($session);
 
-        setcookie(Session::AUTH_COOKIE_NAME, $session, $delta, '/');
+        setcookie(Session::AUTH_COOKIE_NAME, $session_hash, $delta, '/');
 
         $this->clearOldSessionsByUserId($user_id);
     }

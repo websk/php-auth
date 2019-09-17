@@ -4,9 +4,9 @@ namespace WebSK\Auth\RequestHandlers;
 
 use Slim\Http\Request;
 use Slim\Http\Response;
+use WebSK\Auth\AuthConfig;
 use WebSK\Auth\AuthRoutes;
 use WebSK\Captcha\Captcha;
-use WebSK\Config\ConfWrapper;
 use WebSK\Utils\Messages;
 use WebSK\Slim\RequestHandlers\BaseHandler;
 use WebSK\Slim\Router;
@@ -85,14 +85,16 @@ class RegistrationHandler extends BaseHandler
         }
 
         // Roles
-        $role_id = ConfWrapper::value('user.default_role_id', 0);
+        $role_id = AuthConfig::getDefaultRoleId();
 
-        $user_role_service = UserServiceProvider::getUserRoleService($this->container);
+        if ($role_id) {
+            $user_role_service = UserServiceProvider::getUserRoleService($this->container);
 
-        $user_role_obj = new UserRole();
-        $user_role_obj->setUserId($user_obj->getId());
-        $user_role_obj->setRoleId($role_id);
-        $user_role_service->save($user_role_obj);
+            $user_role_obj = new UserRole();
+            $user_role_obj->setUserId($user_obj->getId());
+            $user_role_obj->setRoleId($role_id);
+            $user_role_service->save($user_role_obj);
+        }
 
         Auth::sendConfirmMail($name, $email, $confirm_code);
 

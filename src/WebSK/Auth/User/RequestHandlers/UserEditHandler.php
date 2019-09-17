@@ -6,10 +6,10 @@ use Slim\Http\Request;
 use Slim\Http\Response;
 use Slim\Http\StatusCode;
 use WebSK\Auth\Auth;
+use WebSK\Auth\AuthConfig;
 use WebSK\Auth\User\User;
 use WebSK\Auth\User\UserComponents;
 use WebSK\Auth\User\UserRoutes;
-use WebSK\Config\ConfWrapper;
 use WebSK\CRUD\CRUDServiceProvider;
 use WebSK\CRUD\Form\CRUDFormRow;
 use WebSK\CRUD\Form\Widgets\CRUDFormWidgetInput;
@@ -64,7 +64,7 @@ class UserEditHandler extends BaseHandler
                 new CRUDFormRow('Дополнительная информация', new CRUDFormWidgetTextarea(User::_COMMENT)),
             ],
             function(User $user_obj) {
-                return $this->pathFor(UserRoutes::ROUTE_NAME_ADMIN_USER_EDIT, ['user_id' => $user_obj->getId()]);
+                return $this->pathFor(UserRoutes::ROUTE_NAME_USER_EDIT, ['user_id' => $user_obj->getId()]);
             }
         );
 
@@ -75,7 +75,7 @@ class UserEditHandler extends BaseHandler
             }
         } catch (\Exception $e) {
             Messages::setError($e->getMessage());
-            return $response->withRedirect($this->pathFor(UserRoutes::ROUTE_NAME_ADMIN_USER_EDIT, ['user_id' => $user_id]));
+            return $response->withRedirect($this->pathFor(UserRoutes::ROUTE_NAME_USER_EDIT, ['user_id' => $user_id]));
         }
 
         $content_html = $crud_form->html();
@@ -89,10 +89,10 @@ class UserEditHandler extends BaseHandler
         $layout_dto->setContentHtml($content_html);
 
         $breadcrumbs_arr = [
-            new BreadcrumbItemDTO('Главная', '/'),
+            new BreadcrumbItemDTO('Главная', AuthConfig::getMainPageUrl()),
         ];
         $layout_dto->setBreadcrumbsDtoArr($breadcrumbs_arr);
 
-        return PhpRender::renderLayout($response, ConfWrapper::value('layout.main'), $layout_dto);
+        return PhpRender::renderLayout($response, AuthConfig::getMainLayout(), $layout_dto);
     }
 }

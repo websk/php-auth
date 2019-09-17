@@ -27,10 +27,6 @@ return [
                 'password' => 'root',
             ],
         ],
-        'layout' => [
-            'main' => '/var/www/php-auth/views/layouts/layout.main.tpl.php',
-            'admin' => '/var/www/php-auth/views/layouts/layout.main.tpl.php'
-        ],
         'log_path' => '/var/www/log',
         'tmp_path' => '/var/www/tmp',
         'files_data_path' => '/var/www/php-auth/public/files',
@@ -39,6 +35,12 @@ return [
         'site_name' => 'PHP Auth Demo',
         'site_title' => 'WebSK. PHP Auth Demo',
         'site_email' => 'support@websk.ru',
-        'salt' => 'webskskif',
+        'auth' => [
+            'salt' => 'webskskif',
+            'layout_main' => '/var/www/php-auth/views/layouts/layout.main.tpl.php',
+            'layout_skif' => '/var/www/php-auth/views/layouts/layout.main.tpl.php',
+            'main_page_url' => '/',
+            'skif_main_page_url' => '/admin/user/'
+        ]
     ],
 ];

@@ -55,7 +55,7 @@ class UserChangePasswordHandler extends BaseHandler
         $user_obj->setPassw(Auth::getHash($new_password_first));
         $user_service->save($user_obj);
 
-        Messages::setMessage('Информация о пользователе была успешно сохранена');
+        Messages::setMessage('Пароль был успешно изменен');
 
         return $response->withRedirect($destination);
     }

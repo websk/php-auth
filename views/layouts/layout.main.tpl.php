@@ -3,6 +3,8 @@
  * @var LayoutDTO $layout_dto
  */
 
+use WebSK\Auth\AuthRoutes;
+use WebSK\Slim\Router;
 use WebSK\Utils\Assert;
 use WebSK\Utils\Messages;
 use WebSK\Config\ConfWrapper;
@@ -49,7 +51,8 @@ use WebSK\Utils\Url;
 
 <div id="html">
     <div id="header" class="row">
-        <div style="font-size: 22px;"><?php echo  ConfWrapper::value('site_title')?></div>
+        <div style="font-size: 22px;" class="pull-left"><?php echo  ConfWrapper::value('site_title')?></div>
+        <div class="pull-right" style="margin-right: 50px;"><a href="<?php echo Router::pathFor(AuthRoutes::ROUTE_NAME_AUTH_LOGOUT)?>">Выйти</a></div>
     </div>
 
     <div>

@@ -145,14 +145,17 @@ class HybridAuth
         }
 
         // Roles
-        $role_id = ConfWrapper::value('user.default_role_id', 0);
+        $role_id = AuthConfig::getDefaultRoleId();
 
-        $user_role_obj = new UserRole();
-        $user_role_obj->setUserId($user_obj->getId());
-        $user_role_obj->setRoleId($role_id);
+        if ($role_id) {
+            $user_role_obj = new UserRole();
+            $user_role_obj->setUserId($user_obj->getId());
+            $user_role_obj->setRoleId($role_id);
 
-        $user_role_service = UserServiceProvider::getUserRoleService($container);
-        $user_role_service->save($user_role_obj);
+            $user_role_service = UserServiceProvider::getUserRoleService($container);
+            $user_role_service->save($user_role_obj);
+        }
+
 
         return $user_obj->getId();
     }
