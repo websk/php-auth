@@ -17,13 +17,14 @@ use WebSK\Slim\Facade;
 use WebSK\Slim\Router;
 
 /**
- * Class PhpAuthApp
+ * Class AuthDemoApp
  * @package WebSK\Auth
  */
 class AuthDemoApp extends App
 {
+
     /**
-     * SkifApp constructor.
+     * AuthDemoApp constructor.
      * @param array $config
      */
     public function __construct($config = [])
