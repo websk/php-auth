@@ -115,13 +115,13 @@ class SessionService extends EntityService
     }
 
     /**
-     * @return bool|User
+     * @return User|null
      */
-    public function getCurrentUserObj()
+    public function getCurrentUserObj(): ?User
     {
         $user_id = $this->getCurrentUserId();
         if (!$user_id) {
-            return false;
+            return null;
         }
 
         return $this->user_service->getById($user_id, false);
