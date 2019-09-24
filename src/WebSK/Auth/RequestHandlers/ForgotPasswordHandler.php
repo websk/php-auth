@@ -25,7 +25,7 @@ class ForgotPasswordHandler extends BaseHandler
     {
         $email = $request->getParam('email', '');
 
-        $destination = $request->getParam('destination', $this->pathFor(AuthRoutes::ROUTE_NAME_AUTH_FORGOT_PASSWORD));
+        $destination = $request->getParam('destination', $this->pathFor(AuthRoutes::ROUTE_NAME_AUTH_FORGOT_PASSWORD_FORM));
 
         if (!$request->getParam('captcha')) {
             return $response->withRedirect($destination);
