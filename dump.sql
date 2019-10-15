@@ -23,7 +23,7 @@ CREATE TABLE `users` (
     `address` varchar(250) DEFAULT NULL,
     `company` varchar(200) DEFAULT NULL,
     `comment` mediumtext,
-    `confirm` smallint(6) DEFAULT '0',
+    `confirm` smallint(6) NOT NULL DEFAULT '0',
     `confirm_code` varchar(50) DEFAULT '',
     `provider` varchar(100) NOT NULL DEFAULT '',
     `provider_uid` varchar(255) DEFAULT '',
