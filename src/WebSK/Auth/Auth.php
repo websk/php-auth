@@ -2,6 +2,7 @@
 
 namespace WebSK\Auth;
 
+use WebSK\Auth\User\User;
 use WebSK\Config\ConfWrapper;
 use WebSK\Slim\Facade;
 use WebSK\Slim\Router;
@@ -10,10 +11,10 @@ use WebSK\Utils\Filters;
 /**
  * Class Auth
  * @see SessionService
- * @method static getCurrentUserId()
- * @method static getCurrentUserObj()
- * @method static currentUserIsAdmin()
- * @method static currentUserHasAccessByRoleDesignation(string $role_designation)
+ * @method static int|null getCurrentUserId()
+ * @method static User|null getCurrentUserObj()
+ * @method static bool currentUserIsAdmin()
+ * @method static bool currentUserHasAccessByRoleDesignation(string $role_designation)
  * @package WebSK\Auth\User
  */
 class Auth extends Facade
