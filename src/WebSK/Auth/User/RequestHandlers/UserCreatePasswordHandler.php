@@ -35,7 +35,7 @@ class UserCreatePasswordHandler extends BaseHandler
 
         $new_password = $user_service->createAndSendPasswordToUser($user_id);
 
-        Messages::setMessage('Новый пароль' . $new_password);
+        Messages::setMessage('Новый пароль: ' . $new_password);
 
         return $response->withRedirect($destination);
     }
