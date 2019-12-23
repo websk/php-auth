@@ -19,6 +19,8 @@ use WebSK\Utils\Filters;
  */
 class UserService extends EntityService
 {
+    const PASSWORD_LENGTH = 12;
+
     /** @var RoleService */
     protected $role_service;
 
@@ -202,7 +204,7 @@ class UserService extends EntityService
      */
     public function createAndSendPasswordToUser(int $user_id): string
     {
-        $new_password = $this->generatePassword(8);
+        $new_password = $this->generatePassword(self::PASSWORD_LENGTH);
 
         $user_obj = $this->getById($user_id);
         $user_obj->setPassw(Auth::getHash($new_password));
