@@ -29,7 +29,7 @@ class RegistrationHandler extends BaseHandler
      */
     public function __invoke(Request $request, Response $response)
     {
-        $destination = $request->getParam('destination', Router::pathFor(AuthRoutes::ROUTE_NAME_AUTH_LOGIN_FORM));
+        $destination = $request->getParam('destination', Router::pathFor(AuthRoutes::ROUTE_NAME_AUTH_REGISTRATION_FORM));
 
         $name = trim($request->getParam('name', ''));
         $first_name = trim($request->getParam('first_name', ''));
