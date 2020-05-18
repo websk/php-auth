@@ -13,6 +13,7 @@ use WebSK\Cache\CacheServiceProvider;
 use WebSK\Captcha\CaptchaRoutes;
 use WebSK\CRUD\CRUDServiceProvider;
 use WebSK\DB\DBWrapper;
+use WebSK\Image\ImageRoutes;
 use WebSK\Slim\Facade;
 use WebSK\Slim\Router;
 
@@ -74,5 +75,7 @@ class AuthDemoApp extends App
 
         /** Set DBWrapper db service */
         DBWrapper::setDbService(AuthServiceProvider::getDBService($container));
+
+        ImageRoutes::routes();
     }
 }

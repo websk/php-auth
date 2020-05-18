@@ -48,10 +48,10 @@ class UserListHandler extends BaseHandler
                 'user_create',
                 new User(),
                 [
-                    new CRUDFormRow('Имя на сайте', new CRUDFormWidgetInput(User::_NAME)),
+                    new CRUDFormRow('Имя на сайте', new CRUDFormWidgetInput(User::_NAME, false, true)),
                     new CRUDFormRow('Имя', new CRUDFormWidgetInput(User::_FIRST_NAME)),
                     new CRUDFormRow('Фамилия', new CRUDFormWidgetInput(User::_LAST_NAME)),
-                    new CRUDFormRow('Email', new CRUDFormWidgetInput(User::_EMAIL))
+                    new CRUDFormRow('Email', new CRUDFormWidgetInput(User::_EMAIL, false, true))
                 ],
                 function(User $user_obj) {
                     return $this->pathFor(UserRoutes::ROUTE_NAME_ADMIN_USER_EDIT, ['user_id' => $user_obj->getId()]);

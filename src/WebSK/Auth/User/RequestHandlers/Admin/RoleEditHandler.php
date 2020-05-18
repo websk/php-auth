@@ -76,11 +76,14 @@ class RoleEditHandler extends BaseHandler
 
         $user_service = UserServiceProvider::getUserService($this->container);
 
+        $new_user_role = new UserRole();
+        $new_user_role->setRoleId($role_id);
+
         $crud_table_obj = CRUDServiceProvider::getCrud($this->container)->createTable(
             UserRole::class,
             CRUDServiceProvider::getCrud($this->container)->createForm(
                 'user_role_create_rand324324',
-                new UserRole(),
+                $new_user_role,
                 [
                     new CRUDFormInvisibleRow(new CRUDFormWidgetInput(UserRole::_ROLE_ID)),
                     new CRUDFormRow(

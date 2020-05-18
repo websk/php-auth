@@ -53,7 +53,7 @@ class UserService extends EntityService
         }
 
         if (!$entity_obj->getName()) {
-            throw new \Exception('Ошибка! Не указаны Фамилия Имя Отчество.');
+            throw new \Exception('Ошибка! Не указано имя на сайте.');
         }
 
         $exist_user_obj = null;
