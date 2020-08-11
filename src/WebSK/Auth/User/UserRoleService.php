@@ -29,6 +29,6 @@ class UserRoleService extends EntityService
      */
     public function getIdsArrByRoleId(int $role_id)
     {
-        return $this->repository->findIdsArrForUserId($role_id);
+        return $this->repository->findIdsArrForRoleId($role_id);
     }
 }
