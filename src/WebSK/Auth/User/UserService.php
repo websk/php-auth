@@ -2,6 +2,7 @@
 
 namespace WebSK\Auth\User;
 
+use PHPMailer\PHPMailer\PHPMailer;
 use WebSK\Auth\Auth;
 use WebSK\Image\ImageConstants;
 use WebSK\Image\ImageManager;
@@ -224,7 +225,7 @@ class UserService extends EntityService
 
             $subject = "Смена пароля на сайте " . ConfWrapper::value('site_name');
 
-            $mail = new \PHPMailer;
+            $mail = new PHPMailer;
             $mail->CharSet = "utf-8";
             $mail->setFrom($site_email, $site_name);
             $mail->addAddress($user_obj->getEmail());

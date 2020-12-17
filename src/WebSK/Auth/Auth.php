@@ -2,6 +2,7 @@
 
 namespace WebSK\Auth;
 
+use PHPMailer\PHPMailer\PHPMailer;
 use WebSK\Auth\User\User;
 use WebSK\Config\ConfWrapper;
 use WebSK\Slim\Facade;
@@ -45,7 +46,6 @@ class Auth extends Facade
      * @param string $name
      * @param string $email
      * @param string $confirm_code
-     * @throws \phpmailerException
      */
     public static function sendConfirmMail(string $name, string $email, string $confirm_code)
     {
@@ -64,7 +64,7 @@ class Auth extends Facade
 
         $subject = 'Подтверждение регистрации на сайте ' . $site_name;
 
-        $mail = new \PHPMailer;
+        $mail = new PHPMailer;
         $mail->CharSet = "utf-8";
         $mail->setFrom($site_email, $site_name);
         $mail->addAddress($email);
