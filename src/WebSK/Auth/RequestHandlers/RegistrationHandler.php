@@ -40,6 +40,16 @@ class RegistrationHandler extends BaseHandler
 
         $error_destination = Router::pathFor(AuthRoutes::ROUTE_NAME_AUTH_REGISTRATION_FORM);
 
+        if ($name) {
+            Messages::setError("Не указано Имя на сайте");
+            return $response->withRedirect($destination);
+        }
+
+        if ($email) {
+            Messages::setError("Не указан E-mail");
+            return $response->withRedirect($destination);
+        }
+
         if (!$request->getParam('captcha')) {
             return $response->withRedirect($error_destination);
         }
@@ -49,6 +59,11 @@ class RegistrationHandler extends BaseHandler
         }
 
         $user_service = UserServiceProvider::getUserService($this->container);
+
+        if ($user_service->getUserIdByEmail($email)) {
+            Messages::setError("Пользователь с таким адресом электронной почты " . $email . ' уже зарегистрирован');
+            return $response->withRedirect($destination);
+        }
 
         if (!$new_password_first && !$new_password_second) {
             Messages::setError('Ошибка! Не введен пароль.');
