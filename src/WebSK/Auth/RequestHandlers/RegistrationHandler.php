@@ -40,12 +40,12 @@ class RegistrationHandler extends BaseHandler
 
         $error_destination = Router::pathFor(AuthRoutes::ROUTE_NAME_AUTH_REGISTRATION_FORM);
 
-        if ($name) {
+        if (!$name) {
             Messages::setError("Не указано Имя на сайте");
             return $response->withRedirect($destination);
         }
 
-        if ($email) {
+        if (!$email) {
             Messages::setError("Не указан E-mail");
             return $response->withRedirect($destination);
         }
