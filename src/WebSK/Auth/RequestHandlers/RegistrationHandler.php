@@ -42,12 +42,12 @@ class RegistrationHandler extends BaseHandler
 
         if (!$name) {
             Messages::setError("Не указано Имя на сайте");
-            return $response->withRedirect($destination);
+            return $response->withRedirect($error_destination);
         }
 
         if (!$email) {
             Messages::setError("Не указан E-mail");
-            return $response->withRedirect($destination);
+            return $response->withRedirect($error_destination);
         }
 
         if (!$request->getParam('captcha')) {
@@ -62,7 +62,7 @@ class RegistrationHandler extends BaseHandler
 
         if ($user_service->getUserIdByEmail($email)) {
             Messages::setError("Пользователь с таким адресом электронной почты " . $email . ' уже зарегистрирован');
-            return $response->withRedirect($destination);
+            return $response->withRedirect($error_destination);
         }
 
         if (!$new_password_first && !$new_password_second) {
