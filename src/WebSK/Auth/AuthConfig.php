@@ -30,17 +30,17 @@ class AuthConfig
     /**
      * @return string
      */
-    public static function getSkifLayout(): string
+    public static function getAdminLayout(): string
     {
-        return ConfWrapper::value('auth.layout_skif', ConfWrapper::value('skif.layout'));
+        return ConfWrapper::value('auth.layout_admin', ConfWrapper::value('layout.admin'));
     }
 
     /**
      * @return string
      */
-    public static function getSkifMainPageUrl(): string
+    public static function getAdminMainPageUrl(): string
     {
-        return ConfWrapper::value('auth.skif_main_page_url', '/admin');
+        return ConfWrapper::value('auth.admin_main_page_url', '/admin');
     }
 
     /**

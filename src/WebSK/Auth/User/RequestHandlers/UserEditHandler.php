@@ -13,7 +13,6 @@ use WebSK\Auth\User\UserRoutes;
 use WebSK\CRUD\CRUDServiceProvider;
 use WebSK\CRUD\Form\CRUDFormRow;
 use WebSK\CRUD\Form\Widgets\CRUDFormWidgetInput;
-use WebSK\CRUD\Form\Widgets\CRUDFormWidgetRadios;
 use WebSK\CRUD\Form\Widgets\CRUDFormWidgetTextarea;
 use WebSK\Utils\Messages;
 use WebSK\Views\BreadcrumbItemDTO;

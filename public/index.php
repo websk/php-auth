@@ -9,5 +9,5 @@ $config = require_once $config_path;
 
 ConfWrapper::setConfig($config['settings']);
 
-$app = new WebSK\Auth\AuthDemoApp($config);
+$app = new \WebSK\Auth\Demo\AuthDemoApp($config);
 $app->run();

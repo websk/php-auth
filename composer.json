@@ -7,7 +7,7 @@
     "websk/php-cache": "1.1.*",
     "websk/php-captcha": "1.0.*",
     "websk/php-config": "1.0.*",
-    "websk/php-crud": "1.1.*",
+    "websk/php-crud": "1.2.*",
     "websk/php-db": "1.2.*",
     "websk/php-entity": "1.0.*",
     "websk/php-imagemanager": "1.0.*",

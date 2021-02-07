@@ -1,11 +1,14 @@
 <?php
 
-namespace WebSK\Auth;
+namespace WebSK\Auth\Demo;
 
 use Slim\App;
 use Slim\Handlers\Strategies\RequestResponseArgs;
 use Slim\Http\Request;
 use Slim\Http\Response;
+use WebSK\Auth\Auth;
+use WebSK\Auth\AuthRoutes;
+use WebSK\Auth\AuthServiceProvider;
 use WebSK\Auth\Middleware\CurrentUserIsAdmin;
 use WebSK\Auth\User\UserRoutes;
 use WebSK\Auth\User\UserServiceProvider;
@@ -19,7 +22,7 @@ use WebSK\Slim\Router;
 
 /**
  * Class AuthDemoApp
- * @package WebSK\Auth
+ * @package WebSK\Auth\Demo
  */
 class AuthDemoApp extends App
 {

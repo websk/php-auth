@@ -93,11 +93,11 @@ class RoleListHandler extends BaseHandler
         $layout_dto->setContentHtml($content_html);
 
         $breadcrumbs_arr = [
-            new BreadcrumbItemDTO('Главная', AuthConfig::getSkifMainPageUrl()),
+            new BreadcrumbItemDTO('Главная', AuthConfig::getAdminMainPageUrl()),
             new BreadcrumbItemDTO('Пользователи', $this->pathFor(UserRoutes::ROUTE_NAME_ADMIN_USER_LIST)),
         ];
         $layout_dto->setBreadcrumbsDtoArr($breadcrumbs_arr);
 
-        return PhpRender::renderLayout($response, AuthConfig::getSkifLayout(), $layout_dto);
+        return PhpRender::renderLayout($response, AuthConfig::getAdminLayout(), $layout_dto);
     }
 }

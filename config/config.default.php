@@ -5,7 +5,7 @@ return [
         'displayErrorDetails' => false,
         'cache' => [
             'engine' => \WebSK\Cache\Engines\Memcache::class,
-            'cache_key_prefix' => 'skif',
+            'cache_key_prefix' => 'websk_auth',
             'servers' => [
                 [
                     'host' => 'localhost',
@@ -36,11 +36,11 @@ return [
         'site_title' => 'WebSK. PHP Auth Demo',
         'site_email' => 'support@websk.ru',
         'auth' => [
-            'salt' => 'webskskif',
+            'salt' => 'webskauth',
             'layout_main' => '/var/www/php-auth/views/layouts/layout.main.tpl.php',
-            'layout_skif' => '/var/www/php-auth/views/layouts/layout.main.tpl.php',
+            'layout_admin' => '/var/www/php-auth/views/layouts/layout.main.tpl.php',
             'main_page_url' => '/',
-            'skif_main_page_url' => '/admin/user/'
+            'admin_main_page_url' => '/admin/user'
         ]
     ],
 ];
