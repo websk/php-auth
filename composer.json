@@ -1,5 +1,6 @@
 {
   "name": "websk/php-auth",
+  "description": "Authorization and user management",
   "require": {
     "php": "^7.4",
     "ext-pdo": "*",

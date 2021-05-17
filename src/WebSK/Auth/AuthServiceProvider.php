@@ -15,6 +15,7 @@ use WebSK\Auth\User\UserServiceProvider;
  */
 class AuthServiceProvider
 {
+    const DUMP_FILE_PATH = __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'dumps' . DIRECTORY_SEPARATOR . 'db_auth.sql';
     const AUTH_SERVICE_CONTAINER_ID = 'auth_service_container_id';
     const DB_SERVICE_CONTAINER_ID = 'auth.db_service';
     const DB_ID = 'db_auth';

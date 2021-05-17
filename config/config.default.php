@@ -19,12 +19,8 @@ return [
                 'db_name' => 'db_auth',
                 'user' => 'root',
                 'password' => 'root',
-            ],
-            'db_logger' => [
-                'host' => 'localhost',
-                'db_name' => 'db_logger',
-                'user' => 'root',
-                'password' => 'root',
+                'dump_file_path' => \WebSK\Auth\AuthServiceProvider::DUMP_FILE_PATH
+
             ],
         ],
         'log_path' => '/var/www/log',
