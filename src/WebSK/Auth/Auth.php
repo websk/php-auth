@@ -33,7 +33,7 @@ class Auth extends Facade
      * @param $password
      * @return string
      */
-    public static function getHash(string $password)
+    public static function getHash(string $password): string
     {
         $salt = AuthConfig::getSalt();
 

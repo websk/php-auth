@@ -152,7 +152,7 @@ class UserService extends EntityService
      */
     public function hasRoleAdminByUserId(int $user_id): bool
     {
-        if (in_array(Role::ROLE_ADMIN, $this->getRoleIdsArrByUserId($user_id))) {
+        if (in_array(Role::ADMIN_ROLE_ID, $this->getRoleIdsArrByUserId($user_id))) {
             return true;
         }
 

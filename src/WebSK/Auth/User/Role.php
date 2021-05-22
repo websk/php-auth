@@ -14,15 +14,13 @@ class Role extends Entity
     const ENTITY_REPOSITORY_CONTAINER_ID = 'user.role_repository';
     const DB_TABLE_NAME = 'roles';
 
-    const ROLE_ADMIN = 1;
+    const ADMIN_ROLE_ID = 1;
 
     const _NAME = 'name';
-    /** @var string */
-    protected $name = '';
+    protected string $name = '';
 
     const _DESIGNATION = 'designation';
-    /** @var string */
-    protected $designation = '';
+    protected string $designation = '';
 
     /**
      * @return string
