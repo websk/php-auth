@@ -8,7 +8,6 @@ use WebSK\Auth\User\UserServiceProvider;
 use WebSK\Cache\CacheServiceProvider;
 use WebSK\Config\ConfWrapper;
 use WebSK\Console\ConsoleApp;
-use WebSK\Slim\Facade;
 use WebSK\Utils\Assert;
 
 if (PHP_SAPI !== 'cli') {
@@ -43,9 +42,7 @@ foreach ($files as $file) {
         $config = require_once $file;
     }
 }
-Assert::assert(isset($config['settings']['db']), 'Empty config');
-
-$db_settings_arr = $config['settings']['db'] ?? [];
+Assert::assert(isset($config), 'Empty config');
 
 ConfWrapper::setConfig($config['settings']);
 

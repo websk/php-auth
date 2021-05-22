@@ -22,9 +22,9 @@
   "autoload": {
     "psr-4": {
       "": "src/"
-    },
-    "bin": [
-      "bin/websk_auth_create_user.php"
-    ]
-  }
+    }
+  },
+  "bin": [
+    "bin/websk_auth_create_user.php"
+  ]
 }
