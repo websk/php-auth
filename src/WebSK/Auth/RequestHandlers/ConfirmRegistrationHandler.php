@@ -2,8 +2,8 @@
 
 namespace WebSK\Auth\RequestHandlers;
 
-use Slim\Http\Request;
-use Slim\Http\Response;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use WebSK\Auth\AuthRoutes;
 use WebSK\Utils\Messages;
 use WebSK\Slim\RequestHandlers\BaseHandler;
@@ -16,13 +16,13 @@ use WebSK\Auth\User\UserServiceProvider;
 class ConfirmRegistrationHandler extends BaseHandler
 {
     /**
-     * @param Request $request
-     * @param Response $response
+     * @param ServerRequestInterface $request
+     * @param ResponseInterface $response
      * @param string $confirm_code
-     * @return Response
+     * @return ResponseInterface
      * @throws \Exception
      */
-    public function __invoke(Request $request, Response $response, string $confirm_code)
+    public function __invoke(ServerRequestInterface $request, ResponseInterface $response, string $confirm_code)
     {
         $user_service = UserServiceProvider::getUserService($this->container);
 

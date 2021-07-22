@@ -2,8 +2,8 @@
 
 namespace WebSK\Auth\RequestHandlers;
 
-use Slim\Http\Request;
-use Slim\Http\Response;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use WebSK\Auth\AuthConfig;
 use WebSK\Auth\HybridAuth;
 use WebSK\Slim\RequestHandlers\BaseHandler;
@@ -21,11 +21,11 @@ use WebSK\Views\PhpRender;
 class RegistrationFormHandler extends BaseHandler
 {
     /**
-     * @param Request $request
-     * @param Response $response
-     * @return \Psr\Http\Message\ResponseInterface|Response
+     * @param ServerRequestInterface $request
+     * @param ResponseInterface $response
+     * @return \Psr\Http\Message\ResponseInterface
      */
-    public function __invoke(Request $request, Response $response)
+    public function __invoke(ServerRequestInterface $request, ResponseInterface $response)
     {
         $current_user_id = Auth::getCurrentUserId();
         if ($current_user_id) {

@@ -2,8 +2,8 @@
 
 namespace WebSK\Auth\User\RequestHandlers\Admin;
 
-use Slim\Http\Request;
-use Slim\Http\Response;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use WebSK\Auth\AuthConfig;
 use WebSK\Auth\User\Role;
 use WebSK\CRUD\CRUDServiceProvider;
@@ -30,11 +30,11 @@ class RoleListHandler extends BaseHandler
     const FILTER_NAME = 'role_name';
 
     /**
-     * @param Request $request
-     * @param Response $response
+     * @param ServerRequestInterface $request
+     * @param ResponseInterface $response
      * @return \Psr\Http\Message\ResponseInterface
      */
-    public function __invoke(Request $request, Response $response)
+    public function __invoke(ServerRequestInterface $request, ResponseInterface $response)
     {
         $crud_table_obj = CRUDServiceProvider::getCrud($this->container)->createTable(
             Role::class,
@@ -75,7 +75,7 @@ class RoleListHandler extends BaseHandler
         );
 
         $crud_form_response = $crud_table_obj->processRequest($request, $response);
-        if ($crud_form_response instanceof Response) {
+        if ($crud_form_response instanceof ResponseInterface) {
             return $crud_form_response;
         }
 

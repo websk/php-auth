@@ -2,9 +2,8 @@
 
 namespace WebSK\Auth\User\RequestHandlers\Admin;
 
-use Slim\Http\Request;
-use Slim\Http\Response;
-use Slim\Http\StatusCode;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use WebSK\Auth\AuthConfig;
 use WebSK\Auth\User\Role;
 use WebSK\Auth\User\UserComponents;
@@ -21,6 +20,7 @@ use WebSK\CRUD\Table\CRUDTableColumn;
 use WebSK\CRUD\Table\Filters\CRUDTableFilterEqualInvisible;
 use WebSK\CRUD\Table\Widgets\CRUDTableWidgetDelete;
 use WebSK\CRUD\Table\Widgets\CRUDTableWidgetTextWithLink;
+use WebSK\Utils\HTTP;
 use WebSK\Utils\Messages;
 use WebSK\Views\LayoutDTO;
 use WebSK\Slim\RequestHandlers\BaseHandler;
@@ -37,20 +37,20 @@ use WebSK\Views\PhpRender;
 class UserEditHandler extends BaseHandler
 {
     /**
-     * @param Request $request
-     * @param Response $response
+     * @param ServerRequestInterface $request
+     * @param ResponseInterface $response
      * @param int|null $user_id
-     * @return \Psr\Http\Message\ResponseInterface|Response
+     * @return ResponseInterface
      * @throws \Exception
      */
-    public function __invoke(Request $request, Response $response, ?int $user_id = null)
+    public function __invoke(ServerRequestInterface $request, ResponseInterface $response, ?int $user_id = null)
     {
         $user_service = UserServiceProvider::getUserService($this->container);
 
         $user_obj = $user_service->getById($user_id, false);
 
         if (!$user_obj) {
-            return $response->withStatus(StatusCode::HTTP_NOT_FOUND);
+            return $response->withStatus(HTTP::STATUS_NOT_FOUND);
         }
 
         $crud_form = CRUDServiceProvider::getCrud($this->container)->createForm(
@@ -75,7 +75,7 @@ class UserEditHandler extends BaseHandler
 
         try {
             $crud_form_response = $crud_form->processRequest($request, $response);
-            if ($crud_form_response instanceof Response) {
+            if ($crud_form_response instanceof ResponseInterface) {
                 return $crud_form_response;
             }
         } catch (\Exception $e) {
@@ -138,7 +138,7 @@ class UserEditHandler extends BaseHandler
         );
 
         $crud_form_response = $crud_table_obj->processRequest($request, $response);
-        if ($crud_form_response instanceof Response) {
+        if ($crud_form_response instanceof ResponseInterface) {
             return $crud_form_response;
         }
 

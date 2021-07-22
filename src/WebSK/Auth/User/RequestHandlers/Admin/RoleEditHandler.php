@@ -2,9 +2,8 @@
 
 namespace WebSK\Auth\User\RequestHandlers\Admin;
 
-use Slim\Http\Request;
-use Slim\Http\Response;
-use Slim\Http\StatusCode;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use WebSK\Auth\AuthConfig;
 use WebSK\Auth\User\User;
 use WebSK\Auth\User\UserRole;
@@ -20,6 +19,7 @@ use WebSK\CRUD\Table\Widgets\CRUDTableWidgetDelete;
 use WebSK\CRUD\Table\Widgets\CRUDTableWidgetHtml;
 use WebSK\CRUD\Table\Widgets\CRUDTableWidgetText;
 use WebSK\CRUD\Table\Widgets\CRUDTableWidgetTextWithLink;
+use WebSK\Utils\HTTP;
 use WebSK\Views\LayoutDTO;
 use WebSK\Slim\RequestHandlers\BaseHandler;
 use WebSK\Auth\User\Role;
@@ -38,18 +38,18 @@ class RoleEditHandler extends BaseHandler
     const FILTER_NAME = 'user_name_2354543';
 
     /**
-     * @param Request $request
-     * @param Response $response
+     * @param ServerRequestInterface $request
+     * @param ResponseInterface $response
      * @param int $role_id
-     * @return \Psr\Http\Message\ResponseInterface|Response
+     * @return ResponseInterface
      */
-    public function __invoke(Request $request, Response $response, int $role_id)
+    public function __invoke(ServerRequestInterface $request, ResponseInterface $response, int $role_id)
     {
         $role_service = UserServiceProvider::getRoleService($this->container);
 
         $role_obj = $role_service->getById($role_id, false);
         if (!$role_obj) {
-            return $response->withStatus(StatusCode::HTTP_NOT_FOUND);
+            return $response->withStatus(HTTP::STATUS_NOT_FOUND);
         }
 
         $crud_form = CRUDServiceProvider::getCrud($this->container)->createForm(
@@ -68,7 +68,7 @@ class RoleEditHandler extends BaseHandler
         );
 
         $crud_form_response = $crud_form->processRequest($request, $response);
-        if ($crud_form_response instanceof Response) {
+        if ($crud_form_response instanceof ResponseInterface) {
             return $crud_form_response;
         }
 
@@ -152,7 +152,7 @@ class RoleEditHandler extends BaseHandler
         );
 
         $crud_form_table_response = $crud_table_obj->processRequest($request, $response);
-        if ($crud_form_table_response instanceof Response) {
+        if ($crud_form_table_response instanceof ResponseInterface) {
             return $crud_form_table_response;
         }
 

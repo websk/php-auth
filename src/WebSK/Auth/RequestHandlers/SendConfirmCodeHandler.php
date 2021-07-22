@@ -2,8 +2,8 @@
 
 namespace WebSK\Auth\RequestHandlers;
 
-use Slim\Http\Request;
-use Slim\Http\Response;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use WebSK\Auth\Auth;
 use WebSK\Auth\AuthRoutes;
 use WebSK\Captcha\Captcha;
@@ -18,11 +18,11 @@ use WebSK\Auth\User\UserServiceProvider;
 class SendConfirmCodeHandler extends BaseHandler
 {
     /**
-     * @param Request $request
-     * @param Response $response
-     * @return Response
+     * @param ServerRequestInterface $request
+     * @param ResponseInterface $response
+     * @return ResponseInterface
      */
-    public function __invoke(Request $request, Response $response)
+    public function __invoke(ServerRequestInterface $request, ResponseInterface $response)
     {
         $email = $request->getParam('email', '');
 

@@ -2,8 +2,8 @@
 
 namespace WebSK\Auth\RequestHandlers;
 
-use Slim\Http\Request;
-use Slim\Http\Response;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use WebSK\Slim\RequestHandlers\BaseHandler;
 
 /**
@@ -13,10 +13,10 @@ use WebSK\Slim\RequestHandlers\BaseHandler;
 class GateHandler extends BaseHandler
 {
     /**
-     * @param Request $request
-     * @param Response $response
+     * @param ServerRequestInterface $request
+     * @param ResponseInterface $response
      */
-    public function __invoke(Request $request, Response $response)
+    public function __invoke(ServerRequestInterface $request, ResponseInterface $response)
     {
         \Hybrid_Endpoint::process();
 

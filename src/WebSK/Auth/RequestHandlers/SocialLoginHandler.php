@@ -2,8 +2,8 @@
 
 namespace WebSK\Auth\RequestHandlers;
 
-use Slim\Http\Request;
-use Slim\Http\Response;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use WebSK\Auth\AuthServiceProvider;
 use WebSK\Auth\HybridAuth;
 use WebSK\Auth\Session;
@@ -17,7 +17,7 @@ use WebSK\Slim\RequestHandlers\BaseHandler;
  */
 class SocialLoginHandler extends BaseHandler
 {
-    public function __invoke(Request $request, Response $response, string $provider_name)
+    public function __invoke(ServerRequestInterface $request, ResponseInterface $response, string $provider_name)
     {
         $destination = '/';
         if (array_key_exists('destination', $_REQUEST)) {

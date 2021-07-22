@@ -2,10 +2,10 @@
 
 namespace WebSK\Auth\Middleware;
 
-use Slim\Http\Request;
-use Slim\Http\Response;
-use Slim\Http\StatusCode;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use WebSK\Auth\Auth;
+use WebSK\Utils\HTTP;
 
 /**
  * Class CurrentUserIsAdmin
@@ -14,15 +14,15 @@ use WebSK\Auth\Auth;
 class CurrentUserIsAdmin
 {
     /**
-     * @param Request $request
-     * @param Response $response
+     * @param ServerRequestInterface $request
+     * @param ResponseInterface $response
      * @param $next
-     * @return Response
+     * @return ResponseInterface
      */
-    public function __invoke(Request $request, Response $response, $next)
+    public function __invoke(ServerRequestInterface $request, ResponseInterface $response, $next)
     {
         if (!Auth::currentUserIsAdmin()) {
-            return $response->withStatus(StatusCode::HTTP_FORBIDDEN);
+            return $response->withStatus(HTTP::STATUS_NOT_FOUND);
         }
 
         $response = $next($request, $response);

@@ -2,10 +2,10 @@
 
 namespace WebSK\Auth\Demo;
 
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use Slim\App;
 use Slim\Handlers\Strategies\RequestResponseArgs;
-use Slim\Http\Request;
-use Slim\Http\Response;
 use WebSK\Auth\Auth;
 use WebSK\Auth\AuthRoutes;
 use WebSK\Auth\AuthServiceProvider;
@@ -53,7 +53,7 @@ class AuthDemoApp extends App
         };
 
         // Demo routing. Redirects
-        $this->get('/', function (Request $request, Response $response) {
+        $this->get('/', function (ServerRequestInterface $request, ResponseInterface $response) {
             if (!Auth::getCurrentUserId()) {
                 return $response->withRedirect(Router::pathFor(AuthRoutes::ROUTE_NAME_AUTH_LOGIN_FORM));
             }

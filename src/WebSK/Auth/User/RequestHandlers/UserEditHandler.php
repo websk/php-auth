@@ -2,9 +2,8 @@
 
 namespace WebSK\Auth\User\RequestHandlers;
 
-use Slim\Http\Request;
-use Slim\Http\Response;
-use Slim\Http\StatusCode;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use WebSK\Auth\Auth;
 use WebSK\Auth\AuthConfig;
 use WebSK\Auth\User\User;
@@ -14,6 +13,7 @@ use WebSK\CRUD\CRUDServiceProvider;
 use WebSK\CRUD\Form\CRUDFormRow;
 use WebSK\CRUD\Form\Widgets\CRUDFormWidgetInput;
 use WebSK\CRUD\Form\Widgets\CRUDFormWidgetTextarea;
+use WebSK\Utils\HTTP;
 use WebSK\Utils\Messages;
 use WebSK\Views\BreadcrumbItemDTO;
 use WebSK\Views\LayoutDTO;
@@ -28,23 +28,23 @@ use WebSK\Views\PhpRender;
 class UserEditHandler extends BaseHandler
 {
     /**
-     * @param Request $request
-     * @param Response $response
+     * @param ServerRequestInterface $request
+     * @param ResponseInterface $response
      * @param int $user_id
-     * @return \Psr\Http\Message\ResponseInterface|Response
+     * @return ResponseInterface
      * @throws \Exception
      */
-    public function __invoke(Request $request, Response $response, int $user_id = null)
+    public function __invoke(ServerRequestInterface $request, ResponseInterface $response, int $user_id = null)
     {
         $user_service = UserServiceProvider::getUserService($this->container);
 
         $user_obj = $user_service->getById($user_id, false);
         if (!$user_obj) {
-            return $response->withStatus(StatusCode::HTTP_NOT_FOUND);
+            return $response->withStatus(HTTP::STATUS_NOT_FOUND);
         }
 
         if (($user_id != Auth::getCurrentUserId()) && !Auth::currentUserIsAdmin()) {
-            return $response->withStatus(StatusCode::HTTP_FORBIDDEN);
+            return $response->withStatus(HTTP::STATUS_FORBIDDEN);
         }
 
         $crud_form = CRUDServiceProvider::getCrud($this->container)->createForm(
@@ -68,7 +68,7 @@ class UserEditHandler extends BaseHandler
 
         try {
             $crud_form_response = $crud_form->processRequest($request, $response);
-            if ($crud_form_response instanceof Response) {
+            if ($crud_form_response instanceof ResponseInterface) {
                 return $crud_form_response;
             }
         } catch (\Exception $e) {

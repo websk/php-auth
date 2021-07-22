@@ -2,10 +2,10 @@
 
 namespace WebSK\Auth\Middleware;
 
-use Slim\Http\Request;
-use Slim\Http\Response;
-use Slim\Http\StatusCode;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use WebSK\Auth\Auth;
+use WebSK\Utils\HTTP;
 
 /**
  * Class CurrentUserHasRightToEditUser
@@ -14,12 +14,12 @@ use WebSK\Auth\Auth;
 class CurrentUserHasRightToEditUser
 {
     /**
-     * @param Request $request
-     * @param Response $response
+     * @param ServerRequestInterface $request
+     * @param ResponseInterface $response
      * @param $next
-     * @return Response
+     * @return ResponseInterface
      */
-    public function __invoke(Request $request, Response $response, $next)
+    public function __invoke(ServerRequestInterface $request, ResponseInterface $response, $next)
     {
         $user_id = $request->getAttribute('routeInfo')[2]['user_id'] ?? null;
 
@@ -34,12 +34,10 @@ class CurrentUserHasRightToEditUser
         $current_user_id = Auth::getCurrentUserId();
 
         if (($current_user_id != $user_id) && !Auth::currentUserIsAdmin()) {
-            return $response->withStatus(StatusCode::HTTP_FORBIDDEN);
+            return $response->withStatus(HTTP::STATUS_NOT_FOUND);
         }
 
-        $response = $next($request, $response);
-
-        return $response;
+        return $next($request, $response);
     }
 }
 
