@@ -16,7 +16,7 @@
     "websk/php-slim": "1.1.*",
     "websk/php-utils": "1.0.*",
     "websk/php-view": "1.1.*",
-    "phpmailer/phpmailer": "6.1.*",
+    "phpmailer/phpmailer": "6.5.*",
     "hybridauth/hybridauth": "2.9.*"
   },
   "autoload": {
