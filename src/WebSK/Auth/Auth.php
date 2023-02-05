@@ -16,6 +16,7 @@ use WebSK\Utils\Filters;
  * @method static User|null getCurrentUserObj()
  * @method static bool currentUserIsAdmin()
  * @method static bool currentUserHasAccessByRoleDesignation(string $role_designation)
+ * @method static bool currentUserHasAccessByAnyRoleDesignations(array $role_designations_arr)
  * @package WebSK\Auth\User
  */
 class Auth extends Facade

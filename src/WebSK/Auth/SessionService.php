@@ -17,8 +17,7 @@ class SessionService extends EntityService
     /** @var SessionRepository */
     protected $repository;
 
-    /** @var UserService */
-    protected $user_service;
+    protected UserService $user_service;
 
     /**
      * SessionService constructor.
@@ -95,7 +94,7 @@ class SessionService extends EntityService
      * UserID авторизованного пользователя
      * @return int|null
      */
-    public function getCurrentUserId()
+    public function getCurrentUserId(): ?int
     {
         static $user_session_unique_id;
 
@@ -130,7 +129,7 @@ class SessionService extends EntityService
     /**
      * @return bool
      */
-    public function currentUserIsAdmin()
+    public function currentUserIsAdmin(): bool
     {
         $user_obj = $this->getCurrentUserObj();
         if (!$user_obj) {
@@ -147,15 +146,38 @@ class SessionService extends EntityService
 
     /**
      * Есть ли у пользователя роль, по обозначению роли
-     * @param $role_designation
+     * @param string $role_designation
      * @return bool
      */
-    public function currentUserHasAccessByRoleDesignation(string $role_designation)
+    public function currentUserHasAccessByRoleDesignation(string $role_designation): bool
+    {
+        $user_id = $this->getCurrentUserId();
+        if (!$user_id) {
+            return false;
+        }
+
+        if (!$this->user_service->hasRoleByUserIdAndDesignation($user_id, $role_designation)) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Есть ли у пользователя хоть одна роль, по обозначению ролей
+     * @param array $role_designations_arr
+     * @return bool
+     */
+    public function currentUserHasAccessByAnyRoleDesignations(array $role_designations_arr): bool
     {
         $user_id = $this->getCurrentUserId();
 
-        if ($user_id) {
-            if ($this->user_service->hasRoleByUserIdAndDesignation($user_id, $role_designation)) {
+        if (!$user_id) {
+            return false;
+        }
+
+        foreach ($role_designations_arr as $role_designation) {
+            if (!$this->currentUserHasAccessByRoleDesignation($role_designation)) {
                 return true;
             }
         }
@@ -170,7 +192,7 @@ class SessionService extends EntityService
      * @param bool $save_auth
      * @return bool
      */
-    public function processAuthorization(string $email, string $password, bool $save_auth = false)
+    public function processAuthorization(string $email, string $password, bool $save_auth = false): bool
     {
         $user_id = $this->user_service->getUserIdByEmailAndPassword($email, $password);
 
