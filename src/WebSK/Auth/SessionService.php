@@ -177,7 +177,7 @@ class SessionService extends EntityService
         }
 
         foreach ($role_designations_arr as $role_designation) {
-            if (!$this->currentUserHasAccessByRoleDesignation($role_designation)) {
+            if ($this->currentUserHasAccessByRoleDesignation($role_designation)) {
                 return true;
             }
         }
