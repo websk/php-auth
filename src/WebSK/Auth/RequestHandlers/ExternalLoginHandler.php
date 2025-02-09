@@ -5,7 +5,7 @@ namespace WebSK\Auth\RequestHandlers;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use WebSK\Auth\AuthServiceProvider;
-use WebSK\Auth\HybridAuth;
+use WebSK\Auth\ExternalAuth;
 use WebSK\Auth\Session;
 use WebSK\Auth\User\UserServiceProvider;
 use WebSK\Utils\Messages;
@@ -15,7 +15,7 @@ use WebSK\Slim\RequestHandlers\BaseHandler;
  * Class SocialLoginHandler
  * @package WebSK\Auth\RequestHandlers
  */
-class SocialLoginHandler extends BaseHandler
+class ExternalLoginHandler extends BaseHandler
 {
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response, string $provider_name)
     {
@@ -25,7 +25,7 @@ class SocialLoginHandler extends BaseHandler
         }
 
 
-        $provider = HybridAuth::socialLogin($provider_name, $destination);
+        $provider = ExternalAuth::externalLogin($provider_name, $destination);
         if (!$provider) {
             return $response->withRedirect($destination);
         }
@@ -59,7 +59,7 @@ class SocialLoginHandler extends BaseHandler
                 }
             }
 
-            $user_id = HybridAuth::registerUserByHybridAuthProfile(
+            $user_id = ExternalAuth::registerUserByExternalAuthProfile(
                 $user_profile,
                 $provider_name
             );

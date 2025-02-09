@@ -5,7 +5,7 @@ namespace WebSK\Auth\RequestHandlers;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use WebSK\Auth\AuthConfig;
-use WebSK\Auth\HybridAuth;
+use WebSK\Auth\ExternalAuth;
 use WebSK\Auth\Auth;
 use WebSK\Auth\User\UserRoutes;
 use WebSK\Slim\RequestHandlers\BaseHandler;
@@ -35,7 +35,7 @@ class LoginFormHandler extends BaseHandler
 
         $content = '';
 
-        if (HybridAuth::useSocialLogin()) {
+        if (ExternalAuth::useExternalAuth()) {
             $content .= PhpRender::renderTemplateForModuleNamespace(
                 'WebSK' . DIRECTORY_SEPARATOR . 'Auth',
                 'social_buttons.tpl.php'

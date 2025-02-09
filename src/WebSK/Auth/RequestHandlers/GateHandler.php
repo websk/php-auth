@@ -19,7 +19,5 @@ class GateHandler extends BaseHandler
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response)
     {
         \Hybrid_Endpoint::process();
-
-        return;
     }
 }

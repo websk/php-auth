@@ -1,5 +1,15 @@
 # WebSK php-auth
 
+## Install
+
+https://packagist.org/packages/websk/php-auth
+
+install dependency using Composer
+
+```shell
+composer require websk/php-auth
+```
+
 ## Config example
 * config/config.default.php
 

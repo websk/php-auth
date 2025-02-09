@@ -28,7 +28,7 @@ class LogoutHandler extends BaseHandler
             $session_service->clearUserSession($user_id);
         }
 
-        //\Hybrid_Auth::logoutAllProviders();
+        //TODO: External auth logout
 
         $destination = $request->getQueryParam('destination', '/');
 

@@ -11,15 +11,15 @@ use WebSK\Slim\Container;
 use WebSK\Utils\Messages;
 use WebSK\Utils\Url;
 
-class HybridAuth
+class ExternalAuth
 {
     /**
      * @return bool
      */
-    public static function useSocialLogin()
+    public static function useExternalAuth(): bool
     {
-        $social_config = ConfWrapper::value('auth.hybrid');
-        if (!empty($social_config)) {
+        $external_auth_config = ConfWrapper::value('auth.external');
+        if (!empty($external_auth_config)) {
             return true;
         }
 
@@ -27,13 +27,13 @@ class HybridAuth
     }
 
     /**
-     * URL авторизации на сайте через внешнего провайдера социальной сети
+     * URL авторизации на сайте через внешнего провайдера
      * @param $provider
      * @return string
      */
-    public static function getSocialLoginUrl($provider)
+    public static function getExternalLoginUrl($provider): string
     {
-        return '/user/social_login/' . $provider;
+        return '/user/external_login/' . $provider;
     }
 
     /**
@@ -41,9 +41,9 @@ class HybridAuth
      * @param $destination
      * @return \Hybrid_Provider_Adapter|null
      */
-    public static function socialLogin($provider_name, $destination)
+    public static function externalLogin($provider_name, $destination)
     {
-        $config = ConfWrapper::value('auth.hybrid');
+        $config = ConfWrapper::value('auth.external');
 
         $params = array();
 
@@ -63,9 +63,9 @@ class HybridAuth
 
         //hybridauth use exception for control
         try {
-            $hybrid_auth = new \Hybrid_Auth($config);
+            $external_auth = new \Hybrid_Auth($config);
 
-            $provider = $hybrid_auth->authenticate($provider_name, $params);
+            $provider = $external_auth->authenticate($provider_name, $params);
             //if user is not logged in hybrid will initialize login process and redirect with die(),
             //so next line will be run only if there is logged in user or any error occurred
             return $provider;
@@ -92,7 +92,6 @@ class HybridAuth
                 case 6:
                     $message = "Authentication failed. The user has canceled the authentication or the provider refused the connection.";
                     break;
-
                 default:
                     $message = "Unspecified error!";
             }
@@ -104,10 +103,10 @@ class HybridAuth
 
     /**
      * @param $user_profile \Hybrid_User_Profile
-     * @param $provider
+     * @param string $provider
      * @return bool
      */
-    public static function registerUserByHybridAuthProfile($user_profile, $provider)
+    public static function registerUserByExternalAuthProfile($user_profile, string $provider): bool
     {
         $user_obj = new User();
 
@@ -156,7 +155,6 @@ class HybridAuth
             $user_role_service->save($user_role_obj);
         }
 
-
         return $user_obj->getId();
     }
 
@@ -164,11 +162,10 @@ class HybridAuth
      * @param string $image_path
      * @return string
      */
-    protected static function saveRemoteUserProfileImage($image_path)
+    protected static function saveRemoteUserProfileImage(string $image_path): string
     {
         $image_manager = new ImageManager();
-        $image_name = $image_manager->storeRemoteImageFile($image_path, 'user');
 
-        return $image_name;
+        return $image_manager->storeRemoteImageFile($image_path, 'user');
     }
 }

@@ -14,7 +14,7 @@ use WebSK\Auth\RequestHandlers\RegistrationFormHandler;
 use WebSK\Auth\RequestHandlers\RegistrationHandler;
 use WebSK\Auth\RequestHandlers\SendConfirmCodeFormHandler;
 use WebSK\Auth\RequestHandlers\SendConfirmCodeHandler;
-use WebSK\Auth\RequestHandlers\SocialLoginHandler;
+use WebSK\Auth\RequestHandlers\ExternalLoginHandler;
 
 /**
  * Class AuthRoutes
@@ -71,7 +71,7 @@ class AuthRoutes
             $app->post('/send_confirm_code', SendConfirmCodeHandler::class)
                 ->setName(self::ROUTE_NAME_AUTH_SEND_CONFIRM_CODE);
 
-            $app->post('/social_login/{provider_name:\w+}', SocialLoginHandler::class)
+            $app->post('/social_login/{provider_name:\w+}', ExternalLoginHandler::class)
                 ->setName(self::ROUTE_NAME_AUTH_SOCIAL_LOGIN);
 
             $app->post('/gate', GateHandler::class)
