@@ -10,29 +10,23 @@ use WebSK\Entity\Entity;
  */
 class Session extends Entity
 {
-    const ENTITY_SERVICE_CONTAINER_ID = 'auth.session_service';
-    const ENTITY_REPOSITORY_CONTAINER_ID = 'auth.session_repository';
-    const DB_TABLE_NAME = 'sessions';
+    const string DB_TABLE_NAME = 'sessions';
 
-    const AUTH_COOKIE_NAME = 'auth_session';
+    const string AUTH_COOKIE_NAME = 'auth_session';
 
-    const SESSION_LIFE_TIME = 31536000; // 1 год
+    const int SESSION_LIFE_TIME = 31536000; // 1 год
 
-    const _USER_ID = 'user_id';
-    /** @var int */
-    protected $user_id;
+    const string _USER_ID = 'user_id';
+    protected int $user_id;
 
-    const _SESSION = 'session';
-    /** @var string */
-    protected $session;
+    const string _SESSION = 'session';
+    protected string $session;
 
-    const _HOSTNAME = 'hostname';
-    /** @var string */
-    protected $hostname;
+    const string _HOSTNAME = 'hostname';
+    protected string $hostname;
 
-    const _TIMESTAMP = 'timestamp';
-    /** @var int */
-    protected $timestamp;
+    const string _TIMESTAMP = 'timestamp';
+    protected int $timestamp;
 
     /**
      * @return int

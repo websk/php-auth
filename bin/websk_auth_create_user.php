@@ -4,6 +4,8 @@
 use GetOpt\GetOpt;
 use WebSK\Auth\AuthServiceProvider;
 use WebSK\Auth\Console\CreateUserCommand;
+use WebSK\Auth\User\UserRoleService;
+use WebSK\Auth\User\UserService;
 use WebSK\Auth\User\UserServiceProvider;
 use WebSK\Cache\CacheServiceProvider;
 use WebSK\Config\ConfWrapper;
@@ -58,8 +60,8 @@ $get_opt = new GetOpt();
 
 $get_opt->addCommand(
     new CreateUserCommand(
-            UserServiceProvider::getUserService($container),
-        UserServiceProvider::getUserRoleService($container),
+        $container->get(UserService::class),
+        $container->get(UserRoleService::class),
     )
 );
 

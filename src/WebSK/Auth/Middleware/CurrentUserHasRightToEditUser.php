@@ -2,10 +2,13 @@
 
 namespace WebSK\Auth\Middleware;
 
+use Fig\Http\Message\StatusCodeInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface;
+use Slim\Psr7\Response;
+use Slim\Routing\RouteContext;
 use WebSK\Auth\Auth;
-use WebSK\Utils\HTTP;
 
 /**
  * Class CurrentUserHasRightToEditUser
@@ -15,29 +18,28 @@ class CurrentUserHasRightToEditUser
 {
     /**
      * @param ServerRequestInterface $request
-     * @param ResponseInterface $response
-     * @param $next
+     * @param RequestHandlerInterface $handler
      * @return ResponseInterface
      */
-    public function __invoke(ServerRequestInterface $request, ResponseInterface $response, $next)
+    public function __invoke(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        $user_id = $request->getAttribute('routeInfo')[2]['user_id'] ?? null;
+        $routeContext = RouteContext::fromRequest($request);
+        $route = $routeContext->getRoute();
+
+        $user_id = (int)$route->getArgument('user_id') ?? null;
 
         if (!isset($user_id)) {
-            $response = $next($request, $response);
-
-            return $response;
+            return $handler->handle($request);
         }
-
-        $user_id = (int)$user_id;
 
         $current_user_id = Auth::getCurrentUserId();
 
         if (($current_user_id != $user_id) && !Auth::currentUserIsAdmin()) {
-            return $response->withStatus(HTTP::STATUS_NOT_FOUND);
+            $response = new Response();
+            return $response->withStatus(StatusCodeInterface::STATUS_NOT_FOUND);
         }
 
-        return $next($request, $response);
+        return $handler->handle($request);
     }
 }
 

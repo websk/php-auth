@@ -5,7 +5,7 @@ namespace WebSK\Auth\User\RequestHandlers\Admin;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use WebSK\Auth\User\User;
-use WebSK\CRUD\CRUDServiceProvider;
+use WebSK\CRUD\CRUD;
 use WebSK\CRUD\Table\CRUDTable;
 use WebSK\CRUD\Table\CRUDTableColumn;
 use WebSK\CRUD\Table\Filters\CRUDTableFilterLikeInline;
@@ -19,17 +19,20 @@ use WebSK\Slim\RequestHandlers\BaseHandler;
  */
 class UserListAjaxHandler extends BaseHandler
 {
-    const FILTER_EMAIL = 'user_email_324234';
-    const FILTER_NAME = 'user_name_2354543';
+    const string FILTER_EMAIL = 'user_email_324234';
+    const string FILTER_NAME = 'user_name_2354543';
+
+    /** @Inject */
+    protected CRUD $crud_service;
 
     /**
      * @param ServerRequestInterface $request
      * @param ResponseInterface $response
      * @return ResponseInterface
      */
-    public function __invoke(ServerRequestInterface $request, ResponseInterface $response)
+    public function __invoke(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
     {
-        $crud_table_obj = CRUDServiceProvider::getCrud($this->container)->createTable(
+        $crud_table_obj = $this->crud_service->createTable(
             User::class,
             null,
             [

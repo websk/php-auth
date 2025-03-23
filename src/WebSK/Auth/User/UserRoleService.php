@@ -18,7 +18,7 @@ class UserRoleService extends EntityService
      * @param int $user_id
      * @return array
      */
-    public function getIdsArrByUserId(int $user_id)
+    public function getIdsArrByUserId(int $user_id): array
     {
         return $this->repository->findIdsArrForUserId($user_id);
     }
@@ -27,7 +27,7 @@ class UserRoleService extends EntityService
      * @param int $role_id
      * @return array
      */
-    public function getIdsArrByRoleId(int $role_id)
+    public function getIdsArrByRoleId(int $role_id): array
     {
         return $this->repository->findIdsArrForRoleId($role_id);
     }

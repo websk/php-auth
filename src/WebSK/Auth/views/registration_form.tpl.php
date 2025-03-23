@@ -5,11 +5,11 @@ use WebSK\Captcha\CaptchaRoutes;
 use WebSK\Slim\Router;
 use WebSK\Auth\User\User;
 
-$destination = Router::pathFor(AuthRoutes::ROUTE_NAME_AUTH_LOGIN_FORM);
+$destination = Router::urlFor(AuthRoutes::ROUTE_NAME_AUTH_LOGIN_FORM);
 
 $user_obj = new User();
 ?>
-<form id="registration_form" action="<?php echo Router::pathFor(AuthRoutes::ROUTE_NAME_AUTH_REGISTRATION); ?>" autocomplete="off" method="post" class="form-horizontal">
+<form id="registration_form" action="<?php echo Router::urlFor(AuthRoutes::ROUTE_NAME_AUTH_REGISTRATION); ?>" autocomplete="off" method="post" class="form-horizontal">
     <div xmlns="http://www.w3.org/1999/html">
         <div class="form-group">
             <label class="col-md-4 control-label">Имя на сайте</label>
@@ -41,7 +41,7 @@ $user_obj = new User();
 
     <div class="form-group">
         <div class="col-md-offset-4 col-md-8">
-            <img src="<?php echo Router::pathFor(CaptchaRoutes::ROUTE_NAME_CAPTCHA_GENERATE); ?>" border="0" alt="Введите этот защитный код">
+            <img src="<?php echo Router::urlFor(CaptchaRoutes::ROUTE_NAME_CAPTCHA_GENERATE); ?>" border="0" alt="Введите этот защитный код">
             <input type="text" size="5" name="captcha" class="form-control">
             <span class="help-block">Введите код, изображенный на картинке</span>
         </div>

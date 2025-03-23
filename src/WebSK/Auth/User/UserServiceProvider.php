@@ -15,104 +15,77 @@ class UserServiceProvider
     /**
      * @param ContainerInterface $container
      */
-    public static function register(ContainerInterface $container)
+    public static function register(ContainerInterface $container): void
     {
         /**
          * @param ContainerInterface $container
          * @return RoleService
          */
-        $container[Role::ENTITY_SERVICE_CONTAINER_ID] = function (ContainerInterface $container) {
+        $container->set(RoleService::class, function (ContainerInterface $container) {
             return new RoleService(
                 Role::class,
-                $container->get(Role::ENTITY_REPOSITORY_CONTAINER_ID),
-                CacheServiceProvider::getCacheService($container)
+                $container->get(RoleRepository::class),
+                $container->get(CacheServiceProvider::SERVICE_CONTAINER_ID)
             );
-        };
+        });
 
         /**
          * @param ContainerInterface $container
          * @return RoleRepository
          */
-        $container[Role::ENTITY_REPOSITORY_CONTAINER_ID] = function (ContainerInterface $container) {
+        $container->set(RoleRepository::class, function (ContainerInterface $container) {
             return new RoleRepository(
                 Role::class,
                 $container->get(AuthServiceProvider::DB_SERVICE_CONTAINER_ID)
             );
-        };
+        });
 
         /**
          * @param ContainerInterface $container
          * @return UserRoleService
          */
-        $container[UserRole::ENTITY_SERVICE_CONTAINER_ID] = function (ContainerInterface $container) {
+        $container->set(UserRoleService::class, function (ContainerInterface $container) {
             return new UserRoleService(
                 UserRole::class,
-                $container->get(UserRole::ENTITY_REPOSITORY_CONTAINER_ID),
-                CacheServiceProvider::getCacheService($container)
+                $container->get(UserRoleRepository::class),
+                $container->get(CacheServiceProvider::SERVICE_CONTAINER_ID)
             );
-        };
+        });
 
         /**
          * @param ContainerInterface $container
          * @return UserRoleRepository
          */
-        $container[UserRole::ENTITY_REPOSITORY_CONTAINER_ID] = function (ContainerInterface $container) {
+        $container->set(UserRoleRepository::class, function (ContainerInterface $container) {
             return new UserRoleRepository(
                 UserRole::class,
                 $container->get(AuthServiceProvider::DB_SERVICE_CONTAINER_ID)
             );
-        };
+        });
 
         /**
          * @param ContainerInterface $container
          * @return UserService
          */
-        $container[User::ENTITY_SERVICE_CONTAINER_ID] = function (ContainerInterface $container) {
+        $container->set(UserService::class, function (ContainerInterface $container) {
             return new UserService(
                 User::class,
-                $container->get(User::ENTITY_REPOSITORY_CONTAINER_ID),
-                CacheServiceProvider::getCacheService($container),
-                $container->get(Role::ENTITY_SERVICE_CONTAINER_ID),
-                $container->get(UserRole::ENTITY_SERVICE_CONTAINER_ID)
+                $container->get(UserRepository::class),
+                $container->get(CacheServiceProvider::SERVICE_CONTAINER_ID),
+                $container->get(RoleService::class),
+                $container->get(UserRoleService::class)
             );
-        };
+        });
 
         /**
          * @param ContainerInterface $container
          * @return UserRepository
          */
-        $container[User::ENTITY_REPOSITORY_CONTAINER_ID] = function (ContainerInterface $container) {
+        $container->set(UserRepository::class, function (ContainerInterface $container) {
             return new UserRepository(
                 User::class,
                 $container->get(AuthServiceProvider::DB_SERVICE_CONTAINER_ID)
             );
-        };
-    }
-
-    /**
-     * @param ContainerInterface $container
-     * @return RoleService
-     */
-    public static function getRoleService(ContainerInterface $container)
-    {
-        return $container->get(Role::ENTITY_SERVICE_CONTAINER_ID);
-    }
-
-    /**
-     * @param ContainerInterface $container
-     * @return UserRoleService
-     */
-    public static function getUserRoleService(ContainerInterface $container)
-    {
-        return $container->get(UserRole::ENTITY_SERVICE_CONTAINER_ID);
-    }
-
-    /**
-     * @param ContainerInterface $container
-     * @return UserService
-     */
-    public static function getUserService(ContainerInterface $container)
-    {
-        return $container->get(User::ENTITY_SERVICE_CONTAINER_ID);
+        });
     }
 }

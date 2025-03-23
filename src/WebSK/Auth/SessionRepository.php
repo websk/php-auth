@@ -13,10 +13,10 @@ class SessionRepository extends EntityRepository
 {
 
     /**
-     * @param $session
+     * @param string $session
      * @throws \Exception
      */
-    public function deleteBySession($session)
+    public function deleteBySession(string $session): void
     {
         $query = "DELETE FROM " . Sanitize::sanitizeSqlColumnName($this->getTableName())
             . " WHERE " . Session::_SESSION . "=?";
@@ -29,7 +29,7 @@ class SessionRepository extends EntityRepository
      * @param int $delta
      * @throws \Exception
      */
-    public function clearOldSessionsByUserId(int $user_id, int $delta)
+    public function clearOldSessionsByUserId(int $user_id, int $delta): void
     {
         $query = "DELETE FROM " . Sanitize::sanitizeSqlColumnName($this->getTableName())
             . " WHERE " . Session::_USER_ID . "=? AND " . Session::_TIMESTAMP . "<=?";
@@ -39,7 +39,7 @@ class SessionRepository extends EntityRepository
     /**
      * UserID авторизованного пользователя
      * @param string $auth_session
-     * @return int|null
+     * @return ?int
      */
     public function findCurrentUserId(string $auth_session): ?int
     {
@@ -47,8 +47,6 @@ class SessionRepository extends EntityRepository
             . " FROM " . Sanitize::sanitizeSqlColumnName($this->getTableName())
             . " WHERE " . Session::_SESSION . "=?";
 
-        $user_id = $this->db_service->readField($query, [$auth_session]);
-
-        return $user_id;
+        return $this->db_service->readField($query, [$auth_session]);
     }
 }

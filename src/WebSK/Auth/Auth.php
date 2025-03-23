@@ -7,7 +7,7 @@ use WebSK\Auth\User\User;
 use WebSK\Config\ConfWrapper;
 use WebSK\Slim\Facade;
 use WebSK\Slim\Router;
-use WebSK\Utils\Filters;
+use WebSK\Utils\Sanitize;
 
 /**
  * Class Auth
@@ -26,7 +26,7 @@ class Auth extends Facade
      */
     protected static function getFacadeAccessor(): string
     {
-        return Session::ENTITY_SERVICE_CONTAINER_ID;
+        return SessionService::class;
     }
 
     /**
@@ -48,13 +48,13 @@ class Auth extends Facade
      * @param string $email
      * @param string $confirm_code
      */
-    public static function sendConfirmMail(string $name, string $email, string $confirm_code)
+    public static function sendConfirmMail(string $name, string $email, string $confirm_code): void
     {
         $site_email = ConfWrapper::value('site_email');
         $site_domain = ConfWrapper::value('site_domain');
         $site_name = ConfWrapper::value('site_name');
 
-        $confirm_url = $site_domain . Router::pathFor(AuthRoutes::ROUTE_NAME_AUTH_CONFIRM_REGISTRATION, ['confirm_code' => $confirm_code]);
+        $confirm_url = $site_domain . Router::urlFor(AuthRoutes::ROUTE_NAME_AUTH_CONFIRM_REGISTRATION, ['confirm_code' => $confirm_code]);
 
         $mail_message = 'Здравствуйте, ' . $name . '!<br />';
         $mail_message .= '<p>На сайте ' .  $site_domain . ' была создана регистрационная запись, в которой был указал ваш электронный адрес (e-mail).</p>';
@@ -72,7 +72,7 @@ class Auth extends Facade
         $mail->isHTML(true);
         $mail->Subject = $subject;
         $mail->Body = $mail_message;
-        $mail->AltBody = Filters::checkPlain($mail_message);
+        $mail->AltBody = Sanitize::sanitizeTagContent($mail_message);
         $mail->send();
     }
 }

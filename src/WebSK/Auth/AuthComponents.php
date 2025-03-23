@@ -14,7 +14,7 @@ class AuthComponents
      * @param string $destination
      * @return string
      */
-    public static function renderLoginForm(string $destination)
+    public static function renderLoginForm(string $destination): string
     {
         $content = PhpRender::renderTemplateForModuleNamespace(
             'WebSK/Auth',

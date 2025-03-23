@@ -2,10 +2,11 @@
 
 namespace WebSK\Auth\RequestHandlers;
 
+use Fig\Http\Message\StatusCodeInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use WebSK\Auth\AuthRoutes;
-use WebSK\Auth\AuthServiceProvider;
+use WebSK\Auth\SessionService;
 use WebSK\Slim\RequestHandlers\BaseHandler;
 use WebSK\Utils\Messages;
 
@@ -15,29 +16,31 @@ use WebSK\Utils\Messages;
  */
 class LoginHandler extends BaseHandler
 {
+    /** @Inject */
+    protected SessionService $session_service;
+
     /**
      * @param ServerRequestInterface $request
      * @param ResponseInterface $response
      * @return ResponseInterface
      */
-    public function __invoke(ServerRequestInterface $request, ResponseInterface $response)
+    public function __invoke(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
     {
         if (is_null($request->getParam('email')) || is_null($request->getParam('password'))) {
-            return $response->withRedirect($this->pathFor(AuthRoutes::ROUTE_NAME_AUTH_LOGIN_FORM));
+            return $response->withHeader('Location', $this->urlFor(AuthRoutes::ROUTE_NAME_AUTH_LOGIN_FORM))
+                ->withStatus(StatusCodeInterface::STATUS_FOUND);
         }
 
-        $session_service = AuthServiceProvider::getSessionService($this->container);
-
         $save_auth = ((int)$request->getParam('save_auth') == 1) ? true : false;
-        $is_authenticated = $session_service
-            ->processAuthorization($request->getParam('email'), $request->getParam('password'), $save_auth);
+        $is_authenticated = $this->session_service
+            ->processAuthorization($request->getParam('email'), $request->getParam('password'), $save_auth, $message);
 
         if (!$is_authenticated) {
-            Messages::setError('Ошибка! Неверный адрес электронной почты или пароль.');
+            Messages::setError($message);
         }
 
         $destination = $request->getParam('destination', '/');
 
-        return $response->withRedirect($destination);
+        return $response->withHeader('Location', $destination)->withStatus(StatusCodeInterface::STATUS_FOUND);
     }
 }

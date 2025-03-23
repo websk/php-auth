@@ -2,10 +2,10 @@
 
 namespace WebSK\Auth\RequestHandlers;
 
+use Fig\Http\Message\StatusCodeInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use WebSK\Auth\AuthConfig;
-use WebSK\Auth\HybridAuth;
 use WebSK\Slim\RequestHandlers\BaseHandler;
 use WebSK\Slim\Router;
 use WebSK\Auth\Auth;
@@ -23,25 +23,19 @@ class RegistrationFormHandler extends BaseHandler
     /**
      * @param ServerRequestInterface $request
      * @param ResponseInterface $response
-     * @return \Psr\Http\Message\ResponseInterface
+     * @return ResponseInterface
      */
-    public function __invoke(ServerRequestInterface $request, ResponseInterface $response)
+    public function __invoke(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
     {
         $current_user_id = Auth::getCurrentUserId();
         if ($current_user_id) {
-            return $response->withRedirect(
-                Router::pathFor(UserRoutes::ROUTE_NAME_ADMIN_USER_EDIT, ['user_id' => $current_user_id])
-            );
+            return $response->withHeader(
+                'Location',
+                Router::urlFor(UserRoutes::ROUTE_NAME_ADMIN_USER_EDIT, ['user_id' => $current_user_id])
+            )->withStatus(StatusCodeInterface::STATUS_FOUND);
         }
 
         $content = '';
-
-        if (HybridAuth::useSocialLogin()) {
-            $content .= PhpRender::renderTemplateForModuleNamespace(
-                'WebSK' . DIRECTORY_SEPARATOR .  'Auth',
-                'social_buttons.tpl.php'
-            );
-        }
 
         $content .= PhpRender::renderTemplateForModuleNamespace(
             'WebSK' . DIRECTORY_SEPARATOR . 'Auth',

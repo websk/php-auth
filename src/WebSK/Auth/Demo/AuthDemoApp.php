@@ -2,10 +2,16 @@
 
 namespace WebSK\Auth\Demo;
 
+use Fig\Http\Message\StatusCodeInterface;
+use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Slim\App;
-use Slim\Handlers\Strategies\RequestResponseArgs;
+use Slim\Handlers\ErrorHandler;
+use Slim\Interfaces\InvocationStrategyInterface;
+use Slim\Interfaces\RouteCollectorProxyInterface;
+use Slim\Interfaces\RouteParserInterface;
+use Slim\Psr7\Factory\ResponseFactory;
 use WebSK\Auth\Auth;
 use WebSK\Auth\AuthRoutes;
 use WebSK\Auth\AuthServiceProvider;
@@ -15,9 +21,6 @@ use WebSK\Auth\User\UserServiceProvider;
 use WebSK\Cache\CacheServiceProvider;
 use WebSK\Captcha\CaptchaRoutes;
 use WebSK\CRUD\CRUDServiceProvider;
-use WebSK\DB\DBWrapper;
-use WebSK\Image\ImageRoutes;
-use WebSK\Slim\Facade;
 use WebSK\Slim\Router;
 
 /**
@@ -29,56 +32,65 @@ class AuthDemoApp extends App
 
     /**
      * AuthDemoApp constructor.
-     * @param array $config
+     * @param ContainerInterface $container
      */
-    public function __construct($config = [])
+    public function __construct(ContainerInterface $container)
     {
-        parent::__construct($config);
+        parent::__construct(new ResponseFactory(), $container);
 
-        $container = $this->getContainer();
+        $this->registerRouterSettings($container);
 
         CacheServiceProvider::register($container);
+        CRUDServiceProvider::register($container);
         AuthServiceProvider::register($container);
         UserServiceProvider::register($container);
-        CRUDServiceProvider::register($container);
 
-        $this->registerRoutes();
+        $this->registerRoutes($container);
+
+        $error_middleware = $this->addErrorMiddleware(true, true, true);
+        $error_middleware->setDefaultErrorHandler(ErrorHandler::class);
     }
 
-    protected function registerRoutes()
+    /**
+     * @param ContainerInterface $container
+     */
+    protected function registerRouterSettings(ContainerInterface $container): void
     {
-        $container = $this->getContainer();
-        $container['foundHandler'] = function () {
-            return new RequestResponseArgs();
-        };
+        $route_collector = $this->getRouteCollector();
+        $route_collector->setDefaultInvocationStrategy($container->get(InvocationStrategyInterface::class));
 
+        //$route_parser = $this->getRouteCollector()->getRouteParser();
+        //$this->getContainer()->set(RouteParserInterface::class, $route_parser);
+
+        $route_parser = $route_collector->getRouteParser();
+
+        $container->set(RouteParserInterface::class, $route_parser);
+    }
+
+    protected function registerRoutes(ContainerInterface $container): void
+    {
         // Demo routing. Redirects
         $this->get('/', function (ServerRequestInterface $request, ResponseInterface $response) {
             if (!Auth::getCurrentUserId()) {
-                return $response->withRedirect(Router::pathFor(AuthRoutes::ROUTE_NAME_AUTH_LOGIN_FORM));
+                return $response->withHeader('Location', Router::urlFor(AuthRoutes::ROUTE_NAME_AUTH_LOGIN_FORM))
+                    ->withStatus(StatusCodeInterface::STATUS_FOUND);
             }
             if (Auth::currentUserIsAdmin()) {
-                return $response->withRedirect(Router::pathFor(UserRoutes::ROUTE_NAME_ADMIN_USER_LIST));
+                return $response->withHeader('Location', Router::urlFor(UserRoutes::ROUTE_NAME_ADMIN_USER_LIST))
+                    ->withStatus(StatusCodeInterface::STATUS_FOUND);
             }
 
-            return $response->withRedirect(Router::pathFor(UserRoutes::ROUTE_NAME_USER_EDIT, ['user_id' => Auth::getCurrentUserId()]));
+            return $response->withHeader('Location', Router::urlFor(UserRoutes::ROUTE_NAME_USER_EDIT, ['user_id' => Auth::getCurrentUserId()]))
+                ->withStatus(StatusCodeInterface::STATUS_FOUND);
         });
 
-        $this->group('/admin', function (App $app) {
-            UserRoutes::registerAdmin($app);
+        $this->group('/admin', function (RouteCollectorProxyInterface $route_collector_proxy) {
+            UserRoutes::registerAdmin($route_collector_proxy);
         })->add(new CurrentUserIsAdmin());
 
         CaptchaRoutes::register($this);
 
         UserRoutes::register($this);
         AuthRoutes::register($this);
-
-        /** Use facade */
-        Facade::setFacadeApplication($this);
-
-        /** Set DBWrapper db service */
-        DBWrapper::setDbService(AuthServiceProvider::getDBService($container));
-
-        ImageRoutes::routes();
     }
 }

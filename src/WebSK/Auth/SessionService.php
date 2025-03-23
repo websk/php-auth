@@ -39,10 +39,10 @@ class SessionService extends EntityService
     }
 
     /**
-     * @param $user_id
+     * @param int $user_id
      * @throws \Exception
      */
-    public function clearUserSession($user_id)
+    public function clearUserSession(int $user_id): void
     {
         $this->repository->deleteBySession($_COOKIE[Session::AUTH_COOKIE_NAME]);
 
@@ -53,16 +53,16 @@ class SessionService extends EntityService
 
     /**
      * Удаляем просроченные сессии
-     * @param $user_id
+     * @param int $user_id
      * @throws \Exception
      */
-    protected function clearOldSessionsByUserId($user_id)
+    protected function clearOldSessionsByUserId(int $user_id): void
     {
         $delta = time() - Session::SESSION_LIFE_TIME;
         $this->repository->clearOldSessionsByUserId($user_id, $delta);
     }
 
-    public function clearAuthCookie()
+    public function clearAuthCookie(): void
     {
         setcookie(Session::AUTH_COOKIE_NAME, '', time() - 3600, '/');
     }
@@ -70,10 +70,10 @@ class SessionService extends EntityService
     /**
      * @param int $user_id
      * @param string $session_hash
-     * @param $delta
+     * @param int $delta
      * @throws \Exception
      */
-    public function storeUserSession(int $user_id, string $session_hash, $delta)
+    public function storeUserSession(int $user_id, string $session_hash, int $delta): void
     {
         $time = time();
 
@@ -92,7 +92,7 @@ class SessionService extends EntityService
 
     /**
      * UserID авторизованного пользователя
-     * @return int|null
+     * @return ?int
      */
     public function getCurrentUserId(): ?int
     {
@@ -114,7 +114,7 @@ class SessionService extends EntityService
     }
 
     /**
-     * @return User|null
+     * @return ?User
      */
     public function getCurrentUserObj(): ?User
     {
@@ -190,13 +190,15 @@ class SessionService extends EntityService
      * @param string $email
      * @param string $password
      * @param bool $save_auth
+     * @param ?string $message
      * @return bool
      */
-    public function processAuthorization(string $email, string $password, bool $save_auth = false): bool
+    public function processAuthorization(string $email, string $password, bool $save_auth = false, ?string &$message = null): bool
     {
         $user_id = $this->user_service->getUserIdByEmailAndPassword($email, $password);
 
         if (!$user_id) {
+            $message = 'Неверный адрес электронной почты или пароль.';
             return false;
         }
 
@@ -204,6 +206,7 @@ class SessionService extends EntityService
 
         // Регистрация не подтверждена
         if (!$user_obj->isConfirm()) {
+            $message = 'Сначала подтвердите Ваш адрес электронной почты. Ранее Вам была отправлена ссылка для подтверждения.';
             return false;
         }
 

@@ -52,7 +52,7 @@ use WebSK\Utils\Url;
 <div id="html">
     <div id="header" class="row">
         <div style="font-size: 22px;" class="pull-left"><?php echo  ConfWrapper::value('site_title')?></div>
-        <div class="pull-right" style="margin-right: 50px;"><a href="<?php echo Router::pathFor(AuthRoutes::ROUTE_NAME_AUTH_LOGOUT)?>">Выйти</a></div>
+        <div class="pull-right" style="margin-right: 50px;"><a href="<?php echo Router::urlFor(AuthRoutes::ROUTE_NAME_AUTH_LOGOUT)?>">Выйти</a></div>
     </div>
 
     <div>

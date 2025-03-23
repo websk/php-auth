@@ -10,17 +10,13 @@ use WebSK\Entity\Entity;
  */
 class UserRole extends Entity
 {
-    const ENTITY_SERVICE_CONTAINER_ID = 'user.user_role_service';
-    const ENTITY_REPOSITORY_CONTAINER_ID = 'user.user_role_repository';
-    const DB_TABLE_NAME = 'users_roles';
+    const string DB_TABLE_NAME = 'users_roles';
 
-    const _USER_ID = 'user_id';
-    /** @var int */
-    protected $user_id;
+    const string _USER_ID = 'user_id';
+    protected int $user_id;
 
-    const _ROLE_ID = 'role_id';
-    /** @var int */
-    protected $role_id;
+    const string _ROLE_ID = 'role_id';
+    protected int $role_id;
 
     /**
      * @return int

@@ -2,10 +2,12 @@
 
 namespace WebSK\Auth\Middleware;
 
+use Fig\Http\Message\StatusCodeInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface;
+use Slim\Psr7\Response;
 use WebSK\Auth\Auth;
-use WebSK\Utils\HTTP;
 
 /**
  * Class CurrentUserIsAdmin
@@ -15,18 +17,16 @@ class CurrentUserIsAdmin
 {
     /**
      * @param ServerRequestInterface $request
-     * @param ResponseInterface $response
-     * @param $next
+     * @param RequestHandlerInterface $handler
      * @return ResponseInterface
      */
-    public function __invoke(ServerRequestInterface $request, ResponseInterface $response, $next)
+    public function __invoke(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         if (!Auth::currentUserIsAdmin()) {
-            return $response->withStatus(HTTP::STATUS_NOT_FOUND);
+            $response = new Response();
+            return $response->withStatus(StatusCodeInterface::STATUS_NOT_FOUND);
         }
 
-        $response = $next($request, $response);
-
-        return $response;
+        return $handler->handle($request);
     }
 }

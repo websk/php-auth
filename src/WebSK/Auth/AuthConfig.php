@@ -11,6 +11,10 @@ use WebSK\Config\ConfWrapper;
 class AuthConfig
 {
 
+    const string USER_PHOTO_STORAGE = 'files';
+    const string USER_PHOTO_DIR = 'images' . DIRECTORY_SEPARATOR . 'users';
+    const string USER_PHOTO_FILES_DIR = DIRECTORY_SEPARATOR . 'files' . DIRECTORY_SEPARATOR .  self::USER_PHOTO_DIR;
+
     /**
      * @return string
      */

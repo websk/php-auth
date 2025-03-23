@@ -6,7 +6,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use WebSK\Auth\AuthConfig;
 use WebSK\Auth\User\Role;
-use WebSK\CRUD\CRUDServiceProvider;
+use WebSK\CRUD\CRUD;
 use WebSK\CRUD\Form\CRUDFormRow;
 use WebSK\CRUD\Form\Widgets\CRUDFormWidgetInput;
 use WebSK\CRUD\Table\CRUDTable;
@@ -27,18 +27,21 @@ use WebSK\Views\PhpRender;
  */
 class RoleListHandler extends BaseHandler
 {
-    const FILTER_NAME = 'role_name';
+    const string FILTER_NAME = 'role_name';
+
+    /** @Inject */
+    protected CRUD $crud_service;
 
     /**
      * @param ServerRequestInterface $request
      * @param ResponseInterface $response
-     * @return \Psr\Http\Message\ResponseInterface
+     * @return ResponseInterface
      */
-    public function __invoke(ServerRequestInterface $request, ResponseInterface $response)
+    public function __invoke(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
     {
-        $crud_table_obj = CRUDServiceProvider::getCrud($this->container)->createTable(
+        $crud_table_obj = $this->crud_service->createTable(
             Role::class,
-            CRUDServiceProvider::getCrud($this->container)->createForm(
+            $this->crud_service->createForm(
                 'user_create_rand435345',
                 new Role(),
                 [
@@ -46,7 +49,7 @@ class RoleListHandler extends BaseHandler
                     new CRUDFormRow('Обозначение', new CRUDFormWidgetInput(Role::_DESIGNATION)),
                 ],
                 function(Role $role_obj) {
-                    return $this->pathFor(UserRoutes::ROUTE_NAME_ADMIN_ROLE_EDIT, ['role_id' => $role_obj->getId()]);
+                    return $this->urlFor(UserRoutes::ROUTE_NAME_ADMIN_ROLE_EDIT, ['role_id' => $role_obj->getId()]);
                 }
             ),
             [
@@ -56,7 +59,7 @@ class RoleListHandler extends BaseHandler
                     new CRUDTableWidgetTextWithLink(
                         Role::_NAME,
                         function(Role $role_obj) {
-                            return $this->pathFor(UserRoutes::ROUTE_NAME_ADMIN_ROLE_EDIT, ['role_id' => $role_obj->getId()]);
+                            return $this->urlFor(UserRoutes::ROUTE_NAME_ADMIN_ROLE_EDIT, ['role_id' => $role_obj->getId()]);
                         }
                     )
                 ),
@@ -82,7 +85,7 @@ class RoleListHandler extends BaseHandler
         $content_html = '';
 
         $content_html .= '<div style="padding: 10px 0;"><ul class="nav nav-tabs">
-          <li role="presentation"><a href="' . $this->pathFor(UserRoutes::ROUTE_NAME_ADMIN_USER_LIST)  . '">Пользователи</a></li>
+          <li role="presentation"><a href="' . $this->urlFor(UserRoutes::ROUTE_NAME_ADMIN_USER_LIST)  . '">Пользователи</a></li>
           <li role="presentation" class="active"><a href="#">Роли пользователей</a></li>
         </ul></div>';
 
@@ -94,7 +97,7 @@ class RoleListHandler extends BaseHandler
 
         $breadcrumbs_arr = [
             new BreadcrumbItemDTO('Главная', AuthConfig::getAdminMainPageUrl()),
-            new BreadcrumbItemDTO('Пользователи', $this->pathFor(UserRoutes::ROUTE_NAME_ADMIN_USER_LIST)),
+            new BreadcrumbItemDTO('Пользователи', $this->urlFor(UserRoutes::ROUTE_NAME_ADMIN_USER_LIST)),
         ];
         $layout_dto->setBreadcrumbsDtoArr($breadcrumbs_arr);
 

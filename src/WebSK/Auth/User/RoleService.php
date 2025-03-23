@@ -14,7 +14,7 @@ class RoleService extends EntityService
     /**
      * @return Role[]
      */
-    public function getAllRoles()
+    public function getAllRoles(): array
     {
         $role_objs_arr = [];
 
@@ -37,7 +37,7 @@ class RoleService extends EntityService
      * @param Role $b_role_obj
      * @return int
      */
-    protected function sortByName(Role $a_role_obj, Role $b_role_obj)
+    protected function sortByName(Role $a_role_obj, Role $b_role_obj): int
     {
         return strcmp($a_role_obj->getName(), $b_role_obj->getName());
     }

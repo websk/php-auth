@@ -4,10 +4,9 @@ namespace WebSK\Auth\User;
 
 use PHPMailer\PHPMailer\PHPMailer;
 use WebSK\Auth\Auth;
-use WebSK\Image\ImageConstants;
-use WebSK\Image\ImageManager;
+use WebSK\Auth\AuthConfig;
+use WebSK\FileManager\FileManager;
 use WebSK\Cache\CacheService;
-use WebSK\Entity\EntityRepository;
 use WebSK\Entity\EntityService;
 use WebSK\Entity\InterfaceEntity;
 use WebSK\Config\ConfWrapper;
@@ -20,20 +19,18 @@ use WebSK\Utils\Filters;
  */
 class UserService extends EntityService
 {
-    const PASSWORD_LENGTH = 12;
+    const int PASSWORD_LENGTH = 12;
 
-    /** @var RoleService */
-    protected $role_service;
+    protected RoleService $role_service;
 
-    /** @var UserRoleService */
-    protected $user_role_service;
+    protected UserRoleService $user_role_service;
 
     /** @var UserRepository */
     protected $repository;
 
     public function __construct(
         string $entity_class_name,
-        EntityRepository $repository,
+        UserRepository $repository,
         CacheService $cache_service,
         RoleService $role_service,
         UserRoleService $user_role_service
@@ -47,7 +44,7 @@ class UserService extends EntityService
     /**
      * @param InterfaceEntity|User $entity_obj
      */
-    public function beforeSave(InterfaceEntity $entity_obj)
+    public function beforeSave(InterfaceEntity $entity_obj): void
     {
         if (!$entity_obj->getEmail()) {
             throw new \Exception('Ошибка! Не указан Email.');
@@ -57,7 +54,6 @@ class UserService extends EntityService
             throw new \Exception('Ошибка! Не указано имя на сайте.');
         }
 
-        $exist_user_obj = null;
         $email = '';
         if ($entity_obj->getId()) {
             $exist_user_obj = $this->getById($entity_obj->getId());
@@ -112,7 +108,7 @@ class UserService extends EntityService
      * @return bool
      * @throws \Exception
      */
-    public function deletePhoto(User $user_obj)
+    public function deletePhoto(User $user_obj): bool
     {
         if (!$user_obj->getPhotoPath()) {
             return true;
@@ -121,27 +117,30 @@ class UserService extends EntityService
         $user_obj->setPhoto('');
         $this->save($user_obj);
 
-        $file_path = ConfWrapper::value('site_full_path') . DIRECTORY_SEPARATOR . ImageConstants::IMG_ROOT_FOLDER . DIRECTORY_SEPARATOR . $user_obj->getPhotoPath();
-        if (!file_exists($file_path)) {
-            return false;
-        }
+        $file_manager = new FileManager(AuthConfig::USER_PHOTO_STORAGE);
 
-        $image_manager = new ImageManager();
-        $image_manager->removeImageFile($user_obj->getPhotoPath());
+        $file_path = AuthConfig::USER_PHOTO_DIR . DIRECTORY_SEPARATOR . $user_obj->getPhoto();
+        if ($file_manager->getStorage()->fileExists($file_path)) {
+            try {
+                $file_manager->deleteFileIfExist($file_path);
+            } catch (\Throwable $exception) {
+                return false;
+            }
+        }
 
         return true;
     }
 
     /**
-     * @param InterfaceEntity|User $user_obj
+     * @param InterfaceEntity|User $entity_obj
      * @throws \Exception
      */
-    public function afterDelete(InterfaceEntity $user_obj)
+    public function afterDelete(InterfaceEntity $entity_obj): void
     {
-        $this->deletePhoto($user_obj);
-        $this->deleteUserRolesForUserId($user_obj->getId());
+        $this->deletePhoto($entity_obj);
+        $this->deleteUserRolesForUserId($entity_obj->getId());
 
-        parent::afterDelete($user_obj);
+        parent::afterDelete($entity_obj);
     }
 
     /**

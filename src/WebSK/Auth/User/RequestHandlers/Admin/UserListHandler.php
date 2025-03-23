@@ -2,13 +2,14 @@
 
 namespace WebSK\Auth\User\RequestHandlers\Admin;
 
+use Fig\Http\Message\StatusCodeInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use WebSK\Auth\AuthConfig;
 use WebSK\Auth\User\User;
 use WebSK\Auth\User\UserRoutes;
-use WebSK\Auth\User\UserServiceProvider;
-use WebSK\CRUD\CRUDServiceProvider;
+use WebSK\Auth\User\UserService;
+use WebSK\CRUD\CRUD;
 use WebSK\CRUD\Form\CRUDFormRow;
 use WebSK\CRUD\Form\Widgets\CRUDFormWidgetInput;
 use WebSK\CRUD\Table\CRUDTable;
@@ -30,21 +31,25 @@ use WebSK\Views\BreadcrumbItemDTO;
  */
 class UserListHandler extends BaseHandler
 {
-    const FILTER_EMAIL = 'user_email_324234';
-    const FILTER_NAME = 'user_name_2354543';
+    const string FILTER_EMAIL = 'user_email_324234';
+    const string FILTER_NAME = 'user_name_2354543';
+
+    /** @Inject  */
+    protected UserService $user_service;
+
+    /** @Inject */
+    protected CRUD $crud_service;
 
     /**
      * @param ServerRequestInterface $request
      * @param ResponseInterface $response
-     * @return \Psr\Http\Message\ResponseInterface
+     * @return ResponseInterface
      */
-    public function __invoke(ServerRequestInterface $request, ResponseInterface $response)
+    public function __invoke(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
     {
-        $user_service = UserServiceProvider::getUserService($this->container);
-
-        $crud_table_obj = CRUDServiceProvider::getCrud($this->container)->createTable(
+        $crud_table_obj = $this->crud_service->createTable(
             User::class,
-            CRUDServiceProvider::getCrud($this->container)->createForm(
+            $this->crud_service->createForm(
                 'user_create',
                 new User(),
                 [
@@ -54,7 +59,7 @@ class UserListHandler extends BaseHandler
                     new CRUDFormRow('Email', new CRUDFormWidgetInput(User::_EMAIL, false, true))
                 ],
                 function(User $user_obj) {
-                    return $this->pathFor(UserRoutes::ROUTE_NAME_ADMIN_USER_EDIT, ['user_id' => $user_obj->getId()]);
+                    return $this->urlFor(UserRoutes::ROUTE_NAME_ADMIN_USER_EDIT, ['user_id' => $user_obj->getId()]);
                 }
             ),
             [
@@ -62,8 +67,8 @@ class UserListHandler extends BaseHandler
                 new CRUDTableColumn(
                     'Фото',
                     new CRUDTableWidgetHtml(
-                        function(User $user_obj) use ($user_service) {
-                            return $user_service->getImageHtml($user_obj);
+                        function(User $user_obj){
+                            return $this->user_service->getImageHtml($user_obj);
                         }
                     )
                 ),
@@ -72,7 +77,7 @@ class UserListHandler extends BaseHandler
                     new CRUDTableWidgetTextWithLink(
                         User::_NAME,
                         function(User $user_obj) {
-                            return $this->pathFor(UserRoutes::ROUTE_NAME_ADMIN_USER_EDIT, ['user_id' => $user_obj->getId()]);
+                            return $this->urlFor(UserRoutes::ROUTE_NAME_ADMIN_USER_EDIT, ['user_id' => $user_obj->getId()]);
                         }
                     )
                 ),
@@ -91,11 +96,9 @@ class UserListHandler extends BaseHandler
             CRUDTable::FILTERS_POSITION_INLINE
         );
 
-        $content_html = '';
-
-        $content_html .= '<div style="padding: 10px 0;"><ul class="nav nav-tabs">
+        $content_html = '<div style="padding: 10px 0;"><ul class="nav nav-tabs">
           <li role="presentation" class="active"><a href="#">Пользователи</a></li>
-          <li role="presentation"><a href="' . $this->pathFor(UserRoutes::ROUTE_NAME_ADMIN_ROLE_LIST)  . '">Роли пользователей</a></li>
+          <li role="presentation"><a href="' . $this->urlFor(UserRoutes::ROUTE_NAME_ADMIN_ROLE_LIST)  . '">Роли пользователей</a></li>
         </ul></div>';
 
         try {
@@ -105,7 +108,7 @@ class UserListHandler extends BaseHandler
             }
         } catch (\Exception $e) {
             Messages::setError($e->getMessage());
-            return $response->withRedirect($this->pathFor(UserRoutes::ROUTE_NAME_ADMIN_USER_LIST));
+            return $response->withHeader('Location', $this->urlFor(UserRoutes::ROUTE_NAME_ADMIN_USER_LIST))->withStatus(StatusCodeInterface::STATUS_FOUND);
         }
 
         $content_html .= $crud_table_obj->html($request);

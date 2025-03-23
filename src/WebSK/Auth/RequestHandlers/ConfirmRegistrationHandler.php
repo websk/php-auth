@@ -2,12 +2,13 @@
 
 namespace WebSK\Auth\RequestHandlers;
 
+use Fig\Http\Message\StatusCodeInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use WebSK\Auth\AuthRoutes;
+use WebSK\Auth\User\UserService;
 use WebSK\Utils\Messages;
 use WebSK\Slim\RequestHandlers\BaseHandler;
-use WebSK\Auth\User\UserServiceProvider;
 
 /**
  * Class ConfirmRegistrationHandler
@@ -15,6 +16,9 @@ use WebSK\Auth\User\UserServiceProvider;
  */
 class ConfirmRegistrationHandler extends BaseHandler
 {
+    /** @Inject  */
+    protected UserService $user_service;
+
     /**
      * @param ServerRequestInterface $request
      * @param ResponseInterface $response
@@ -22,19 +26,17 @@ class ConfirmRegistrationHandler extends BaseHandler
      * @return ResponseInterface
      * @throws \Exception
      */
-    public function __invoke(ServerRequestInterface $request, ResponseInterface $response, string $confirm_code)
+    public function __invoke(ServerRequestInterface $request, ResponseInterface $response, string $confirm_code): ResponseInterface
     {
-        $user_service = UserServiceProvider::getUserService($this->container);
+        $user_id = $this->user_service->getUserIdByConfirmCode($confirm_code);
 
-        $user_id = $user_service->getUserIdByConfirmCode($confirm_code);
-
-        $destination = $this->pathFor(AuthRoutes::ROUTE_NAME_AUTH_LOGIN_FORM);
+        $destination = $this->urlFor(AuthRoutes::ROUTE_NAME_AUTH_LOGIN_FORM);
 
         if (!$user_id) {
             Messages::setError(
-                'Ошибка! Неверный код подтверждения. <a href="' . $this->pathFor(AuthRoutes::ROUTE_NAME_AUTH_SEND_CONFIRM_CODE_FORM) . '">Выслать код подтверждения повторно.</a>'
+                'Ошибка! Неверный код подтверждения. <a href="' . $this->urlFor(AuthRoutes::ROUTE_NAME_AUTH_SEND_CONFIRM_CODE_FORM) . '">Выслать код подтверждения повторно.</a>'
             );
-            return $response->withRedirect($destination);
+            return $response->withHeader('Location', $destination)->withStatus(StatusCodeInterface::STATUS_FOUND);
         }
 
         $user_obj = $user_service->getById($user_id);
@@ -46,6 +48,6 @@ class ConfirmRegistrationHandler extends BaseHandler
 
         Messages::setMessage($message);
 
-        return $response->withRedirect($destination);
+        return $response->withHeader('Location', $destination)->withStatus(StatusCodeInterface::STATUS_FOUND);
     }
 }

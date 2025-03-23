@@ -13,7 +13,7 @@ use WebSK\Utils\Url;
 $destination = $redirect_destination_url ?: Url::getUriNoQueryString();
 
 ?>
-<form id="profile_form" action="<?php echo Router::pathFor(UserRoutes::ROUTE_NAME_USER_CHANGE_PASSWORD, ['user_id' => $user_obj->getId()]); ?>" autocomplete="off" method="post" class="form-horizontal">
+<form id="profile_form" action="<?php echo Router::urlFor(UserRoutes::ROUTE_NAME_USER_CHANGE_PASSWORD, ['user_id' => $user_obj->getId()]); ?>" autocomplete="off" method="post" class="form-horizontal">
 
     <div class="form-group">
         <div class="col-md-offset-4 col-md-8">
@@ -40,7 +40,7 @@ $destination = $redirect_destination_url ?: Url::getUriNoQueryString();
             ?>
             <div class="form-group">
                 <div class="col-md-offset-4 col-md-8">
-                    <a href="<?php echo Router::pathFor(UserRoutes::ROUTE_NAME_USER_CREATE_PASSWORD, ['user_id' => $user_obj->getId()], ['destination' => $destination]) ?>">Сгенерировать
+                    <a href="<?php echo Router::urlFor(UserRoutes::ROUTE_NAME_USER_CREATE_PASSWORD, ['user_id' => $user_obj->getId()], ['destination' => $destination]) ?>">Сгенерировать
                         пароль и выслать пользователю</a>
                 </div>
             </div>

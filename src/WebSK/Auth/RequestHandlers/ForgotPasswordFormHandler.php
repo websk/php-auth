@@ -19,9 +19,9 @@ class ForgotPasswordFormHandler extends BaseHandler
     /**
      * @param ServerRequestInterface $request
      * @param ResponseInterface $response
-     * @return \Psr\Http\Message\ResponseInterface
+     * @return ResponseInterface
      */
-    public function __invoke(ServerRequestInterface $request, ResponseInterface $response)
+    public function __invoke(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
     {
         $content = PhpRender::renderTemplateForModuleNamespace(
             'WebSK' . DIRECTORY_SEPARATOR . 'Auth',

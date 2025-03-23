@@ -10,16 +10,14 @@ use WebSK\Entity\Entity;
  */
 class Role extends Entity
 {
-    const ENTITY_SERVICE_CONTAINER_ID = 'user.role_service';
-    const ENTITY_REPOSITORY_CONTAINER_ID = 'user.role_repository';
-    const DB_TABLE_NAME = 'roles';
+    const string DB_TABLE_NAME = 'roles';
 
-    const ADMIN_ROLE_ID = 1;
+    const int ADMIN_ROLE_ID = 1;
 
-    const _NAME = 'name';
+    const string _NAME = 'name';
     protected string $name = '';
 
-    const _DESIGNATION = 'designation';
+    const string _DESIGNATION = 'designation';
     protected string $designation = '';
 
     /**

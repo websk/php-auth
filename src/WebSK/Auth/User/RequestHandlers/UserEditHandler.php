@@ -2,6 +2,7 @@
 
 namespace WebSK\Auth\User\RequestHandlers;
 
+use Fig\Http\Message\StatusCodeInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use WebSK\Auth\Auth;
@@ -9,16 +10,16 @@ use WebSK\Auth\AuthConfig;
 use WebSK\Auth\User\User;
 use WebSK\Auth\User\UserComponents;
 use WebSK\Auth\User\UserRoutes;
-use WebSK\CRUD\CRUDServiceProvider;
+use WebSK\Auth\User\UserService;
+use WebSK\CRUD\CRUD;
 use WebSK\CRUD\Form\CRUDFormRow;
 use WebSK\CRUD\Form\Widgets\CRUDFormWidgetInput;
 use WebSK\CRUD\Form\Widgets\CRUDFormWidgetTextarea;
-use WebSK\Utils\HTTP;
+use WebSK\CRUD\Form\Widgets\CRUDFormWidgetUpload;
 use WebSK\Utils\Messages;
 use WebSK\Views\BreadcrumbItemDTO;
 use WebSK\Views\LayoutDTO;
 use WebSK\Slim\RequestHandlers\BaseHandler;
-use WebSK\Auth\User\UserServiceProvider;
 use WebSK\Views\PhpRender;
 
 /**
@@ -27,6 +28,12 @@ use WebSK\Views\PhpRender;
  */
 class UserEditHandler extends BaseHandler
 {
+    /** @Inject */
+    protected UserService $user_service;
+
+    /** @Inject */
+    protected CRUD $crud_service;
+
     /**
      * @param ServerRequestInterface $request
      * @param ResponseInterface $response
@@ -34,21 +41,23 @@ class UserEditHandler extends BaseHandler
      * @return ResponseInterface
      * @throws \Exception
      */
-    public function __invoke(ServerRequestInterface $request, ResponseInterface $response, int $user_id = null)
+    public function __invoke(ServerRequestInterface $request, ResponseInterface $response, int $user_id): ResponseInterface
     {
-        $user_service = UserServiceProvider::getUserService($this->container);
+        if (!$user_id) {
+            return $response->withStatus(StatusCodeInterface::STATUS_NOT_FOUND);
+        }
 
-        $user_obj = $user_service->getById($user_id, false);
+        $user_obj = $this->user_service->getById($user_id, false);
         if (!$user_obj) {
-            return $response->withStatus(HTTP::STATUS_NOT_FOUND);
+            return $response->withStatus(StatusCodeInterface::STATUS_NOT_FOUND);
         }
 
         if (($user_id != Auth::getCurrentUserId()) && !Auth::currentUserIsAdmin()) {
-            return $response->withStatus(HTTP::STATUS_FORBIDDEN);
+            return $response->withStatus(StatusCodeInterface::STATUS_FORBIDDEN);
         }
 
-        $crud_form = CRUDServiceProvider::getCrud($this->container)->createForm(
-            'user_create',
+        $crud_form = $this->crud_service->createForm(
+            'user_edit',
             $user_obj,
             [
                 new CRUDFormRow('Имя на сайте', new CRUDFormWidgetInput(User::_NAME, false, true)),
@@ -60,9 +69,22 @@ class UserEditHandler extends BaseHandler
                 new CRUDFormRow('Город', new CRUDFormWidgetInput(User::_CITY)),
                 new CRUDFormRow('Адрес', new CRUDFormWidgetInput(User::_ADDRESS)),
                 new CRUDFormRow('Дополнительная информация', new CRUDFormWidgetTextarea(User::_COMMENT)),
+                new CRUDFormRow(
+                    'Фото',
+                    new CRUDFormWidgetUpload(
+                        User::_PHOTO,
+                        AuthConfig::USER_PHOTO_STORAGE,
+                        AuthConfig::USER_PHOTO_DIR,
+                        function(User $user_obj) {
+                            return $user_obj->getPhoto() ? AuthConfig::USER_PHOTO_FILES_DIR . DIRECTORY_SEPARATOR . $user_obj->getPhoto() : '';
+                        },
+                        $user_obj->getId() . '-' . time(),
+                        CRUDFormWidgetUpload::FILE_TYPE_IMAGE
+                    )
+                )
             ],
             function(User $user_obj) {
-                return $this->pathFor(UserRoutes::ROUTE_NAME_USER_EDIT, ['user_id' => $user_obj->getId()]);
+                return $this->urlFor(UserRoutes::ROUTE_NAME_USER_EDIT, ['user_id' => $user_obj->getId()]);
             }
         );
 
@@ -73,12 +95,10 @@ class UserEditHandler extends BaseHandler
             }
         } catch (\Exception $e) {
             Messages::setError($e->getMessage());
-            return $response->withRedirect($this->pathFor(UserRoutes::ROUTE_NAME_USER_EDIT, ['user_id' => $user_id]));
+            return $response->withHeader('Location', $this->urlFor(UserRoutes::ROUTE_NAME_USER_EDIT, ['user_id' => $user_id]))->withStatus(StatusCodeInterface::STATUS_FOUND);
         }
 
         $content_html = $crud_form->html();
-
-        $content_html .= UserComponents::renderUserPhotoForm($user_obj);
 
         $content_html .= UserComponents::renderPasswordForm($user_obj);
 

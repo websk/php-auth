@@ -10,77 +10,60 @@ use WebSK\Entity\Entity;
  */
 class User extends Entity
 {
-    const ENTITY_SERVICE_CONTAINER_ID = 'user.user_service';
-    const ENTITY_REPOSITORY_CONTAINER_ID = 'user.user_repository';
-    const DB_TABLE_NAME = 'users';
+    const string DB_TABLE_NAME = 'users';
 
-    const _NAME = 'name';
-    /** @var string */
-    protected $name = '';
+    const string PHOTO_DIR = 'user';
 
-    const _FIRST_NAME = 'first_name';
-    /** @var string */
-    protected $first_name = '';
+    const string _NAME = 'name';
+    protected string $name = '';
 
-    const _LAST_NAME = 'last_name';
-    /** @var string */
-    protected $last_name = '';
+    const string _FIRST_NAME = 'first_name';
+    protected ?string $first_name = null;
 
-    const _BIRTHDAY = 'birthday';
-    /** @var string */
-    protected $birthday = '';
+    const string _LAST_NAME = 'last_name';
+    protected ?string $last_name = null;
 
-    const _PHONE = 'phone';
-    /** @var string */
-    protected $phone = '';
+    const string _BIRTHDAY = 'birthday';
+    protected string $birthday = '';
 
-    const _EMAIL = 'email';
-    /** @var string */
-    protected $email = '';
+    const string _PHONE = 'phone';
+    protected string $phone = '';
 
-    const _CITY = 'city';
-    /** @var string */
-    protected $city = '';
+    const string _EMAIL = 'email';
+    protected string $email = '';
 
-    const _ADDRESS = 'address';
-    /** @var string */
-    protected $address = '';
+    const string _CITY = 'city';
+    protected string $city = '';
 
-    const _COMPANY = 'company';
-    /** @var string */
-    protected $company = '';
+    const string _ADDRESS = 'address';
+    protected string $address = '';
 
-    const _COMMENT = 'comment';
-    /** @var string */
-    protected $comment = '';
+    const string _COMPANY = 'company';
+    protected string $company = '';
 
-    const _IS_CONFIRM = 'confirm';
-    /** @var int */
-    protected $confirm = false;
+    const string _COMMENT = 'comment';
+    protected string $comment = '';
 
-    const _CONFIRM_CODE = 'confirm_code';
-    /** @var string */
-    protected $confirm_code;
+    const string _IS_CONFIRM = 'confirm';
+    protected bool $confirm = false;
 
-    const _PHOTO = 'photo';
-    /** @var string */
-    protected $photo = '';
+    const string _CONFIRM_CODE = 'confirm_code';
+    protected string $confirm_code;
 
-    const _PASSW = 'passw';
-    /** @var string */
-    protected $passw;
+    const string _PHOTO = 'photo';
+    protected string $photo = '';
 
-    const _PROVIDER = 'provider';
-    /** @var string */
-    protected $provider = '';
+    const string _PASSW = 'passw';
+    protected string $passw;
 
-    const _PROVIDER_UID = 'provider_uid';
-    /** @var string */
-    protected $provider_uid = '';
+    const string _PROVIDER = 'provider';
+    protected string $provider = '';
 
-    const _PROFILE_URL = 'profile_url';
-    /** @var string */
-    protected $profile_url = '';
+    const string _PROVIDER_UID = 'provider_uid';
+    protected string $provider_uid = '';
+
+    const string _PROFILE_URL = 'profile_url';
+    protected string $profile_url = '';
 
     /**
      * @return string
@@ -246,13 +229,13 @@ class User extends Entity
      * Путь к фото
      * @return string
      */
-    public function getPhotoPath()
+    public function getPhotoPath(): string
     {
         if (!$this->getPhoto()) {
             return '';
         }
 
-        return 'user/'. $this->getPhoto();
+        return self::PHOTO_DIR . DIRECTORY_SEPARATOR . $this->getPhoto();
     }
 
     /**
@@ -347,7 +330,7 @@ class User extends Entity
     /**
      * @param bool $confirm
      */
-    public function setConfirm(bool $confirm)
+    public function setConfirm(bool $confirm): void
     {
         $this->confirm = $confirm;
     }
@@ -355,7 +338,7 @@ class User extends Entity
     /**
      * @return string
      */
-    public function getConfirmCode()
+    public function getConfirmCode(): string
     {
         return $this->confirm_code;
     }
@@ -363,7 +346,7 @@ class User extends Entity
     /**
      * @param string $confirm_code
      */
-    public function setConfirmCode(string $confirm_code)
+    public function setConfirmCode(string $confirm_code): void
     {
         $this->confirm_code = $confirm_code;
     }

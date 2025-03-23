@@ -2,31 +2,33 @@
 
 namespace WebSK\Auth\User\RequestHandlers\Admin;
 
+use Fig\Http\Message\StatusCodeInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use WebSK\Auth\AuthConfig;
 use WebSK\Auth\User\Role;
+use WebSK\Auth\User\RoleService;
 use WebSK\Auth\User\UserComponents;
 use WebSK\Auth\User\UserRole;
-use WebSK\CRUD\CRUDServiceProvider;
+use WebSK\Auth\User\UserService;
+use WebSK\CRUD\CRUD;
 use WebSK\CRUD\Form\CRUDFormInvisibleRow;
 use WebSK\CRUD\Form\CRUDFormRow;
 use WebSK\CRUD\Form\Widgets\CRUDFormWidgetInput;
 use WebSK\CRUD\Form\Widgets\CRUDFormWidgetRadios;
 use WebSK\CRUD\Form\Widgets\CRUDFormWidgetReferenceAjax;
 use WebSK\CRUD\Form\Widgets\CRUDFormWidgetTextarea;
+use WebSK\CRUD\Form\Widgets\CRUDFormWidgetUpload;
 use WebSK\CRUD\Table\CRUDTable;
 use WebSK\CRUD\Table\CRUDTableColumn;
 use WebSK\CRUD\Table\Filters\CRUDTableFilterEqualInvisible;
 use WebSK\CRUD\Table\Widgets\CRUDTableWidgetDelete;
 use WebSK\CRUD\Table\Widgets\CRUDTableWidgetTextWithLink;
-use WebSK\Utils\HTTP;
 use WebSK\Utils\Messages;
 use WebSK\Views\LayoutDTO;
 use WebSK\Slim\RequestHandlers\BaseHandler;
 use WebSK\Auth\User\User;
 use WebSK\Auth\User\UserRoutes;
-use WebSK\Auth\User\UserServiceProvider;
 use WebSK\Views\BreadcrumbItemDTO;
 use WebSK\Views\PhpRender;
 
@@ -36,25 +38,32 @@ use WebSK\Views\PhpRender;
  */
 class UserEditHandler extends BaseHandler
 {
+    /** @Inject */
+    protected UserService $user_service;
+
+    /** @Inject */
+    protected RoleService $role_service;
+
+    /** @Inject */
+    protected CRUD $crud_service;
+
     /**
      * @param ServerRequestInterface $request
      * @param ResponseInterface $response
-     * @param int|null $user_id
+     * @param int $user_id
      * @return ResponseInterface
      * @throws \Exception
      */
-    public function __invoke(ServerRequestInterface $request, ResponseInterface $response, ?int $user_id = null)
+    public function __invoke(ServerRequestInterface $request, ResponseInterface $response, int $user_id): ResponseInterface
     {
-        $user_service = UserServiceProvider::getUserService($this->container);
-
-        $user_obj = $user_service->getById($user_id, false);
+        $user_obj = $this->user_service->getById($user_id, false);
 
         if (!$user_obj) {
-            return $response->withStatus(HTTP::STATUS_NOT_FOUND);
+            return $response->withStatus(StatusCodeInterface::STATUS_NOT_FOUND);
         }
 
-        $crud_form = CRUDServiceProvider::getCrud($this->container)->createForm(
-            'user_create',
+        $crud_form = $this->crud_service->createForm(
+            'user_edit',
             $user_obj,
             [
                 new CRUDFormRow('Имя на сайте', new CRUDFormWidgetInput(User::_NAME, false, true)),
@@ -67,9 +76,22 @@ class UserEditHandler extends BaseHandler
                 new CRUDFormRow('Город', new CRUDFormWidgetInput(User::_CITY)),
                 new CRUDFormRow('Адрес', new CRUDFormWidgetInput(User::_ADDRESS)),
                 new CRUDFormRow('Дополнительная информация', new CRUDFormWidgetTextarea(User::_COMMENT)),
+                new CRUDFormRow(
+                    'Фото',
+                    new CRUDFormWidgetUpload(
+                        User::_PHOTO,
+                        AuthConfig::USER_PHOTO_STORAGE,
+                        AuthConfig::USER_PHOTO_DIR,
+                        function(User $user_obj) {
+                            return $user_obj->getPhoto() ? AuthConfig::USER_PHOTO_FILES_DIR . DIRECTORY_SEPARATOR . $user_obj->getPhoto() : '';
+                        },
+                        $user_obj->getId() . '-' . time(),
+                        CRUDFormWidgetUpload::FILE_TYPE_IMAGE
+                    )
+                )
             ],
             function(User $user_obj) {
-                return $this->pathFor(UserRoutes::ROUTE_NAME_ADMIN_USER_EDIT, ['user_id' => $user_obj->getId()]);
+                return $this->urlFor(UserRoutes::ROUTE_NAME_ADMIN_USER_EDIT, ['user_id' => $user_obj->getId()]);
             }
         );
 
@@ -80,20 +102,17 @@ class UserEditHandler extends BaseHandler
             }
         } catch (\Exception $e) {
             Messages::setError($e->getMessage());
-            return $response->withRedirect($this->pathFor(UserRoutes::ROUTE_NAME_ADMIN_USER_EDIT, ['user_id' => $user_id]));
+            return $response->withHeader('Location', $this->urlFor(UserRoutes::ROUTE_NAME_ADMIN_USER_EDIT, ['user_id' => $user_id]))->withStatus(StatusCodeInterface::STATUS_FOUND);
         }
 
         $content_html = $crud_form->html();
 
-
-        $role_service = UserServiceProvider::getRoleService($this->container);
-
         $new_user_role = new UserRole();
         $new_user_role->setUserId($user_id);
 
-        $crud_table_obj = CRUDServiceProvider::getCrud($this->container)->createTable(
+        $crud_table_obj = $this->crud_service->createTable(
             UserRole::class,
-            CRUDServiceProvider::getCrud($this->container)->createForm(
+            $this->crud_service->createForm(
                 'user_role_create',
                 $new_user_role,
                 [
@@ -104,8 +123,8 @@ class UserEditHandler extends BaseHandler
                             UserRole::_ROLE_ID,
                             Role::class,
                             Role::_NAME,
-                            $this->pathFor(UserRoutes::ROUTE_NAME_ADMIN_ROLE_LIST_AJAX),
-                            $this->pathFor(
+                            $this->urlFor(UserRoutes::ROUTE_NAME_ADMIN_ROLE_LIST_AJAX),
+                            $this->urlFor(
                                 UserRoutes::ROUTE_NAME_ADMIN_ROLE_EDIT,
                                 ['role_id' => CRUDFormWidgetReferenceAjax::REFERENCED_ID_PLACEHOLDER]
                             ),
@@ -118,12 +137,12 @@ class UserEditHandler extends BaseHandler
                 new CRUDTableColumn(
                     'Название',
                     new CRUDTableWidgetTextWithLink(
-                        function(UserRole $user_role_obj) use ($role_service) {
-                            $role_obj = $role_service->getById($user_role_obj->getRoleId());
+                        function(UserRole $user_role_obj) {
+                            $role_obj = $this->role_service->getById($user_role_obj->getRoleId());
                             return $role_obj->getName();
                         },
                         function(UserRole $user_role_obj) {
-                            return $this->pathFor(UserRoutes::ROUTE_NAME_ADMIN_ROLE_EDIT, ['role_id' => $user_role_obj->getRoleId()]);
+                            return $this->urlFor(UserRoutes::ROUTE_NAME_ADMIN_ROLE_EDIT, ['role_id' => $user_role_obj->getRoleId()]);
                         }
                     )
                 ),
@@ -142,8 +161,6 @@ class UserEditHandler extends BaseHandler
             return $crud_form_response;
         }
 
-        $content_html .= UserComponents::renderUserPhotoForm($user_obj);
-
         $content_html .= UserComponents::renderPasswordForm($user_obj);
 
         $content_html .= '<h3>Роли пользователя</h3>';
@@ -155,7 +172,7 @@ class UserEditHandler extends BaseHandler
 
         $breadcrumbs_arr = [
             new BreadcrumbItemDTO('Главная', AuthConfig::getAdminMainPageUrl()),
-            new BreadcrumbItemDTO('Пользователи', $this->pathFor(UserRoutes::ROUTE_NAME_ADMIN_USER_LIST)),
+            new BreadcrumbItemDTO('Пользователи', $this->urlFor(UserRoutes::ROUTE_NAME_ADMIN_USER_LIST)),
         ];
         $layout_dto->setBreadcrumbsDtoArr($breadcrumbs_arr);
 

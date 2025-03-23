@@ -11,7 +11,7 @@ if (!isset($destination)) {
 }
 ?>
 
-<form action="<?php echo Router::pathFor(AuthRoutes::ROUTE_NAME_AUTH_LOGIN); ?>" class="form-inline" method="post">
+<form action="<?php echo Router::urlFor(AuthRoutes::ROUTE_NAME_AUTH_LOGIN); ?>" class="form-inline" method="post">
     <div class="form-group">
         <label class="sr-only">Email</label>
         <div class="input-group">

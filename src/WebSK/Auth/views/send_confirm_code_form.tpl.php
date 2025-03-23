@@ -6,7 +6,7 @@ use WebSK\Slim\Router;
 
 ?>
 
-<form action="<?php echo Router::pathFor(AuthRoutes::ROUTE_NAME_AUTH_SEND_CONFIRM_CODE); ?>" method="post" class="form-horizontal">
+<form action="<?php echo Router::urlFor(AuthRoutes::ROUTE_NAME_AUTH_SEND_CONFIRM_CODE); ?>" method="post" class="form-horizontal">
     <div class="form-group">
         <label class="col-md-2 control-label">Email</label>
         <div class="col-md-10">
@@ -17,7 +17,7 @@ use WebSK\Slim\Router;
 
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">
-            <img src="<?php echo Router::pathFor(CaptchaRoutes::ROUTE_NAME_CAPTCHA_GENERATE); ?>" border="0" alt="Введите этот защитный код">
+            <img src="<?php echo Router::urlFor(CaptchaRoutes::ROUTE_NAME_CAPTCHA_GENERATE); ?>" alt="Введите этот защитный код">
             <input type="text" size="5" name="captcha" class="form-control">
             <span class="help-block">Введите код, изображенный на картинке</span>
         </div>
@@ -31,7 +31,7 @@ use WebSK\Slim\Router;
 
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">
-            <a href="<?php echo Router::pathFor(AuthRoutes::ROUTE_NAME_AUTH_REGISTRATION_FORM); ?>">Регистрация</a>
+            <a href="<?php echo Router::urlFor(AuthRoutes::ROUTE_NAME_AUTH_REGISTRATION_FORM); ?>">Регистрация</a>
         </div>
     </div>
 </form>
