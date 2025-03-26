@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ab91aaabea2b280a596d40b3878a1a0b",
+    "content-hash": "9d1fffc5b84b92c689a7f9820a1a3b60",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -62,16 +62,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.337.3",
+            "version": "3.342.13",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "06dfc8f76423b49aaa181debd25bbdc724c346d6"
+                "reference": "713bdb1ff0c2eb519932c111fc450f6b5462b69f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/06dfc8f76423b49aaa181debd25bbdc724c346d6",
-                "reference": "06dfc8f76423b49aaa181debd25bbdc724c346d6",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/713bdb1ff0c2eb519932c111fc450f6b5462b69f",
+                "reference": "713bdb1ff0c2eb519932c111fc450f6b5462b69f",
                 "shasum": ""
             },
             "require": {
@@ -79,31 +79,30 @@
                 "ext-json": "*",
                 "ext-pcre": "*",
                 "ext-simplexml": "*",
-                "guzzlehttp/guzzle": "^6.5.8 || ^7.4.5",
-                "guzzlehttp/promises": "^1.4.0 || ^2.0",
-                "guzzlehttp/psr7": "^1.9.1 || ^2.4.5",
-                "mtdowling/jmespath.php": "^2.6",
-                "php": ">=7.2.5",
-                "psr/http-message": "^1.0 || ^2.0"
+                "guzzlehttp/guzzle": "^7.4.5",
+                "guzzlehttp/promises": "^2.0",
+                "guzzlehttp/psr7": "^2.4.5",
+                "mtdowling/jmespath.php": "^2.8.0",
+                "php": ">=8.1",
+                "psr/http-message": "^2.0"
             },
             "require-dev": {
                 "andrewsville/php-token-reflection": "^1.4",
                 "aws/aws-php-sns-message-validator": "~1.0",
                 "behat/behat": "~3.0",
-                "composer/composer": "^1.10.22",
+                "composer/composer": "^2.7.8",
                 "dms/phpunit-arraysubset-asserts": "^0.4.0",
                 "doctrine/cache": "~1.4",
                 "ext-dom": "*",
                 "ext-openssl": "*",
                 "ext-pcntl": "*",
                 "ext-sockets": "*",
-                "nette/neon": "^2.3",
-                "paragonie/random_compat": ">= 2",
                 "phpunit/phpunit": "^5.6.3 || ^8.5 || ^9.5",
-                "psr/cache": "^1.0 || ^2.0 || ^3.0",
-                "psr/simple-cache": "^1.0 || ^2.0 || ^3.0",
-                "sebastian/comparator": "^1.2.3 || ^4.0",
-                "yoast/phpunit-polyfills": "^1.0"
+                "psr/cache": "^2.0 || ^3.0",
+                "psr/simple-cache": "^2.0 || ^3.0",
+                "sebastian/comparator": "^1.2.3 || ^4.0 || ^5.0",
+                "symfony/filesystem": "^v6.4.0 || ^v7.1.0",
+                "yoast/phpunit-polyfills": "^2.0"
             },
             "suggest": {
                 "aws/aws-php-sns-message-validator": "To validate incoming SNS notifications",
@@ -152,11 +151,11 @@
                 "sdk"
             ],
             "support": {
-                "forum": "https://forums.aws.amazon.com/forum.jspa?forumID=80",
+                "forum": "https://github.com/aws/aws-sdk-php/discussions",
                 "issues": "https://github.com/aws/aws-sdk-php/issues",
-                "source": "https://github.com/aws/aws-sdk-php/tree/3.337.3"
+                "source": "https://github.com/aws/aws-sdk-php/tree/3.342.13"
             },
-            "time": "2025-01-21T19:10:05+00:00"
+            "time": "2025-03-25T18:06:01+00:00"
         },
         {
             "name": "doctrine/annotations",
@@ -1899,16 +1898,16 @@
         },
         {
             "name": "psr/http-message",
-            "version": "1.1",
+            "version": "2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-fig/http-message.git",
-                "reference": "cb6ce4845ce34a8ad9e68117c10ee90a29919eba"
+                "reference": "402d35bcb92c70c026d1a6a9883f06b2ead23d71"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-fig/http-message/zipball/cb6ce4845ce34a8ad9e68117c10ee90a29919eba",
-                "reference": "cb6ce4845ce34a8ad9e68117c10ee90a29919eba",
+                "url": "https://api.github.com/repos/php-fig/http-message/zipball/402d35bcb92c70c026d1a6a9883f06b2ead23d71",
+                "reference": "402d35bcb92c70c026d1a6a9883f06b2ead23d71",
                 "shasum": ""
             },
             "require": {
@@ -1917,7 +1916,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.1.x-dev"
+                    "dev-master": "2.0.x-dev"
                 }
             },
             "autoload": {
@@ -1932,7 +1931,7 @@
             "authors": [
                 {
                     "name": "PHP-FIG",
-                    "homepage": "http://www.php-fig.org/"
+                    "homepage": "https://www.php-fig.org/"
                 }
             ],
             "description": "Common interface for HTTP messages",
@@ -1946,9 +1945,9 @@
                 "response"
             ],
             "support": {
-                "source": "https://github.com/php-fig/http-message/tree/1.1"
+                "source": "https://github.com/php-fig/http-message/tree/2.0"
             },
-            "time": "2023-04-04T09:50:52+00:00"
+            "time": "2023-04-04T09:54:51+00:00"
         },
         {
             "name": "psr/http-server-handler",
@@ -2159,16 +2158,16 @@
         },
         {
             "name": "slim/http",
-            "version": "1.3",
+            "version": "1.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/slimphp/Slim-Http.git",
-                "reference": "9542edbe469b7c0f3084c2467efea972387f5beb"
+                "reference": "a8def7b8e9eabd0cdc21654ad4a82606942e066a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/slimphp/Slim-Http/zipball/9542edbe469b7c0f3084c2467efea972387f5beb",
-                "reference": "9542edbe469b7c0f3084c2467efea972387f5beb",
+                "url": "https://api.github.com/repos/slimphp/Slim-Http/zipball/a8def7b8e9eabd0cdc21654ad4a82606942e066a",
+                "reference": "a8def7b8e9eabd0cdc21654ad4a82606942e066a",
                 "shasum": ""
             },
             "require": {
@@ -2176,18 +2175,19 @@
                 "ext-json": "*",
                 "ext-libxml": "*",
                 "ext-simplexml": "*",
-                "php": "^7.4 || ^8.0",
+                "php": "^8.0",
                 "psr/http-factory": "^1.0",
-                "psr/http-message": "^1.0"
+                "psr/http-message": "^1.1 || ^2.0"
             },
             "require-dev": {
-                "adriansuter/php-autoload-override": "^1.3",
-                "laminas/laminas-diactoros": "^2.17",
-                "nyholm/psr7": "^1.5",
-                "php-http/psr7-integration-tests": "dev-master",
-                "phpstan/phpstan": "^1.8",
-                "phpunit/phpunit": "^9.5",
-                "squizlabs/php_codesniffer": "^3.7"
+                "adriansuter/php-autoload-override": "^1.4",
+                "doctrine/instantiator": "^1.3.1",
+                "laminas/laminas-diactoros": "^3.1.0",
+                "nyholm/psr7": "^1.8.1",
+                "php-http/psr7-integration-tests": "^1.3.0",
+                "phpstan/phpstan": "^1.10",
+                "phpunit/phpunit": "^9.6",
+                "squizlabs/php_codesniffer": "^3.9"
             },
             "type": "library",
             "autoload": {
@@ -2230,9 +2230,9 @@
             ],
             "support": {
                 "issues": "https://github.com/slimphp/Slim-Http/issues",
-                "source": "https://github.com/slimphp/Slim-Http/tree/1.3"
+                "source": "https://github.com/slimphp/Slim-Http/tree/1.4.0"
             },
-            "time": "2022-09-14T15:45:07+00:00"
+            "time": "2024-06-24T18:27:41+00:00"
         },
         {
             "name": "slim/php-view",
@@ -2292,40 +2292,40 @@
         },
         {
             "name": "slim/psr7",
-            "version": "1.6.1",
+            "version": "1.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/slimphp/Slim-Psr7.git",
-                "reference": "72d2b2bac94ab4575d369f605dbfafbe168d3163"
+                "reference": "753e9646def5ff4db1a06e5cf4ef539bfd30f467"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/slimphp/Slim-Psr7/zipball/72d2b2bac94ab4575d369f605dbfafbe168d3163",
-                "reference": "72d2b2bac94ab4575d369f605dbfafbe168d3163",
+                "url": "https://api.github.com/repos/slimphp/Slim-Psr7/zipball/753e9646def5ff4db1a06e5cf4ef539bfd30f467",
+                "reference": "753e9646def5ff4db1a06e5cf4ef539bfd30f467",
                 "shasum": ""
             },
             "require": {
                 "fig/http-message-util": "^1.1.5",
-                "php": "^7.4 || ^8.0",
-                "psr/http-factory": "^1.0",
-                "psr/http-message": "^1.0",
+                "php": "^8.0",
+                "psr/http-factory": "^1.1",
+                "psr/http-message": "^1.0 || ^2.0",
                 "ralouphie/getallheaders": "^3.0",
-                "symfony/polyfill-php80": "^1.26"
+                "symfony/polyfill-php80": "^1.29"
             },
             "provide": {
-                "psr/http-factory-implementation": "1.0",
-                "psr/http-message-implementation": "1.0"
+                "psr/http-factory-implementation": "^1.0",
+                "psr/http-message-implementation": "^1.0 || ^2.0"
             },
             "require-dev": {
-                "adriansuter/php-autoload-override": "^1.3",
+                "adriansuter/php-autoload-override": "^1.4",
                 "ext-json": "*",
-                "http-interop/http-factory-tests": "^0.9.0",
-                "php-http/psr7-integration-tests": "1.1",
-                "phpspec/prophecy": "^1.15",
-                "phpspec/prophecy-phpunit": "^2.0",
-                "phpstan/phpstan": "^1.8",
-                "phpunit/phpunit": "^9.5",
-                "squizlabs/php_codesniffer": "^3.7"
+                "http-interop/http-factory-tests": "^1.1.0",
+                "php-http/psr7-integration-tests": "1.3.0",
+                "phpspec/prophecy": "^1.19",
+                "phpspec/prophecy-phpunit": "^2.2",
+                "phpstan/phpstan": "^1.11",
+                "phpunit/phpunit": "^9.6",
+                "squizlabs/php_codesniffer": "^3.10"
             },
             "type": "library",
             "autoload": {
@@ -2368,9 +2368,9 @@
             ],
             "support": {
                 "issues": "https://github.com/slimphp/Slim-Psr7/issues",
-                "source": "https://github.com/slimphp/Slim-Psr7/tree/1.6.1"
+                "source": "https://github.com/slimphp/Slim-Psr7/tree/1.7.0"
             },
-            "time": "2023-04-17T16:02:20+00:00"
+            "time": "2024-06-08T14:48:17+00:00"
         },
         {
             "name": "slim/slim",
@@ -2717,25 +2717,26 @@
         },
         {
             "name": "ulrichsg/getopt-php",
-            "version": "v3.4.0",
+            "version": "v4.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/getopt-php/getopt-php.git",
-                "reference": "9121d7c2c51a6a59ee407c49a13b4d8cfae71075"
+                "reference": "9313ecde04f7bed262716e3a4d32a5e2cea3ffad"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/getopt-php/getopt-php/zipball/9121d7c2c51a6a59ee407c49a13b4d8cfae71075",
-                "reference": "9121d7c2c51a6a59ee407c49a13b4d8cfae71075",
+                "url": "https://api.github.com/repos/getopt-php/getopt-php/zipball/9313ecde04f7bed262716e3a4d32a5e2cea3ffad",
+                "reference": "9313ecde04f7bed262716e3a4d32a5e2cea3ffad",
                 "shasum": ""
             },
             "require": {
                 "ext-mbstring": "*",
-                "php": ">=5.4.0"
+                "php": "^7.1 || ^8.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "^4.8",
-                "squizlabs/php_codesniffer": "^2.7"
+                "phpunit/phpunit": "*",
+                "squizlabs/php_codesniffer": "^3.5.8",
+                "tflori/phpunit-printer": "*"
             },
             "type": "library",
             "autoload": {
@@ -2757,13 +2758,13 @@
                     "email": "thflori@gmail.com"
                 }
             ],
-            "description": "Command line arguments parser for PHP 5.4 - 7.3",
+            "description": "Command line arguments parser for PHP 7.1 and above",
             "homepage": "http://getopt-php.github.io/getopt-php",
             "support": {
                 "issues": "https://github.com/getopt-php/getopt-php/issues",
-                "source": "https://github.com/getopt-php/getopt-php/tree/v3.4.0"
+                "source": "https://github.com/getopt-php/getopt-php/tree/v4.0.4"
             },
-            "time": "2020-07-14T06:09:04+00:00"
+            "time": "2025-02-11T14:42:04+00:00"
         },
         {
             "name": "websk/php-cache",
@@ -2803,16 +2804,16 @@
         },
         {
             "name": "websk/php-captcha",
-            "version": "2.1.1",
+            "version": "2.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/websk/php-captcha.git",
-                "reference": "3d69f72eb6173b9c9393d5a8a8ddbcc6457c8c5b"
+                "reference": "a6afd0f5d784d2d52246a7583262b3447d8de930"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/websk/php-captcha/zipball/3d69f72eb6173b9c9393d5a8a8ddbcc6457c8c5b",
-                "reference": "3d69f72eb6173b9c9393d5a8a8ddbcc6457c8c5b",
+                "url": "https://api.github.com/repos/websk/php-captcha/zipball/a6afd0f5d784d2d52246a7583262b3447d8de930",
+                "reference": "a6afd0f5d784d2d52246a7583262b3447d8de930",
                 "shasum": ""
             },
             "require": {
@@ -2820,8 +2821,8 @@
                 "ext-mbstring": "*",
                 "php": "^8.3",
                 "slim/slim": "4.14.*",
-                "websk/php-slim": "2.2.*",
-                "websk/php-utils": "2.0.*"
+                "websk/php-slim": "2.3.*",
+                "websk/php-utils": "2.1.*"
             },
             "type": "library",
             "autoload": {
@@ -2832,9 +2833,9 @@
             "notification-url": "https://packagist.org/downloads/",
             "support": {
                 "issues": "https://github.com/websk/php-captcha/issues",
-                "source": "https://github.com/websk/php-captcha/tree/2.1.1"
+                "source": "https://github.com/websk/php-captcha/tree/2.3.0"
             },
-            "time": "2025-03-15T16:06:16+00:00"
+            "time": "2025-03-26T06:02:01+00:00"
         },
         {
             "name": "websk/php-config",
@@ -2870,22 +2871,23 @@
         },
         {
             "name": "websk/php-console",
-            "version": "2.1.0",
+            "version": "2.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/websk/php-console.git",
-                "reference": "99c56df5389ee89a57792c124e490c86079d8660"
+                "reference": "3a4f7b2593b9cfb16c61128f960f3691fe49a30f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/websk/php-console/zipball/99c56df5389ee89a57792c124e490c86079d8660",
-                "reference": "99c56df5389ee89a57792c124e490c86079d8660",
+                "url": "https://api.github.com/repos/websk/php-console/zipball/3a4f7b2593b9cfb16c61128f960f3691fe49a30f",
+                "reference": "3a4f7b2593b9cfb16c61128f960f3691fe49a30f",
                 "shasum": ""
             },
             "require": {
                 "php": "^8.3",
+                "slim/psr7": "1.7.0",
                 "slim/slim": "4.14.*",
-                "ulrichsg/getopt-php": "^3.0"
+                "ulrichsg/getopt-php": "^v4.0.4"
             },
             "type": "library",
             "autoload": {
@@ -2896,22 +2898,22 @@
             "notification-url": "https://packagist.org/downloads/",
             "support": {
                 "issues": "https://github.com/websk/php-console/issues",
-                "source": "https://github.com/websk/php-console/tree/2.1.0"
+                "source": "https://github.com/websk/php-console/tree/2.2.0"
             },
-            "time": "2025-02-09T11:48:08+00:00"
+            "time": "2025-03-25T05:49:27+00:00"
         },
         {
             "name": "websk/php-crud",
-            "version": "2.1.0",
+            "version": "2.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/websk/php-crud.git",
-                "reference": "4ac666b00873c98e4e1bfdb9dfc69a549ea37482"
+                "reference": "0138c89c58bddcfc4fa802db3cb4b669f5dd7b66"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/websk/php-crud/zipball/4ac666b00873c98e4e1bfdb9dfc69a549ea37482",
-                "reference": "4ac666b00873c98e4e1bfdb9dfc69a549ea37482",
+                "url": "https://api.github.com/repos/websk/php-crud/zipball/0138c89c58bddcfc4fa802db3cb4b669f5dd7b66",
+                "reference": "0138c89c58bddcfc4fa802db3cb4b669f5dd7b66",
                 "shasum": ""
             },
             "require": {
@@ -2923,12 +2925,12 @@
                 "slim/slim": "4.14.*",
                 "websk/php-cache": "2.2.*",
                 "websk/php-config": "2.0.*",
-                "websk/php-db": "2.0.*",
+                "websk/php-db": "2.1.*",
                 "websk/php-entity": "2.2.*",
                 "websk/php-filemanager": "2.0.*",
-                "websk/php-slim": "2.2.*",
-                "websk/php-utils": "2.0.*",
-                "websk/php-view": "2.2.*"
+                "websk/php-slim": "2.3.*",
+                "websk/php-utils": "2.1.*",
+                "websk/php-view": "2.3.*"
             },
             "type": "library",
             "autoload": {
@@ -2940,30 +2942,28 @@
             "description": "CRUD",
             "support": {
                 "issues": "https://github.com/websk/php-crud/issues",
-                "source": "https://github.com/websk/php-crud/tree/2.1.0"
+                "source": "https://github.com/websk/php-crud/tree/2.3.0"
             },
-            "time": "2025-03-23T15:49:56+00:00"
+            "time": "2025-03-26T06:14:59+00:00"
         },
         {
             "name": "websk/php-db",
-            "version": "2.0.0",
+            "version": "2.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/websk/php-db.git",
-                "reference": "dbf5019e61b6bfacf36f94fee78e299ae7e8aedf"
+                "reference": "4d867ad132ddde644c5e40e7cf5797153be846b6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/websk/php-db/zipball/dbf5019e61b6bfacf36f94fee78e299ae7e8aedf",
-                "reference": "dbf5019e61b6bfacf36f94fee78e299ae7e8aedf",
+                "url": "https://api.github.com/repos/websk/php-db/zipball/4d867ad132ddde644c5e40e7cf5797153be846b6",
+                "reference": "4d867ad132ddde644c5e40e7cf5797153be846b6",
                 "shasum": ""
             },
             "require": {
                 "ext-pdo": "*",
                 "php": "^8.3",
-                "ulrichsg/getopt-php": "^3.0",
-                "websk/php-config": "2.0.*",
-                "websk/php-utils": "2.0.*"
+                "ulrichsg/getopt-php": "^v4.0.4"
             },
             "bin": [
                 "bin/websk_db_migration.php"
@@ -2978,30 +2978,30 @@
             "description": "DB Service",
             "support": {
                 "issues": "https://github.com/websk/php-db/issues",
-                "source": "https://github.com/websk/php-db/tree/2.0.0"
+                "source": "https://github.com/websk/php-db/tree/2.1.0"
             },
-            "time": "2024-08-22T07:54:54+00:00"
+            "time": "2025-03-25T05:30:14+00:00"
         },
         {
             "name": "websk/php-entity",
-            "version": "2.2.1",
+            "version": "2.2.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/websk/php-entity.git",
-                "reference": "a08bfd346cb7c983d135105e37a1298ebde486d9"
+                "reference": "9988880c8042ff530082f57ba0b62e5730d34d89"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/websk/php-entity/zipball/a08bfd346cb7c983d135105e37a1298ebde486d9",
-                "reference": "a08bfd346cb7c983d135105e37a1298ebde486d9",
+                "url": "https://api.github.com/repos/websk/php-entity/zipball/9988880c8042ff530082f57ba0b62e5730d34d89",
+                "reference": "9988880c8042ff530082f57ba0b62e5730d34d89",
                 "shasum": ""
             },
             "require": {
                 "ext-pdo": "*",
                 "php": "^8.3",
                 "websk/php-cache": "2.2.*",
-                "websk/php-db": "2.0.*",
-                "websk/php-utils": "2.0.*"
+                "websk/php-db": "2.1.*",
+                "websk/php-utils": "2.1.*"
             },
             "type": "library",
             "autoload": {
@@ -3013,9 +3013,9 @@
             "description": "PHP Entity",
             "support": {
                 "issues": "https://github.com/websk/php-entity/issues",
-                "source": "https://github.com/websk/php-entity/tree/2.2.1"
+                "source": "https://github.com/websk/php-entity/tree/2.2.2"
             },
-            "time": "2025-03-15T16:53:32+00:00"
+            "time": "2025-03-25T05:53:03+00:00"
         },
         {
             "name": "websk/php-filemanager",
@@ -3054,23 +3054,23 @@
         },
         {
             "name": "websk/php-slim",
-            "version": "2.2.1",
+            "version": "2.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/websk/php-slim.git",
-                "reference": "459df625c02d0e31db24a7567563c92890cdd8d7"
+                "reference": "d07419f26368ec358746008186cf9ca2bf66b8a5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/websk/php-slim/zipball/459df625c02d0e31db24a7567563c92890cdd8d7",
-                "reference": "459df625c02d0e31db24a7567563c92890cdd8d7",
+                "url": "https://api.github.com/repos/websk/php-slim/zipball/d07419f26368ec358746008186cf9ca2bf66b8a5",
+                "reference": "d07419f26368ec358746008186cf9ca2bf66b8a5",
                 "shasum": ""
             },
             "require": {
                 "fig/http-message-util": "1.1.5",
                 "php": "^8.3",
-                "slim/http": "1.3.0",
-                "slim/psr7": "1.6.1",
+                "slim/http": "1.4.0",
+                "slim/psr7": "1.7.0",
                 "slim/slim": "4.14.*"
             },
             "type": "library",
@@ -3084,29 +3084,28 @@
             "homepage": "https://websk.ru/",
             "support": {
                 "issues": "https://github.com/websk/php-slim/issues",
-                "source": "https://github.com/websk/php-slim/tree/2.2.1"
+                "source": "https://github.com/websk/php-slim/tree/2.3.0"
             },
-            "time": "2025-03-15T15:56:13+00:00"
+            "time": "2025-03-26T05:57:35+00:00"
         },
         {
             "name": "websk/php-utils",
-            "version": "2.0.0",
+            "version": "2.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/websk/php-utils.git",
-                "reference": "ba0e4ab23f2e91f24769d2c74042e6b993724974"
+                "reference": "1fe69ffbf539aa62aa536b1ac11b09759f41e71e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/websk/php-utils/zipball/ba0e4ab23f2e91f24769d2c74042e6b993724974",
-                "reference": "ba0e4ab23f2e91f24769d2c74042e6b993724974",
+                "url": "https://api.github.com/repos/websk/php-utils/zipball/1fe69ffbf539aa62aa536b1ac11b09759f41e71e",
+                "reference": "1fe69ffbf539aa62aa536b1ac11b09759f41e71e",
                 "shasum": ""
             },
             "require": {
                 "ext-json": "*",
                 "ext-mbstring": "*",
-                "php": "^8.3",
-                "websk/php-config": "2.0.*"
+                "php": "^8.3"
             },
             "type": "library",
             "autoload": {
@@ -3118,22 +3117,22 @@
             "description": "PHP utils",
             "support": {
                 "issues": "https://github.com/websk/php-utils/issues",
-                "source": "https://github.com/websk/php-utils/tree/2.0.0"
+                "source": "https://github.com/websk/php-utils/tree/2.1.1"
             },
-            "time": "2024-08-08T07:42:18+00:00"
+            "time": "2025-03-25T05:39:40+00:00"
         },
         {
             "name": "websk/php-view",
-            "version": "2.2.1",
+            "version": "2.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/websk/php-view.git",
-                "reference": "f200ca2dadc29630c626519336ecb09df410a2f8"
+                "reference": "0979b176f31a57b5b1f96b265364591834222f22"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/websk/php-view/zipball/f200ca2dadc29630c626519336ecb09df410a2f8",
-                "reference": "f200ca2dadc29630c626519336ecb09df410a2f8",
+                "url": "https://api.github.com/repos/websk/php-view/zipball/0979b176f31a57b5b1f96b265364591834222f22",
+                "reference": "0979b176f31a57b5b1f96b265364591834222f22",
                 "shasum": ""
             },
             "require": {
@@ -3141,8 +3140,8 @@
                 "php": "^8.3",
                 "slim/php-view": "3.4.*",
                 "websk/php-config": "2.0.*",
-                "websk/php-slim": "2.2.*",
-                "websk/php-utils": "2.0.*"
+                "websk/php-slim": "2.3.*",
+                "websk/php-utils": "2.1.*"
             },
             "type": "library",
             "autoload": {
@@ -3153,9 +3152,9 @@
             "notification-url": "https://packagist.org/downloads/",
             "support": {
                 "issues": "https://github.com/websk/php-view/issues",
-                "source": "https://github.com/websk/php-view/tree/2.2.1"
+                "source": "https://github.com/websk/php-view/tree/2.3.0"
             },
-            "time": "2025-03-15T16:02:17+00:00"
+            "time": "2025-03-26T06:03:42+00:00"
         }
     ],
     "packages-dev": [],
