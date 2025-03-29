@@ -210,7 +210,7 @@ class SessionService extends EntityService
             return false;
         }
 
-        $delta = null;
+        $delta = 0;
         if ($save_auth) {
             $delta = time() + Session::SESSION_LIFE_TIME;
         }
