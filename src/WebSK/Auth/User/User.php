@@ -48,7 +48,7 @@ class User extends Entity
     protected bool $confirm = false;
 
     const string _CONFIRM_CODE = 'confirm_code';
-    protected string $confirm_code;
+    protected string $confirm_code = '';
 
     const string _PHOTO = 'photo';
     protected string $photo = '';
