@@ -57,6 +57,8 @@ class RoleListAjaxHandler extends BaseHandler
             CRUDTable::FILTERS_POSITION_INLINE
         );
 
-        return $response->write($crud_table_obj->html($request));
+        $response->getBody()->write($crud_table_obj->html($request));
+
+        return $response;
     }
 }
