@@ -37,3 +37,6 @@ ALTER TABLE sessions ADD COLUMN `hostname` varchar(128) NOT NULL DEFAULT '' /* v
 ALTER TABLE sessions ADD COLUMN `timestamp` int(11) NOT NULL DEFAULT '0' /* 3094v0394044g */;
 ALTER TABLE sessions ADD UNIQUE KEY `session` (`session`) /* 34jv943j9j34 */;
 ALTER TABLE sessions ADD KEY `timestamp` (`timestamp`) /* wvjv-w9j0v9j34 */;
+UPDATE users SET created_at_ts = 0 WHERE created_at_ts IS NULL /* 3v948h39048g */;
+UPDATE users SET provider_uid = '' WHERE provider_uid IS NULL /* 3v948h39048g */;
+UPDATE users SET profile_url = '' WHERE profile_url IS NULL /* 3v948h39048g */;
