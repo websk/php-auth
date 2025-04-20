@@ -4,7 +4,6 @@ namespace WebSK\Auth\User;
 
 use PHPMailer\PHPMailer\PHPMailer;
 use WebSK\Auth\Auth;
-use WebSK\Auth\AuthConfig;
 use WebSK\FileManager\FileManager;
 use WebSK\Cache\CacheService;
 use WebSK\Entity\EntityService;
@@ -19,7 +18,11 @@ use WebSK\Utils\Filters;
  */
 class UserService extends EntityService
 {
-    const int PASSWORD_LENGTH = 12;
+    public const int PASSWORD_LENGTH = 12;
+    public const string PHOTO_STORAGE = 'files';
+    public const string PHOTO_DIR = 'user';
+    public const string PHOTO_DIR_INSIDE_STORAGE = 'images' . DIRECTORY_SEPARATOR . UserService::PHOTO_DIR;
+    public const string PHOTO_URL_RELATIVE_TO_SITE_ROOT = DIRECTORY_SEPARATOR . 'files' . DIRECTORY_SEPARATOR . UserService::PHOTO_DIR_INSIDE_STORAGE;
 
     protected RoleService $role_service;
 
@@ -110,16 +113,16 @@ class UserService extends EntityService
      */
     public function deletePhoto(User $user_obj): bool
     {
-        if (!$user_obj->getPhotoPath()) {
+        if (!$user_obj->getPhoto()) {
             return true;
         }
 
         $user_obj->setPhoto('');
         $this->save($user_obj);
 
-        $file_manager = new FileManager(AuthConfig::USER_PHOTO_STORAGE);
+        $file_manager = new FileManager(self::PHOTO_STORAGE);
 
-        $file_path = AuthConfig::USER_PHOTO_DIR . DIRECTORY_SEPARATOR . $user_obj->getPhoto();
+        $file_path = self::PHOTO_DIR_INSIDE_STORAGE . DIRECTORY_SEPARATOR . $user_obj->getPhoto();
         if ($file_manager->getStorage()->fileExists($file_path)) {
             try {
                 $file_manager->deleteFileIfExist($file_path);

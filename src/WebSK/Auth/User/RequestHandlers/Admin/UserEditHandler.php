@@ -80,10 +80,10 @@ class UserEditHandler extends BaseHandler
                     'Фото',
                     new CRUDFormWidgetUpload(
                         User::_PHOTO,
-                        AuthConfig::USER_PHOTO_STORAGE,
-                        AuthConfig::USER_PHOTO_DIR,
+                        UserService::PHOTO_STORAGE,
+                        UserService::PHOTO_DIR_INSIDE_STORAGE,
                         function(User $user_obj) {
-                            return $user_obj->getPhoto() ? AuthConfig::USER_PHOTO_FILES_DIR . DIRECTORY_SEPARATOR . $user_obj->getPhoto() : '';
+                            return $user_obj->getPhoto() ? UserService::PHOTO_URL_RELATIVE_TO_SITE_ROOT . DIRECTORY_SEPARATOR . $user_obj->getPhoto() : '';
                         },
                         $user_obj->getId() . '-' . time(),
                         CRUDFormWidgetUpload::FILE_TYPE_IMAGE

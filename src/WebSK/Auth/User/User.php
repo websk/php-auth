@@ -12,8 +12,6 @@ class User extends Entity
 {
     const string DB_TABLE_NAME = 'users';
 
-    const string PHOTO_DIR = 'user';
-
     const string _NAME = 'name';
     protected string $name = '';
 
@@ -223,19 +221,6 @@ class User extends Entity
     public function setPhoto(string $photo): void
     {
         $this->photo = $photo;
-    }
-
-    /**
-     * Путь к фото
-     * @return string
-     */
-    public function getPhotoPath(): string
-    {
-        if (!$this->getPhoto()) {
-            return '';
-        }
-
-        return self::PHOTO_DIR . DIRECTORY_SEPARATOR . $this->getPhoto();
     }
 
     /**
