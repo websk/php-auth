@@ -12,8 +12,14 @@ class User extends Entity
 {
     const string DB_TABLE_NAME = 'users';
 
+    const string _EMAIL = 'email';
+    protected string $email;
+
+    const string _PASSW = 'passw';
+    protected string $passw;
+
     const string _NAME = 'name';
-    protected string $name = '';
+    protected string $name;
 
     const string _FIRST_NAME = 'first_name';
     protected ?string $first_name = null;
@@ -21,38 +27,32 @@ class User extends Entity
     const string _LAST_NAME = 'last_name';
     protected ?string $last_name = null;
 
+    const string _PHOTO = 'photo';
+    protected string $photo = '';
+
     const string _BIRTHDAY = 'birthday';
-    protected string $birthday = '';
+    protected ?string $birthday = null;
 
     const string _PHONE = 'phone';
-    protected string $phone = '';
-
-    const string _EMAIL = 'email';
-    protected string $email = '';
+    protected ?string $phone = null;
 
     const string _CITY = 'city';
-    protected string $city = '';
+    protected ?string $city = null;
 
     const string _ADDRESS = 'address';
-    protected string $address = '';
+    protected ?string $address = null;
 
     const string _COMPANY = 'company';
-    protected string $company = '';
+    protected ?string $company = null;
 
     const string _COMMENT = 'comment';
     protected string $comment = '';
 
-    const string _IS_CONFIRM = 'confirm';
+    const string _CONFIRM = 'confirm';
     protected bool $confirm = false;
 
     const string _CONFIRM_CODE = 'confirm_code';
     protected string $confirm_code = '';
-
-    const string _PHOTO = 'photo';
-    protected string $photo = '';
-
-    const string _PASSW = 'passw';
-    protected string $passw;
 
     const string _PROVIDER = 'provider';
     protected string $provider = '';
@@ -62,6 +62,38 @@ class User extends Entity
 
     const string _PROFILE_URL = 'profile_url';
     protected string $profile_url = '';
+
+    /**
+     * @return string
+     */
+    public function getEmail(): string
+    {
+        return $this->email;
+    }
+
+    /**
+     * @param string $email
+     */
+    public function setEmail(string $email): void
+    {
+        $this->email = $email;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPassw(): string
+    {
+        return $this->passw;
+    }
+
+    /**
+     * @param string $passw
+     */
+    public function setPassw(string $passw): void
+    {
+        $this->passw = $passw;
+    }
 
     /**
      * @return string
@@ -88,7 +120,7 @@ class User extends Entity
     }
 
     /**
-     * @param null|string $first_name
+     * @param ?string $first_name
      */
     public function setFirstName(?string $first_name): void
     {
@@ -96,7 +128,7 @@ class User extends Entity
     }
 
     /**
-     * @return null|string
+     * @return ?string
      */
     public function getLastName(): ?string
     {
@@ -104,7 +136,7 @@ class User extends Entity
     }
 
     /**
-     * @param null|string $last_name
+     * @param ?string $last_name
      */
     public function setLastName(?string $last_name): void
     {
@@ -114,79 +146,79 @@ class User extends Entity
     /**
      * @return string
      */
-    public function getBirthday(): string
+    public function getPhoto(): string
+    {
+        return $this->photo;
+    }
+
+    /**
+     * @param string $photo
+     */
+    public function setPhoto(string $photo): void
+    {
+        $this->photo = $photo;
+    }
+
+    /**
+     * @return ?string
+     */
+    public function getBirthday(): ?string
     {
         return $this->birthday;
     }
 
     /**
-     * @param string $birthday
+     * @param ?string $birthday
      */
-    public function setBirthday(string $birthday): void
+    public function setBirthday(?string $birthday): void
     {
         $this->birthday = $birthday;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getPhone(): string
+    public function getPhone(): ?string
     {
         return $this->phone;
     }
 
     /**
-     * @param string $phone
+     * @param ?string $phone
      */
-    public function setPhone(string $phone): void
+    public function setPhone(?string $phone): void
     {
         $this->phone = $phone;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getEmail(): string
-    {
-        return $this->email;
-    }
-
-    /**
-     * @param string $email
-     */
-    public function setEmail(string $email): void
-    {
-        $this->email = $email;
-    }
-
-    /**
-     * @return string
-     */
-    public function getCity(): string
+    public function getCity(): ?string
     {
         return $this->city;
     }
 
     /**
-     * @param string $city
+     * @param ?string $city
      */
-    public function setCity(string $city): void
+    public function setCity(?string $city): void
     {
         $this->city = $city;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getAddress(): string
+    public function getAddress(): ?string
     {
         return $this->address;
     }
 
     /**
-     * @param string $address
+     * @param ?string $address
      */
-    public function setAddress(string $address): void
+    public function setAddress(?string $address): void
     {
         $this->address = $address;
     }
@@ -208,51 +240,19 @@ class User extends Entity
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getPhoto(): string
-    {
-        return $this->photo;
-    }
-
-    /**
-     * @param string $photo
-     */
-    public function setPhoto(string $photo): void
-    {
-        $this->photo = $photo;
-    }
-
-    /**
-     * @return string
-     */
-    public function getCompany(): string
+    public function getCompany(): ?string
     {
         return $this->company;
     }
 
     /**
-     * @param string $company
+     * @param ?string $company
      */
-    public function setCompany(string $company): void
+    public function setCompany(?string $company): void
     {
         $this->company = $company;
-    }
-
-    /**
-     * @return string
-     */
-    public function getPassw(): string
-    {
-        return $this->passw;
-    }
-
-    /**
-     * @param string $passw
-     */
-    public function setPassw(string $passw): void
-    {
-        $this->passw = $passw;
     }
 
     /**

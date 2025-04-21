@@ -45,9 +45,10 @@ class AuthDemoApp extends App
         AuthServiceProvider::register($container);
         UserServiceProvider::register($container);
 
-        $this->registerRoutes($container);
+        $this->registerRoutes();
 
-        $error_middleware = $this->addErrorMiddleware(true, true, true);
+        $display_error_details = $container->get('settings.displayErrorDetails');
+        $error_middleware = $this->addErrorMiddleware($display_error_details, true, true);
         $error_middleware->setDefaultErrorHandler(ErrorHandler::class);
     }
 
@@ -58,16 +59,12 @@ class AuthDemoApp extends App
     {
         $route_collector = $this->getRouteCollector();
         $route_collector->setDefaultInvocationStrategy($container->get(InvocationStrategyInterface::class));
-
-        //$route_parser = $this->getRouteCollector()->getRouteParser();
-        //$this->getContainer()->set(RouteParserInterface::class, $route_parser);
-
         $route_parser = $route_collector->getRouteParser();
 
         $container->set(RouteParserInterface::class, $route_parser);
     }
 
-    protected function registerRoutes(ContainerInterface $container): void
+    protected function registerRoutes(): void
     {
         // Demo routing. Redirects
         $this->get('/', function (ServerRequestInterface $request, ResponseInterface $response) {

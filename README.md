@@ -78,4 +78,10 @@ composer require websk/php-auth
   docker compose exec php-fpm php vendor/bin/websk_db_migration.php migrations:migration_handle
   ```
 
+* Создаем пользователя для входа в админку
+
+  ```shell
+  docker compose exec php-fpm php bin/websk_auth_create_user.php auth:create_user
+  ```
+
 * open `https://php-auth.devbox`

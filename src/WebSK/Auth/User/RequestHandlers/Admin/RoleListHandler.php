@@ -42,11 +42,11 @@ class RoleListHandler extends BaseHandler
         $crud_table_obj = $this->crud_service->createTable(
             Role::class,
             $this->crud_service->createForm(
-                'user_create_rand435345',
+                'user_create',
                 new Role(),
                 [
-                    new CRUDFormRow('Название', new CRUDFormWidgetInput(Role::_NAME)),
-                    new CRUDFormRow('Обозначение', new CRUDFormWidgetInput(Role::_DESIGNATION)),
+                    new CRUDFormRow('Название', new CRUDFormWidgetInput(Role::_NAME, false, true)),
+                    new CRUDFormRow('Обозначение', new CRUDFormWidgetInput(Role::_DESIGNATION, false, true)),
                 ],
                 function(Role $role_obj) {
                     return $this->urlFor(UserRoutes::ROUTE_NAME_ADMIN_ROLE_EDIT, ['role_id' => $role_obj->getId()]);
@@ -73,7 +73,7 @@ class RoleListHandler extends BaseHandler
                 new CRUDTableFilterLikeInline(self::FILTER_NAME, 'Название', Role::_NAME),
             ],
             Role::_NAME,
-            'roles_list_324324',
+            'roles_list',
             CRUDTable::FILTERS_POSITION_INLINE
         );
 

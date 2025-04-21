@@ -61,7 +61,7 @@ class RoleEditHandler extends BaseHandler
         }
 
         $crud_form = $this->crud_service->createForm(
-            'role_edit_rand3453245',
+            'role_edit',
             $role_obj,
             [
                 new CRUDFormRow(

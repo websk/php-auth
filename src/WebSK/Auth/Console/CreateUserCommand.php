@@ -19,10 +19,10 @@ use WebSK\Auth\User\UserService;
  */
 class CreateUserCommand extends Command
 {
-    const NAME = 'auth:create_user';
+    const string NAME = 'auth:create_user';
 
-    const OPTION_EMAIL = 'email';
-    const OPTION_PASSWORD = 'password';
+    const string OPTION_EMAIL = 'email';
+    const string OPTION_PASSWORD = 'password';
 
     protected UserService $user_service;
 
@@ -47,7 +47,7 @@ class CreateUserCommand extends Command
     /**
      * @param GetOpt $get_opt
      */
-    public function execute(GetOpt $get_opt)
+    public function execute(GetOpt $get_opt): void
     {
         $email = $get_opt->getOption(self::OPTION_EMAIL);
         $password = $get_opt->getOption(self::OPTION_PASSWORD);

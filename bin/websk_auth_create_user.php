@@ -2,6 +2,8 @@
 <?php
 
 use GetOpt\GetOpt;
+use Jgut\Slim\PHPDI\Configuration;
+use Jgut\Slim\PHPDI\ContainerBuilder;
 use WebSK\Auth\AuthServiceProvider;
 use WebSK\Auth\Console\CreateUserCommand;
 use WebSK\Auth\User\UserRoleService;
@@ -46,11 +48,14 @@ foreach ($files as $file) {
 }
 Assert::assert(isset($config), 'Empty config');
 
+$configuration = new Configuration();
+$configuration->setDefinitions([$config]);
+$configuration->setUseAnnotations(true);
+
+$container = ContainerBuilder::build($configuration);
 ConfWrapper::setConfig($config['settings']);
 
-$app = new ConsoleApp($config);
-
-$container = $app->getContainer();
+$app = new ConsoleApp($container);
 
 CacheServiceProvider::register($container);
 AuthServiceProvider::register($container);

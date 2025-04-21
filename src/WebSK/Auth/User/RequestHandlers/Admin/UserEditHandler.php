@@ -70,7 +70,7 @@ class UserEditHandler extends BaseHandler
                 new CRUDFormRow('Имя', new CRUDFormWidgetInput(User::_FIRST_NAME)),
                 new CRUDFormRow('Фамилия', new CRUDFormWidgetInput(User::_LAST_NAME)),
                 new CRUDFormRow('Email', new CRUDFormWidgetInput(User::_EMAIL, false, true)),
-                new CRUDFormRow('Регистрация подтверждена', new CRUDFormWidgetRadios(User::_IS_CONFIRM, [0 => 'Нет', 1 =>  'Да'])),
+                new CRUDFormRow('Регистрация подтверждена', new CRUDFormWidgetRadios(User::_CONFIRM, [0 => 'Нет', 1 =>  'Да'])),
                 new CRUDFormRow('Дата рождения', new CRUDFormWidgetInput(User::_BIRTHDAY), '(дд.мм.гггг)'),
                 new CRUDFormRow('Телефон', new CRUDFormWidgetInput(User::_PHONE)),
                 new CRUDFormRow('Город', new CRUDFormWidgetInput(User::_CITY)),

@@ -40,3 +40,6 @@ ALTER TABLE sessions ADD KEY `timestamp` (`timestamp`) /* wvjv-w9j0v9j34 */;
 UPDATE users SET created_at_ts = 0 WHERE created_at_ts IS NULL /* 3v948h39048g */;
 UPDATE users SET provider_uid = '' WHERE provider_uid IS NULL /* 3v948h39048g */;
 UPDATE users SET profile_url = '' WHERE profile_url IS NULL /* 3v948h39048g */;
+UPDATE users SET confirm_code = '' WHERE confirm_code is NULL /* 3v948h39048g */;
+ALTER TABLE roles CHANGE COLUMN `name` `name` varchar(100) NOT NULL /* 34r34r432rr2r */;
+ALTER TABLE roles CHANGE COLUMN `designation` `designation` varchar(100) NOT NULL /* 43r23r234f43fg */;

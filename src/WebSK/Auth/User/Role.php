@@ -15,10 +15,10 @@ class Role extends Entity
     const int ADMIN_ROLE_ID = 1;
 
     const string _NAME = 'name';
-    protected string $name = '';
+    protected string $name;
 
     const string _DESIGNATION = 'designation';
-    protected string $designation = '';
+    protected string $designation;
 
     /**
      * @return string
