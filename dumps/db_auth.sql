@@ -43,3 +43,4 @@ UPDATE users SET profile_url = '' WHERE profile_url IS NULL /* 3v948h39048g */;
 UPDATE users SET confirm_code = '' WHERE confirm_code is NULL /* 3v948h39048g */;
 ALTER TABLE roles CHANGE COLUMN `name` `name` varchar(100) NOT NULL /* 34r34r432rr2r */;
 ALTER TABLE roles CHANGE COLUMN `designation` `designation` varchar(100) NOT NULL /* 43r23r234f43fg */;
+UPDATE users SET comment = '' WHERE comment is NULL /* c3084hv034v */;
