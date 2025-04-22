@@ -14,13 +14,13 @@ $user_obj = new User();
         <div class="form-group">
             <label class="col-md-4 control-label">Имя на сайте</label>
             <div class="col-md-8">
-                <input type="text" name="name" value="<?= $user_obj->getName() ?>" class="form-control">
+                <input type="text" name="name" value="" class="form-control">
             </div>
         </div>
         <div class="form-group">
             <label class="col-md-4 control-label">E-mail</label>
             <div class="col-md-8">
-                <input type="text" name="email" value="<?= $user_obj->getEmail() ?>" class="form-control">
+                <input type="text" name="email" value="" class="form-control">
             </div>
         </div>
         <div>
