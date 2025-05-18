@@ -9,7 +9,7 @@ use WebSK\Cache\CacheService;
 use WebSK\Entity\EntityService;
 use WebSK\Entity\InterfaceEntity;
 use WebSK\Config\ConfWrapper;
-use WebSK\Utils\Filters;
+use WebSK\Utils\Sanitize;
 
 /**
  * Class UserService
@@ -231,10 +231,9 @@ class UserService extends EntityService
             $mail->CharSet = "utf-8";
             $mail->setFrom($site_email, $site_name);
             $mail->addAddress($user_obj->getEmail());
-            $mail->isHTML(true);
             $mail->Subject = $subject;
             $mail->Body = $mail_message;
-            $mail->AltBody = Filters::checkPlain($mail_message);
+            $mail->AltBody = Sanitize::sanitizeTagContent($mail_message);
             $mail->send();
         }
 
@@ -307,9 +306,7 @@ class UserService extends EntityService
     {
         $confirm_code = time() . uniqid();
 
-        $confirm_code = Auth::getHash($confirm_code);
-
-        return $confirm_code;
+        return Auth::getHash($confirm_code);
     }
 
     /**

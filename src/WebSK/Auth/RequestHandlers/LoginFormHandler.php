@@ -34,9 +34,7 @@ class LoginFormHandler extends BaseHandler
             )->withStatus(StatusCodeInterface::STATUS_FOUND);
         }
 
-        $content = '';
-
-        $content .= PhpRender::renderTemplateForModuleNamespace(
+        $content = PhpRender::renderTemplateForModuleNamespace(
             'WebSK' . DIRECTORY_SEPARATOR . 'Auth',
             'login_form.tpl.php'
         );

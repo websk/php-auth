@@ -16,12 +16,10 @@ class AuthComponents
      */
     public static function renderLoginForm(string $destination): string
     {
-        $content = PhpRender::renderTemplateForModuleNamespace(
+        return PhpRender::renderTemplateForModuleNamespace(
             'WebSK/Auth',
             'login_form_block.tpl.php',
             ['destination' => $destination]
         );
-
-        return $content;
     }
 }

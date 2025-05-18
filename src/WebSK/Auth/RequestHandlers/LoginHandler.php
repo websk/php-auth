@@ -31,7 +31,7 @@ class LoginHandler extends BaseHandler
                 ->withStatus(StatusCodeInterface::STATUS_FOUND);
         }
 
-        $save_auth = ((int)$request->getParam('save_auth') == 1) ? true : false;
+        $save_auth = (int)$request->getParam('save_auth') == 1;
         $is_authenticated = $this->session_service
             ->processAuthorization($request->getParam('email'), $request->getParam('password'), $save_auth, $message);
 

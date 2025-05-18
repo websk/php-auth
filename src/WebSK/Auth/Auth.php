@@ -31,16 +31,14 @@ class Auth extends Facade
 
     /**
      * Хеш пароля
-     * @param $password
+     * @param string $password
      * @return string
      */
     public static function getHash(string $password): string
     {
         $salt = AuthConfig::getSalt();
 
-        $hash = md5($salt . $password);
-
-        return $hash;
+        return md5($salt . $password);
     }
 
     /**
@@ -69,7 +67,6 @@ class Auth extends Facade
         $mail->CharSet = "utf-8";
         $mail->setFrom($site_email, $site_name);
         $mail->addAddress($email);
-        $mail->isHTML(true);
         $mail->Subject = $subject;
         $mail->Body = $mail_message;
         $mail->AltBody = Sanitize::sanitizeTagContent($mail_message);

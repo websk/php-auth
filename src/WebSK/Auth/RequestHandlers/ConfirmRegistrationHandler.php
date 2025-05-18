@@ -39,10 +39,10 @@ class ConfirmRegistrationHandler extends BaseHandler
             return $response->withHeader('Location', $destination)->withStatus(StatusCodeInterface::STATUS_FOUND);
         }
 
-        $user_obj = $user_service->getById($user_id);
+        $user_obj = $this->user_service->getById($user_id);
         $user_obj->setConfirm(true);
         $user_obj->setConfirmCode('');
-        $user_service->save($user_obj);
+        $this->user_service->save($user_obj);
 
         $message = 'Поздравляем! Процесс регистрации успешно завершен. Теперь вы можете войти на сайт.';
 
