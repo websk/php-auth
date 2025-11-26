@@ -55,7 +55,7 @@ class Auth extends Facade
         $confirm_url = $site_domain . Router::urlFor(AuthRoutes::ROUTE_NAME_AUTH_CONFIRM_REGISTRATION, ['confirm_code' => $confirm_code]);
 
         $mail_message = 'Здравствуйте, ' . $name . '!<br />';
-        $mail_message .= '<p>На сайте ' .  $site_domain . ' была создана регистрационная запись, в которой был указал ваш электронный адрес (e-mail).</p>';
+        $mail_message .= '<p>На сайте ' .  $site_domain . ' была создана регистрационная запись, в которой был указан ваш электронный адрес (e-mail).</p>';
         $mail_message .= '<p>Если вы не регистрировались на данном сайте, просто проигнорируйте это сообщение! Аккаунт будет автоматически удален через некоторое время.</p>';
         $mail_message .= '<p>Если это были вы, то для завершения процедуры регистрации, пожалуйста перейдите по ссылке <a href="' . $confirm_url .  '">' . $confirm_url .  '</a></p>';
 
