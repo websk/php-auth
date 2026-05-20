@@ -32,21 +32,21 @@ class ForgotPasswordHandler extends BaseHandler
         $destination = $request->getParam('destination', $this->urlFor(AuthRoutes::ROUTE_NAME_AUTH_FORGOT_PASSWORD_FORM));
 
         if (!$request->getParam('captcha')) {
-            return $response->withHeader('Location', $destination)->withStatus(StatusCodeInterface::STATUS_FOUND);
+            return $response->withHeader('Location', $destination)->withStatus(StatusCodeInterface::STATUS_TEMPORARY_REDIRECT);
         }
 
         if (!Captcha::checkWithMessage()) {
-            return $response->withHeader('Location', $destination)->withStatus(StatusCodeInterface::STATUS_FOUND);
+            return $response->withHeader('Location', $destination)->withStatus(StatusCodeInterface::STATUS_TEMPORARY_REDIRECT);
         }
 
         if (empty($email)) {
             Messages::setError('Ошибка! Не указан адрес электронной почты (Email).');
-            return $response->withHeader('Location', $destination)->withStatus(StatusCodeInterface::STATUS_FOUND);
+            return $response->withHeader('Location', $destination)->withStatus(StatusCodeInterface::STATUS_TEMPORARY_REDIRECT);
         }
 
         if (!$this->user_service->hasUserByEmail($email)) {
             Messages::setError('Ошибка! Пользователь с таким адресом электронной почты не зарегистрирован на сайте.');
-            return $response->withHeader('Location', $destination)->withStatus(StatusCodeInterface::STATUS_FOUND);
+            return $response->withHeader('Location', $destination)->withStatus(StatusCodeInterface::STATUS_TEMPORARY_REDIRECT);
         }
 
         $user_id = $this->user_service->getUserIdByEmail($email);
@@ -58,6 +58,6 @@ class ForgotPasswordHandler extends BaseHandler
         Messages::setMessage($message);
 
         return $response->withHeader('Location', $this->urlFor(AuthRoutes::ROUTE_NAME_AUTH_LOGIN_FORM))
-            ->withStatus(StatusCodeInterface::STATUS_FOUND);
+            ->withStatus(StatusCodeInterface::STATUS_TEMPORARY_REDIRECT);
     }
 }

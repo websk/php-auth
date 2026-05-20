@@ -45,12 +45,12 @@ class UserChangePasswordHandler extends BaseHandler
 
         if (!$new_password_first || !$new_password_second) {
             Messages::setError('Ошибка! Не заполнен пароль или подтверждение пароля');
-            return $response->withHeader('Location', $destination)->withStatus(StatusCodeInterface::STATUS_FOUND);
+            return $response->withHeader('Location', $destination)->withStatus(StatusCodeInterface::STATUS_TEMPORARY_REDIRECT);
         }
 
         if ($new_password_first != $new_password_second) {
             Messages::setError('Ошибка! Пароль не подтвержден, либо подтвержден неверно.');
-            return $response->withHeader('Location', $destination)->withStatus(StatusCodeInterface::STATUS_FOUND);
+            return $response->withHeader('Location', $destination)->withStatus(StatusCodeInterface::STATUS_TEMPORARY_REDIRECT);
         }
 
         $user_obj->setPassw(Auth::getHash($new_password_first));
@@ -58,6 +58,6 @@ class UserChangePasswordHandler extends BaseHandler
 
         Messages::setMessage('Пароль был успешно изменен');
 
-        return $response->withHeader('Location', $destination)->withStatus(StatusCodeInterface::STATUS_FOUND);
+        return $response->withHeader('Location', $destination)->withStatus(StatusCodeInterface::STATUS_TEMPORARY_REDIRECT);
     }
 }

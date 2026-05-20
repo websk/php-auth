@@ -28,7 +28,7 @@ class LoginHandler extends BaseHandler
     {
         if (is_null($request->getParam('email')) || is_null($request->getParam('password'))) {
             return $response->withHeader('Location', $this->urlFor(AuthRoutes::ROUTE_NAME_AUTH_LOGIN_FORM))
-                ->withStatus(StatusCodeInterface::STATUS_FOUND);
+                ->withStatus(StatusCodeInterface::STATUS_TEMPORARY_REDIRECT);
         }
 
         $save_auth = (int)$request->getParam('save_auth') == 1;
@@ -41,6 +41,6 @@ class LoginHandler extends BaseHandler
 
         $destination = $request->getParam('destination', '/');
 
-        return $response->withHeader('Location', $destination)->withStatus(StatusCodeInterface::STATUS_FOUND);
+        return $response->withHeader('Location', $destination)->withStatus(StatusCodeInterface::STATUS_TEMPORARY_REDIRECT);
     }
 }

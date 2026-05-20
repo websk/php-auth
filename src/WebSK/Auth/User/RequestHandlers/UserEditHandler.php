@@ -95,7 +95,8 @@ class UserEditHandler extends BaseHandler
             }
         } catch (\Exception $e) {
             Messages::setError($e->getMessage());
-            return $response->withHeader('Location', $this->urlFor(UserRoutes::ROUTE_NAME_USER_EDIT, ['user_id' => $user_id]))->withStatus(StatusCodeInterface::STATUS_FOUND);
+            return $response->withHeader('Location', $this->urlFor(UserRoutes::ROUTE_NAME_USER_EDIT, ['user_id' => $user_id]))
+                ->withStatus(StatusCodeInterface::STATUS_TEMPORARY_REDIRECT);
         }
 
         $content_html = $crud_form->html();

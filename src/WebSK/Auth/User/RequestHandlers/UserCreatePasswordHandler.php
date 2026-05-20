@@ -38,6 +38,6 @@ class UserCreatePasswordHandler extends BaseHandler
 
         Messages::setMessage('Новый пароль: ' . $new_password);
 
-        return $response->withHeader('Location', $destination)->withStatus(StatusCodeInterface::STATUS_FOUND);
+        return $response->withHeader('Location', $destination)->withStatus(StatusCodeInterface::STATUS_TEMPORARY_REDIRECT);
     }
 }

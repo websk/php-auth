@@ -32,7 +32,7 @@ class RegistrationFormHandler extends BaseHandler
             return $response->withHeader(
                 'Location',
                 Router::urlFor(UserRoutes::ROUTE_NAME_ADMIN_USER_EDIT, ['user_id' => $current_user_id])
-            )->withStatus(StatusCodeInterface::STATUS_FOUND);
+            )->withStatus(StatusCodeInterface::STATUS_TEMPORARY_REDIRECT);
         }
 
 

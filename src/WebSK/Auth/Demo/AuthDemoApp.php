@@ -70,15 +70,15 @@ class AuthDemoApp extends App
         $this->get('/', function (ServerRequestInterface $request, ResponseInterface $response) {
             if (!Auth::getCurrentUserId()) {
                 return $response->withHeader('Location', Router::urlFor(AuthRoutes::ROUTE_NAME_AUTH_LOGIN_FORM))
-                    ->withStatus(StatusCodeInterface::STATUS_FOUND);
+                    ->withStatus(StatusCodeInterface::STATUS_TEMPORARY_REDIRECT);
             }
             if (Auth::currentUserIsAdmin()) {
                 return $response->withHeader('Location', Router::urlFor(UserRoutes::ROUTE_NAME_ADMIN_USER_LIST))
-                    ->withStatus(StatusCodeInterface::STATUS_FOUND);
+                    ->withStatus(StatusCodeInterface::STATUS_TEMPORARY_REDIRECT);
             }
 
             return $response->withHeader('Location', Router::urlFor(UserRoutes::ROUTE_NAME_USER_EDIT, ['user_id' => Auth::getCurrentUserId()]))
-                ->withStatus(StatusCodeInterface::STATUS_FOUND);
+                ->withStatus(StatusCodeInterface::STATUS_TEMPORARY_REDIRECT);
         });
 
         $this->group('/admin', function (RouteCollectorProxyInterface $route_collector_proxy) {
