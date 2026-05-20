@@ -33,6 +33,6 @@ class LogoutHandler extends BaseHandler
 
         $destination = $request->getQueryParam('destination', '/');
 
-        return $response->withHeader('Location', $destination)->withStatus(StatusCodeInterface::STATUS_TEMPORARY_REDIRECT);
+        return $response->withHeader('Location', $destination)->withStatus(StatusCodeInterface::STATUS_FOUND);
     }
 }

@@ -50,36 +50,36 @@ class RegistrationHandler extends BaseHandler
 
         if (!$name) {
             Messages::setError("Не указано Имя на сайте");
-            return $response->withHeader('Location', $error_destination)->withStatus(StatusCodeInterface::STATUS_TEMPORARY_REDIRECT);
+            return $response->withHeader('Location', $error_destination)->withStatus(StatusCodeInterface::STATUS_FOUND);
         }
 
         if (!$email) {
             Messages::setError("Не указан E-mail");
-            return $response->withHeader('Location', $error_destination)->withStatus(StatusCodeInterface::STATUS_TEMPORARY_REDIRECT);
+            return $response->withHeader('Location', $error_destination)->withStatus(StatusCodeInterface::STATUS_FOUND);
         }
 
         if (!$request->getParam('captcha')) {
-            return $response->withHeader('Location', $error_destination)->withStatus(StatusCodeInterface::STATUS_TEMPORARY_REDIRECT);
+            return $response->withHeader('Location', $error_destination)->withStatus(StatusCodeInterface::STATUS_FOUND);
         }
 
         if (!Captcha::checkWithMessage()) {
-            return $response->withHeader('Location', $error_destination)->withStatus(StatusCodeInterface::STATUS_TEMPORARY_REDIRECT);
+            return $response->withHeader('Location', $error_destination)->withStatus(StatusCodeInterface::STATUS_FOUND);
         }
 
         if ($this->user_service->getUserIdByEmail($email)) {
             Messages::setError("Пользователь с таким адресом электронной почты " . $email . ' уже зарегистрирован');
-            return $response->withHeader('Location', $error_destination)->withStatus(StatusCodeInterface::STATUS_TEMPORARY_REDIRECT);
+            return $response->withHeader('Location', $error_destination)->withStatus(StatusCodeInterface::STATUS_FOUND);
         }
 
         if (!$new_password_first && !$new_password_second) {
             Messages::setError('Ошибка! Не введен пароль.');
-            return $response->withHeader('Location', $error_destination)->withStatus(StatusCodeInterface::STATUS_TEMPORARY_REDIRECT);
+            return $response->withHeader('Location', $error_destination)->withStatus(StatusCodeInterface::STATUS_FOUND);
         }
 
         if ($new_password_first || $new_password_second) {
             if ($new_password_first != $new_password_second) {
                 Messages::setError('Ошибка! Пароль не подтвержден, либо подтвержден неверно.');
-                return $response->withHeader('Location', $error_destination)->withStatus(StatusCodeInterface::STATUS_TEMPORARY_REDIRECT);
+                return $response->withHeader('Location', $error_destination)->withStatus(StatusCodeInterface::STATUS_FOUND);
             }
         }
 
@@ -102,7 +102,7 @@ class RegistrationHandler extends BaseHandler
             $this->user_service->save($user_obj);
         } catch (\Exception $e) {
             Messages::setError($e->getMessage());
-            return $response->withHeader('Location', $destination)->withStatus(StatusCodeInterface::STATUS_TEMPORARY_REDIRECT);
+            return $response->withHeader('Location', $destination)->withStatus(StatusCodeInterface::STATUS_FOUND);
         }
 
         // Roles
@@ -122,6 +122,6 @@ class RegistrationHandler extends BaseHandler
 
         Messages::setMessage($message);
 
-        return $response->withHeader('Location', $destination)->withStatus(StatusCodeInterface::STATUS_TEMPORARY_REDIRECT);
+        return $response->withHeader('Location', $destination)->withStatus(StatusCodeInterface::STATUS_FOUND);
     }
 }

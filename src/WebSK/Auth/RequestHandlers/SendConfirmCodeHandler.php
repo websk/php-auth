@@ -33,21 +33,21 @@ class SendConfirmCodeHandler extends BaseHandler
         $destination = $this->urlFor(AuthRoutes::ROUTE_NAME_AUTH_SEND_CONFIRM_CODE_FORM);
 
         if (!$request->getParam('captcha')) {
-            return $response->withHeader('Location', $destination)->withStatus(StatusCodeInterface::STATUS_TEMPORARY_REDIRECT);
+            return $response->withHeader('Location', $destination)->withStatus(StatusCodeInterface::STATUS_FOUND);
         }
 
         if (!Captcha::checkWithMessage()) {
-            return $response->withHeader('Location', $destination)->withStatus(StatusCodeInterface::STATUS_TEMPORARY_REDIRECT);
+            return $response->withHeader('Location', $destination)->withStatus(StatusCodeInterface::STATUS_FOUND);
         }
 
         if (empty($email)) {
             Messages::setError('Ошибка! Не указан адрес электронной почты (Email).');
-            return $response->withHeader('Location', $destination)->withStatus(StatusCodeInterface::STATUS_TEMPORARY_REDIRECT);
+            return $response->withHeader('Location', $destination)->withStatus(StatusCodeInterface::STATUS_FOUND);
         }
 
         if (!$this->user_service->hasUserByEmail($email)) {
             Messages::setError('Ошибка! Пользователь с таким адресом электронной почты не зарегистрирован на сайте.');
-            return $response->withHeader('Location', $destination)->withStatus(StatusCodeInterface::STATUS_TEMPORARY_REDIRECT);
+            return $response->withHeader('Location', $destination)->withStatus(StatusCodeInterface::STATUS_FOUND);
         }
 
         $user_id = $this->user_service->getUserIdByEmail($email);
@@ -56,7 +56,7 @@ class SendConfirmCodeHandler extends BaseHandler
 
         if ($user_obj->isConfirm()) {
             Messages::setError('Ошибка! Пользователь с таким адресом электронной почты уже зарегистрирован.');
-            return $response->withHeader('Location', $destination)->withStatus(StatusCodeInterface::STATUS_TEMPORARY_REDIRECT);
+            return $response->withHeader('Location', $destination)->withStatus(StatusCodeInterface::STATUS_FOUND);
         }
 
         $confirm_code = $this->user_service->generateConfirmCode();
@@ -67,6 +67,6 @@ class SendConfirmCodeHandler extends BaseHandler
 
         Messages::setMessage($message);
 
-        return $response->withHeader('Location', $destination)->withStatus(StatusCodeInterface::STATUS_TEMPORARY_REDIRECT);
+        return $response->withHeader('Location', $destination)->withStatus(StatusCodeInterface::STATUS_FOUND);
     }
 }

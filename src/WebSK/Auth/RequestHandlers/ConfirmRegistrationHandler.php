@@ -36,7 +36,7 @@ class ConfirmRegistrationHandler extends BaseHandler
             Messages::setError(
                 'Ошибка! Неверный код подтверждения. <a href="' . $this->urlFor(AuthRoutes::ROUTE_NAME_AUTH_SEND_CONFIRM_CODE_FORM) . '">Выслать код подтверждения повторно.</a>'
             );
-            return $response->withHeader('Location', $destination)->withStatus(StatusCodeInterface::STATUS_TEMPORARY_REDIRECT);
+            return $response->withHeader('Location', $destination)->withStatus(StatusCodeInterface::STATUS_FOUND);
         }
 
         $user_obj = $this->user_service->getById($user_id);
@@ -48,6 +48,6 @@ class ConfirmRegistrationHandler extends BaseHandler
 
         Messages::setMessage($message);
 
-        return $response->withHeader('Location', $destination)->withStatus(StatusCodeInterface::STATUS_TEMPORARY_REDIRECT);
+        return $response->withHeader('Location', $destination)->withStatus(StatusCodeInterface::STATUS_FOUND);
     }
 }
