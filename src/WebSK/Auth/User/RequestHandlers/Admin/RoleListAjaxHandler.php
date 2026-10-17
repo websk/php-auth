@@ -2,6 +2,7 @@
 
 namespace WebSK\Auth\User\RequestHandlers\Admin;
 
+use DI\Attribute\Inject;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use WebSK\Auth\User\Role;
@@ -21,7 +22,7 @@ class RoleListAjaxHandler extends BaseHandler
 {
     const string FILTER_NAME = 'role_name_234234';
 
-    /** @Inject */
+    #[Inject]
     protected CRUD $crud_service;
 
     /**

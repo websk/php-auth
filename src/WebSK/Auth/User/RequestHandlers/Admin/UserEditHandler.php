@@ -2,6 +2,7 @@
 
 namespace WebSK\Auth\User\RequestHandlers\Admin;
 
+use DI\Attribute\Inject;
 use Fig\Http\Message\StatusCodeInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -38,13 +39,13 @@ use WebSK\Views\PhpRender;
  */
 class UserEditHandler extends BaseHandler
 {
-    /** @Inject */
+    #[Inject]
     protected UserService $user_service;
 
-    /** @Inject */
+    #[Inject]
     protected RoleService $role_service;
 
-    /** @Inject */
+    #[Inject]
     protected CRUD $crud_service;
 
     /**
@@ -82,7 +83,10 @@ class UserEditHandler extends BaseHandler
                         User::_PHOTO,
                         UserService::PHOTO_STORAGE,
                         UserService::PHOTO_DIR_INSIDE_STORAGE,
-                        function(User $user_obj) {
+                        function(\WebSK\Entity\InterfaceEntity $user_obj): string {
+                            if (!$user_obj instanceof User) {
+                                throw new \UnexpectedValueException('Expected a User entity.');
+                            }
                             return $user_obj->getPhoto() ? UserService::PHOTO_URL_RELATIVE_TO_SITE_ROOT . DIRECTORY_SEPARATOR . $user_obj->getPhoto() : '';
                         },
                         $user_obj->getId() . '-' . time(),
@@ -90,8 +94,11 @@ class UserEditHandler extends BaseHandler
                     )
                 )
             ],
-            function(User $user_obj) {
-                return $this->urlFor(UserRoutes::ROUTE_NAME_ADMIN_USER_EDIT, ['user_id' => $user_obj->getId()]);
+            function(\WebSK\Entity\InterfaceEntity $user_obj): string {
+                if (!$user_obj instanceof User) {
+                    throw new \UnexpectedValueException('Expected a User entity.');
+                }
+                return $this->urlFor(UserRoutes::ROUTE_NAME_ADMIN_USER_EDIT, ['user_id' => (string) $user_obj->getId()]);
             }
         );
 
@@ -102,7 +109,7 @@ class UserEditHandler extends BaseHandler
             }
         } catch (\Exception $e) {
             Messages::setError($e->getMessage());
-            return $response->withHeader('Location', $this->urlFor(UserRoutes::ROUTE_NAME_ADMIN_USER_EDIT, ['user_id' => $user_id]))
+            return $response->withHeader('Location', $this->urlFor(UserRoutes::ROUTE_NAME_ADMIN_USER_EDIT, ['user_id' => (string) $user_id]))
                 ->withStatus(StatusCodeInterface::STATUS_TEMPORARY_REDIRECT);
         }
 
@@ -140,17 +147,20 @@ class UserEditHandler extends BaseHandler
                     new CRUDTableWidgetTextWithLink(
                         function(UserRole $user_role_obj) {
                             $role_obj = $this->role_service->getById($user_role_obj->getRoleId());
+                            if ($role_obj === null) {
+                                throw new \UnexpectedValueException('Role was not found.');
+                            }
                             return $role_obj->getName();
                         },
                         function(UserRole $user_role_obj) {
-                            return $this->urlFor(UserRoutes::ROUTE_NAME_ADMIN_ROLE_EDIT, ['role_id' => $user_role_obj->getRoleId()]);
+                            return $this->urlFor(UserRoutes::ROUTE_NAME_ADMIN_ROLE_EDIT, ['role_id' => (string) $user_role_obj->getRoleId()]);
                         }
                     )
                 ),
                 new CRUDTableColumn('', new CRUDTableWidgetDelete())
             ],
             [
-                new CRUDTableFilterEqualInvisible(UserRole::_USER_ID, $user_id)
+                new CRUDTableFilterEqualInvisible(UserRole::_USER_ID, (string) $user_id)
             ],
             UserRole::_ID,
             'user_roles_list_324324',

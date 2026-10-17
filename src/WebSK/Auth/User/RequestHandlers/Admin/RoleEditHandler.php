@@ -2,6 +2,7 @@
 
 namespace WebSK\Auth\User\RequestHandlers\Admin;
 
+use DI\Attribute\Inject;
 use Fig\Http\Message\StatusCodeInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -38,13 +39,13 @@ class RoleEditHandler extends BaseHandler
     const string FILTER_EMAIL = 'user_email_324234';
     const string FILTER_NAME = 'user_name_2354543';
 
-    /** @Inject */
+    #[Inject]
     protected RoleService $role_service;
 
-    /** @Inject */
+    #[Inject]
     protected UserService $user_service;
 
-    /** @Inject */
+    #[Inject]
     protected CRUD $crud_service;
 
     /**
@@ -121,7 +122,7 @@ class RoleEditHandler extends BaseHandler
                     'Фото',
                     new CRUDTableWidgetHtml(
                         function(UserRole $user_role_obj) {
-                            $user_obj = $this->user_service->getById($user_role_obj->getUserId());
+                            $user_obj = $this->requiredUser($user_role_obj->getUserId());
                             return $this->user_service->getImageHtml($user_obj);
                         }
                     )
@@ -130,11 +131,11 @@ class RoleEditHandler extends BaseHandler
                     'Имя',
                     new CRUDTableWidgetTextWithLink(
                         function(UserRole $user_role_obj) {
-                            $user_obj = $this->user_service->getById($user_role_obj->getUserId());
+                            $user_obj = $this->requiredUser($user_role_obj->getUserId());
                             return $user_obj->getName();
                         },
                         function(UserRole $user_role_obj) {
-                            return $this->urlFor(UserRoutes::ROUTE_NAME_ADMIN_USER_EDIT, ['user_id' => $user_role_obj->getUserId()]);
+                            return $this->urlFor(UserRoutes::ROUTE_NAME_ADMIN_USER_EDIT, ['user_id' => (string) $user_role_obj->getUserId()]);
                         }
                     )
                 ),
@@ -142,7 +143,7 @@ class RoleEditHandler extends BaseHandler
                     'Email',
                     new CRUDTableWidgetText(
                         function(UserRole $user_role_obj) {
-                            $user_obj = $this->user_service->getById($user_role_obj->getUserId());
+                            $user_obj = $this->requiredUser($user_role_obj->getUserId());
                             return $user_obj->getEmail();
                         }
                     )
@@ -150,7 +151,7 @@ class RoleEditHandler extends BaseHandler
                 new CRUDTableColumn('', new CRUDTableWidgetDelete())
             ],
             [
-                new CRUDTableFilterEqualInvisible(UserRole::_ROLE_ID, $role_id)
+                new CRUDTableFilterEqualInvisible(UserRole::_ROLE_ID, (string) $role_id)
             ],
             UserRole::_CREATED_AT_TS . ' DESC',
             'user_role_list',
@@ -177,5 +178,15 @@ class RoleEditHandler extends BaseHandler
         $layout_dto->setBreadcrumbsDtoArr($breadcrumbs_arr);
 
         return PhpRender::renderLayout($response, AuthConfig::getAdminLayout(), $layout_dto);
+    }
+
+    private function requiredUser(int $user_id): User
+    {
+        $user = $this->user_service->getById($user_id);
+        if ($user === null) {
+            throw new \UnexpectedValueException('User ' . $user_id . ' was not found.');
+        }
+
+        return $user;
     }
 }

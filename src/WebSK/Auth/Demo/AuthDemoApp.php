@@ -2,8 +2,8 @@
 
 namespace WebSK\Auth\Demo;
 
+use DI\Container;
 use Fig\Http\Message\StatusCodeInterface;
-use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Slim\App;
@@ -21,44 +21,54 @@ use WebSK\Auth\User\UserServiceProvider;
 use WebSK\Cache\CacheServiceProvider;
 use WebSK\Captcha\CaptchaRoutes;
 use WebSK\CRUD\CRUDServiceProvider;
+use WebSK\CRUD\MutableContainerAdapter;
 use WebSK\Slim\Router;
 
 /**
  * Class AuthDemoApp
  * @package WebSK\Auth\Demo
  */
+/** @extends App<Container> */
 class AuthDemoApp extends App
 {
 
     /**
      * AuthDemoApp constructor.
-     * @param ContainerInterface $container
+     * @param Container $container
      */
-    public function __construct(ContainerInterface $container)
+    public function __construct(Container $container)
     {
         parent::__construct(new ResponseFactory(), $container);
 
         $this->registerRouterSettings($container);
 
-        CacheServiceProvider::register($container);
-        CRUDServiceProvider::register($container);
-        AuthServiceProvider::register($container);
-        UserServiceProvider::register($container);
+        $mutable_container = new MutableContainerAdapter($container);
+        CacheServiceProvider::register($mutable_container);
+        CRUDServiceProvider::register($mutable_container);
+        AuthServiceProvider::register($mutable_container);
+        UserServiceProvider::register($mutable_container);
 
         $this->registerRoutes();
 
         $display_error_details = $container->get('settings.displayErrorDetails');
+        if (!is_bool($display_error_details)) {
+            throw new \UnexpectedValueException('displayErrorDetails must be a boolean.');
+        }
         $error_middleware = $this->addErrorMiddleware($display_error_details, true, true);
         $error_middleware->setDefaultErrorHandler(ErrorHandler::class);
     }
 
     /**
-     * @param ContainerInterface $container
+     * @param Container $container
      */
-    protected function registerRouterSettings(ContainerInterface $container): void
+    protected function registerRouterSettings(Container $container): void
     {
         $route_collector = $this->getRouteCollector();
-        $route_collector->setDefaultInvocationStrategy($container->get(InvocationStrategyInterface::class));
+        $invocation_strategy = $container->get(InvocationStrategyInterface::class);
+        if (!$invocation_strategy instanceof InvocationStrategyInterface) {
+            throw new \UnexpectedValueException('Container invocation strategy has an invalid type.');
+        }
+        $route_collector->setDefaultInvocationStrategy($invocation_strategy);
         $route_parser = $route_collector->getRouteParser();
 
         $container->set(RouteParserInterface::class, $route_parser);
@@ -77,7 +87,7 @@ class AuthDemoApp extends App
                     ->withStatus(StatusCodeInterface::STATUS_TEMPORARY_REDIRECT);
             }
 
-            return $response->withHeader('Location', Router::urlFor(UserRoutes::ROUTE_NAME_USER_EDIT, ['user_id' => Auth::getCurrentUserId()]))
+            return $response->withHeader('Location', Router::urlFor(UserRoutes::ROUTE_NAME_USER_EDIT, ['user_id' => (string) Auth::getCurrentUserId()]))
                 ->withStatus(StatusCodeInterface::STATUS_TEMPORARY_REDIRECT);
         });
 

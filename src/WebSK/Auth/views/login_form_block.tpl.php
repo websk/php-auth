@@ -6,9 +6,6 @@
 use WebSK\Auth\AuthRoutes;
 use WebSK\Slim\Router;
 
-if (!isset($destination)) {
-    $destination = '/';
-}
 ?>
 
 <form action="<?php echo Router::urlFor(AuthRoutes::ROUTE_NAME_AUTH_LOGIN); ?>" class="form-inline" method="post">
@@ -28,6 +25,6 @@ if (!isset($destination)) {
             <input type="checkbox" name="save_auth" value="1"> Запомнить
         </label>
     </div>
-    <input type="hidden" name="destination" value="<?php echo $destination; ?>">
+    <input type="hidden" name="destination" value="<?php echo htmlspecialchars($destination, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8'); ?>">
     <button type="submit" class="btn btn-default">Войти</button>
 </form>

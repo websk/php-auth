@@ -2,6 +2,7 @@
 
 namespace WebSK\Auth\User\RequestHandlers\Admin;
 
+use DI\Attribute\Inject;
 use Fig\Http\Message\StatusCodeInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -34,10 +35,10 @@ class UserListHandler extends BaseHandler
     const string FILTER_EMAIL = 'user_email_324234';
     const string FILTER_NAME = 'user_name_2354543';
 
-    /** @Inject  */
+    #[Inject]
     protected UserService $user_service;
 
-    /** @Inject */
+    #[Inject]
     protected CRUD $crud_service;
 
     /**
@@ -58,8 +59,11 @@ class UserListHandler extends BaseHandler
                     new CRUDFormRow('Фамилия', new CRUDFormWidgetInput(User::_LAST_NAME)),
                     new CRUDFormRow('Email', new CRUDFormWidgetInput(User::_EMAIL, false, true))
                 ],
-                function(User $user_obj) {
-                    return $this->urlFor(UserRoutes::ROUTE_NAME_ADMIN_USER_EDIT, ['user_id' => $user_obj->getId()]);
+                function(\WebSK\Entity\InterfaceEntity $user_obj): string {
+                    if (!$user_obj instanceof User) {
+                        throw new \UnexpectedValueException('Expected a User entity.');
+                    }
+                    return $this->urlFor(UserRoutes::ROUTE_NAME_ADMIN_USER_EDIT, ['user_id' => (string) $user_obj->getId()]);
                 }
             ),
             [
@@ -77,7 +81,7 @@ class UserListHandler extends BaseHandler
                     new CRUDTableWidgetTextWithLink(
                         User::_NAME,
                         function(User $user_obj) {
-                            return $this->urlFor(UserRoutes::ROUTE_NAME_ADMIN_USER_EDIT, ['user_id' => $user_obj->getId()]);
+                            return $this->urlFor(UserRoutes::ROUTE_NAME_ADMIN_USER_EDIT, ['user_id' => (string) $user_obj->getId()]);
                         }
                     )
                 ),

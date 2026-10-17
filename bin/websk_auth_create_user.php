@@ -12,6 +12,7 @@ use WebSK\Auth\User\UserServiceProvider;
 use WebSK\Cache\CacheServiceProvider;
 use WebSK\Config\ConfWrapper;
 use WebSK\Console\ConsoleApp;
+use WebSK\CRUD\MutableContainerAdapter;
 use WebSK\Utils\Assert;
 
 if (PHP_SAPI !== 'cli') {
@@ -50,16 +51,17 @@ Assert::assert(isset($config), 'Empty config');
 
 $configuration = new Configuration();
 $configuration->setDefinitions([$config]);
-$configuration->setUseAnnotations(true);
+$configuration->setUseAttributes(true);
 
 $container = ContainerBuilder::build($configuration);
 ConfWrapper::setConfig($config['settings']);
 
 $app = new ConsoleApp($container);
 
-CacheServiceProvider::register($container);
-AuthServiceProvider::register($container);
-UserServiceProvider::register($container);
+$mutable_container = new MutableContainerAdapter($container);
+CacheServiceProvider::register($mutable_container);
+AuthServiceProvider::register($mutable_container);
+UserServiceProvider::register($mutable_container);
 
 $get_opt = new GetOpt();
 

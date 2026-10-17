@@ -13,9 +13,9 @@ class UserRepository extends EntityRepository
 {
     /**
      * @param string $email
-     * @return false|mixed
+     * @return int|null
      */
-    public function findUserIdByEmail(string $email)
+    public function findUserIdByEmail(string $email): ?int
     {
         $query = "SELECT " . Sanitize::sanitizeSqlColumnName($this->getIdFieldName())
             . " FROM " . Sanitize::sanitizeSqlColumnName($this->getTableName())
@@ -23,14 +23,14 @@ class UserRepository extends EntityRepository
             . " LIMIT 1";
         $param_arr = [$email];
 
-        return $this->db_service->readField($query, $param_arr);
+        return self::normalizeId($this->db_service->readField($query, $param_arr));
     }
 
     /**
      * @param string $confirm_code
-     * @return false|mixed
+     * @return int|null
      */
-    public function findUserIdByConfirmCode(string $confirm_code)
+    public function findUserIdByConfirmCode(string $confirm_code): ?int
     {
         $query = "SELECT " . Sanitize::sanitizeSqlColumnName($this->getIdFieldName())
             . " FROM " . Sanitize::sanitizeSqlColumnName($this->getTableName())
@@ -38,33 +38,33 @@ class UserRepository extends EntityRepository
             . " LIMIT 1";
         $param_arr = [$confirm_code];
 
-        return $this->db_service->readField($query, $param_arr);
+        return self::normalizeId($this->db_service->readField($query, $param_arr));
     }
 
     /**
      * @param string $provider_name
      * @param string $provider_uid
-     * @return false|mixed
+     * @return int|null
      */
-    public function findUserIdIfExistByProvider(string $provider_name, string $provider_uid)
+    public function findUserIdIfExistByProvider(string $provider_name, string $provider_uid): ?int
     {
         $query = "SELECT " . Sanitize::sanitizeSqlColumnName($this->getIdFieldName())
             . " FROM " . Sanitize::sanitizeSqlColumnName($this->getTableName())
             . " WHERE " . Sanitize::sanitizeSqlColumnName(User::_PROVIDER) . " = ?"
             . " AND " . Sanitize::sanitizeSqlColumnName(User::_PROVIDER_UID) . " = ?";
 
-        return $this->db_service->readField(
+        return self::normalizeId($this->db_service->readField(
             $query,
             [$provider_name, $provider_uid]
-        );
+        ));
     }
 
     /**
      * @param string $email
      * @param string $salt_password
-     * @return false|mixed
+     * @return int|null
      */
-    public function findUserIdByEmailAndPassword(string $email, string $salt_password)
+    public function findUserIdByEmailAndPassword(string $email, string $salt_password): ?int
     {
         $query = "SELECT " . Sanitize::sanitizeSqlColumnName($this->getIdFieldName())
             . " FROM " . Sanitize::sanitizeSqlColumnName($this->getTableName())
@@ -73,6 +73,21 @@ class UserRepository extends EntityRepository
             . " LIMIT 1";
         $param_arr = [$email, $salt_password];
 
-        return $this->db_service->readField($query, $param_arr);
+        return self::normalizeId($this->db_service->readField($query, $param_arr));
+    }
+
+    private static function normalizeId(mixed $value): ?int
+    {
+        if ($value === null || $value === false) {
+            return null;
+        }
+        if (is_int($value)) {
+            return $value;
+        }
+        if (is_string($value) && ctype_digit($value)) {
+            return (int) $value;
+        }
+
+        throw new \UnexpectedValueException('User ID must be an integer.');
     }
 }

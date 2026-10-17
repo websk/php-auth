@@ -1,27 +1,75 @@
 {
   "name": "websk/php-auth",
   "description": "Authorization and user management",
+  "license": "MIT",
   "require": {
     "php": "^8.3",
     "ext-pdo": "*",
-    "slim/slim": "4.14.*",
-    "websk/php-cache": "2.2.*",
-    "websk/php-captcha": "2.3.*",
-    "websk/php-config": "2.0.*",
-    "websk/php-console": "2.2.*",
-    "websk/php-crud": "2.3.*",
-    "websk/php-db": "2.1.*",
-    "websk/php-entity": "2.2.*",
-    "websk/php-filemanager": "2.0.*",
-    "websk/php-slim": "2.3.*",
-    "websk/php-utils": "2.1.*",
-    "websk/php-view": "2.3.*",
-    "phpmailer/phpmailer": "7.0.1"
+    "ext-pdo_mysql": "*",
+    "juliangut/slim-php-di": "^4.2",
+    "phpmailer/phpmailer": "^7.1",
+    "psr/container": "^2.0",
+    "psr/http-message": "^2.0",
+    "psr/http-server-handler": "^1.0",
+    "slim/psr7": "^1.8",
+    "slim/slim": "^4.15",
+    "websk/php-cache": "3.0.*",
+    "websk/php-captcha": "3.0.*",
+    "websk/php-config": "2.2.*",
+    "websk/php-console": "2.3.*",
+    "websk/php-crud": "3.0.*",
+    "websk/php-db": "3.0.*",
+    "websk/php-entity": "3.0.*",
+    "websk/php-filemanager": "3.0.*",
+    "websk/php-slim": "2.4.*",
+    "websk/php-utils": "3.0.*",
+    "websk/php-view": "3.1.*"
+  },
+  "require-dev": {
+    "phpstan/phpstan": "^2.3",
+    "phpunit/phpunit": "^12.5"
   },
   "autoload": {
     "psr-4": {
-      "": "src/"
+      "WebSK\\": "src/WebSK/"
     }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "WebSK\\Auth\\Tests\\": "tests/"
+    }
+  },
+  "archive": {
+    "exclude": [
+      "/.ai",
+      "/.cache",
+      "/.DS_Store",
+      "/.idea",
+      "/.phpstan-cache",
+      "/.phpunit.cache",
+      "/config/config.php",
+      "/var/docker/.env",
+      "/var/docker/data",
+      "/var/docker/logs",
+      "/var/docker/nginx/rootCA-key.pem",
+      "/var/docker/nginx/rootCA.pem",
+      "/var/docker/nginx/ssl",
+      "/var/docker/nginx/sites/*.key",
+      "/var/docker/nginx/sites/*.pem",
+      "/vendor",
+      "/*.zip"
+    ]
+  },
+  "scripts": {
+    "lint": "find src bin public config views tests -name '*.php' -print0 | xargs -0 -n1 php -l",
+    "test": "php -d error_reporting=E_ALL vendor/bin/phpunit --exclude-group mysql",
+    "test:mysql": "php -d error_reporting=E_ALL vendor/bin/phpunit --group mysql",
+    "phpstan": "php -d error_reporting=E_ALL vendor/bin/phpstan analyse --no-progress --debug",
+    "check": [
+      "@lint",
+      "@test",
+      "@phpstan"
+    ]
   },
   "bin": [
     "bin/websk_auth_create_user.php"

@@ -30,7 +30,7 @@ class LoginFormHandler extends BaseHandler
         if ($current_user_id) {
             return $response->withHeader(
                 'Location',
-                $this->urlFor(UserRoutes::ROUTE_NAME_ADMIN_USER_EDIT, ['user_id' => $current_user_id])
+                $this->urlFor(UserRoutes::ROUTE_NAME_ADMIN_USER_EDIT, ['user_id' => (string) $current_user_id])
             )->withStatus(StatusCodeInterface::STATUS_TEMPORARY_REDIRECT);
         }
 

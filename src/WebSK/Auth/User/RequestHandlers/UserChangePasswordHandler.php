@@ -2,12 +2,14 @@
 
 namespace WebSK\Auth\User\RequestHandlers;
 
+use DI\Attribute\Inject;
 use Fig\Http\Message\StatusCodeInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use WebSK\Auth\Auth;
 use WebSK\Auth\User\UserRoutes;
 use WebSK\Auth\User\UserService;
+use WebSK\CRUD\RequestParams;
 use WebSK\Slim\RequestHandlers\BaseHandler;
 use WebSK\Utils\Messages;
 
@@ -17,7 +19,7 @@ use WebSK\Utils\Messages;
  */
 class UserChangePasswordHandler extends BaseHandler
 {
-    /** @Inject  */
+    #[Inject]
     protected UserService $user_service;
 
     /**
@@ -38,10 +40,14 @@ class UserChangePasswordHandler extends BaseHandler
             return $response->withStatus(StatusCodeInterface::STATUS_NOT_FOUND);
         }
 
-        $destination = $request->getParam('destination', $this->urlFor(UserRoutes::ROUTE_NAME_USER_EDIT, ['user_id' => $user_id]));
+        $destination = RequestParams::parsedString(
+            $request,
+            'destination',
+            $this->urlFor(UserRoutes::ROUTE_NAME_USER_EDIT, ['user_id' => (string) $user_id])
+        );
 
-        $new_password_first = $request->getParam('new_password_first', '');
-        $new_password_second = $request->getParam('new_password_second', '');
+        $new_password_first = RequestParams::parsedString($request, 'new_password_first', '');
+        $new_password_second = RequestParams::parsedString($request, 'new_password_second', '');
 
         if (!$new_password_first || !$new_password_second) {
             Messages::setError('Ошибка! Не заполнен пароль или подтверждение пароля');
@@ -53,7 +59,7 @@ class UserChangePasswordHandler extends BaseHandler
             return $response->withHeader('Location', $destination)->withStatus(StatusCodeInterface::STATUS_TEMPORARY_REDIRECT);
         }
 
-        $user_obj->setPassw(Auth::getHash($new_password_first));
+        $user_obj->setPassw(Auth::hashPassword($new_password_first));
         $this->user_service->save($user_obj);
 
         Messages::setMessage('Пароль был успешно изменен');

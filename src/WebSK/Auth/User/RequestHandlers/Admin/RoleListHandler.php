@@ -2,6 +2,7 @@
 
 namespace WebSK\Auth\User\RequestHandlers\Admin;
 
+use DI\Attribute\Inject;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use WebSK\Auth\AuthConfig;
@@ -29,7 +30,7 @@ class RoleListHandler extends BaseHandler
 {
     const string FILTER_NAME = 'role_name';
 
-    /** @Inject */
+    #[Inject]
     protected CRUD $crud_service;
 
     /**
@@ -48,8 +49,11 @@ class RoleListHandler extends BaseHandler
                     new CRUDFormRow('Название', new CRUDFormWidgetInput(Role::_NAME, false, true)),
                     new CRUDFormRow('Обозначение', new CRUDFormWidgetInput(Role::_DESIGNATION, false, true)),
                 ],
-                function(Role $role_obj) {
-                    return $this->urlFor(UserRoutes::ROUTE_NAME_ADMIN_ROLE_EDIT, ['role_id' => $role_obj->getId()]);
+                function(\WebSK\Entity\InterfaceEntity $role_obj): string {
+                    if (!$role_obj instanceof Role) {
+                        throw new \UnexpectedValueException('Expected a Role entity.');
+                    }
+                    return $this->urlFor(UserRoutes::ROUTE_NAME_ADMIN_ROLE_EDIT, ['role_id' => (string) $role_obj->getId()]);
                 }
             ),
             [
@@ -59,7 +63,7 @@ class RoleListHandler extends BaseHandler
                     new CRUDTableWidgetTextWithLink(
                         Role::_NAME,
                         function(Role $role_obj) {
-                            return $this->urlFor(UserRoutes::ROUTE_NAME_ADMIN_ROLE_EDIT, ['role_id' => $role_obj->getId()]);
+                            return $this->urlFor(UserRoutes::ROUTE_NAME_ADMIN_ROLE_EDIT, ['role_id' => (string) $role_obj->getId()]);
                         }
                     )
                 ),

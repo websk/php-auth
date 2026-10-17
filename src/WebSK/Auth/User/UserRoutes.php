@@ -37,7 +37,7 @@ class UserRoutes
     const string ROUTE_NAME_ADMIN_ROLE_LIST_AJAX = 'admin:user:role:list:ajax';
 
     /**
-     * @param RouteCollectorProxyInterface $route_collector_proxy
+     * @param RouteCollectorProxyInterface<\Psr\Container\ContainerInterface|null> $route_collector_proxy
      */
     public static function registerAdmin(RouteCollectorProxyInterface $route_collector_proxy): void
     {
@@ -65,7 +65,7 @@ class UserRoutes
     }
 
     /**
-     * @param App $app
+     * @param App<\Psr\Container\ContainerInterface|null> $app
      */
     public static function register(App $app): void
     {

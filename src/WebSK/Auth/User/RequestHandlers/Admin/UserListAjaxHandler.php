@@ -2,6 +2,7 @@
 
 namespace WebSK\Auth\User\RequestHandlers\Admin;
 
+use DI\Attribute\Inject;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use WebSK\Auth\User\User;
@@ -22,7 +23,7 @@ class UserListAjaxHandler extends BaseHandler
     const string FILTER_EMAIL = 'user_email_324234';
     const string FILTER_NAME = 'user_name_2354543';
 
-    /** @Inject */
+    #[Inject]
     protected CRUD $crud_service;
 
     /**

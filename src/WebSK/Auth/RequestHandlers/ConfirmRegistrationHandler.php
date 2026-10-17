@@ -2,6 +2,7 @@
 
 namespace WebSK\Auth\RequestHandlers;
 
+use DI\Attribute\Inject;
 use Fig\Http\Message\StatusCodeInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -16,7 +17,7 @@ use WebSK\Slim\RequestHandlers\BaseHandler;
  */
 class ConfirmRegistrationHandler extends BaseHandler
 {
-    /** @Inject  */
+    #[Inject]
     protected UserService $user_service;
 
     /**
@@ -40,6 +41,9 @@ class ConfirmRegistrationHandler extends BaseHandler
         }
 
         $user_obj = $this->user_service->getById($user_id);
+        if ($user_obj === null) {
+            return $response->withStatus(StatusCodeInterface::STATUS_NOT_FOUND);
+        }
         $user_obj->setConfirm(true);
         $user_obj->setConfirmCode('');
         $this->user_service->save($user_obj);

@@ -5,6 +5,8 @@ namespace WebSK\Auth\User;
 use Psr\Container\ContainerInterface;
 use WebSK\Auth\AuthServiceProvider;
 use WebSK\Cache\CacheServiceProvider;
+use WebSK\Cache\CacheService;
+use WebSK\DB\DBService;
 
 /**
  * Class UsersServiceProvider
@@ -15,77 +17,93 @@ class UserServiceProvider
     /**
      * @param ContainerInterface $container
      */
-    public static function register(ContainerInterface $container): void
+    /** @param ContainerInterface&\ArrayAccess<string, mixed> $container */
+    public static function register(ContainerInterface&\ArrayAccess $container): void
     {
         /**
          * @param ContainerInterface $container
          * @return RoleService
          */
-        $container->set(RoleService::class, function (ContainerInterface $container) {
+        $container[RoleService::class] = function (ContainerInterface $container): RoleService {
             return new RoleService(
                 Role::class,
-                $container->get(RoleRepository::class),
-                $container->get(CacheServiceProvider::SERVICE_CONTAINER_ID)
+                self::service($container, RoleRepository::class, RoleRepository::class),
+                self::service($container, CacheServiceProvider::SERVICE_CONTAINER_ID, CacheService::class)
             );
-        });
+        };
 
         /**
          * @param ContainerInterface $container
          * @return RoleRepository
          */
-        $container->set(RoleRepository::class, function (ContainerInterface $container) {
+        $container[RoleRepository::class] = function (ContainerInterface $container): RoleRepository {
             return new RoleRepository(
                 Role::class,
-                $container->get(AuthServiceProvider::DB_SERVICE_CONTAINER_ID)
+                self::service($container, AuthServiceProvider::DB_SERVICE_CONTAINER_ID, DBService::class)
             );
-        });
+        };
 
         /**
          * @param ContainerInterface $container
          * @return UserRoleService
          */
-        $container->set(UserRoleService::class, function (ContainerInterface $container) {
+        $container[UserRoleService::class] = function (ContainerInterface $container): UserRoleService {
             return new UserRoleService(
                 UserRole::class,
-                $container->get(UserRoleRepository::class),
-                $container->get(CacheServiceProvider::SERVICE_CONTAINER_ID)
+                self::service($container, UserRoleRepository::class, UserRoleRepository::class),
+                self::service($container, CacheServiceProvider::SERVICE_CONTAINER_ID, CacheService::class)
             );
-        });
+        };
 
         /**
          * @param ContainerInterface $container
          * @return UserRoleRepository
          */
-        $container->set(UserRoleRepository::class, function (ContainerInterface $container) {
+        $container[UserRoleRepository::class] = function (ContainerInterface $container): UserRoleRepository {
             return new UserRoleRepository(
                 UserRole::class,
-                $container->get(AuthServiceProvider::DB_SERVICE_CONTAINER_ID)
+                self::service($container, AuthServiceProvider::DB_SERVICE_CONTAINER_ID, DBService::class)
             );
-        });
+        };
 
         /**
          * @param ContainerInterface $container
          * @return UserService
          */
-        $container->set(UserService::class, function (ContainerInterface $container) {
+        $container[UserService::class] = function (ContainerInterface $container): UserService {
             return new UserService(
                 User::class,
-                $container->get(UserRepository::class),
-                $container->get(CacheServiceProvider::SERVICE_CONTAINER_ID),
-                $container->get(RoleService::class),
-                $container->get(UserRoleService::class)
+                self::service($container, UserRepository::class, UserRepository::class),
+                self::service($container, CacheServiceProvider::SERVICE_CONTAINER_ID, CacheService::class),
+                self::service($container, RoleService::class, RoleService::class),
+                self::service($container, UserRoleService::class, UserRoleService::class)
             );
-        });
+        };
 
         /**
          * @param ContainerInterface $container
          * @return UserRepository
          */
-        $container->set(UserRepository::class, function (ContainerInterface $container) {
+        $container[UserRepository::class] = function (ContainerInterface $container): UserRepository {
             return new UserRepository(
                 User::class,
-                $container->get(AuthServiceProvider::DB_SERVICE_CONTAINER_ID)
+                self::service($container, AuthServiceProvider::DB_SERVICE_CONTAINER_ID, DBService::class)
             );
-        });
+        };
+    }
+
+    /**
+     * @template T of object
+     * @param class-string<T> $class
+     * @return T
+     */
+    private static function service(ContainerInterface $container, string $id, string $class): object
+    {
+        $service = $container->get($id);
+        if (!$service instanceof $class) {
+            throw new \UnexpectedValueException('Container service "' . $id . '" must be an instance of ' . $class . '.');
+        }
+
+        return $service;
     }
 }

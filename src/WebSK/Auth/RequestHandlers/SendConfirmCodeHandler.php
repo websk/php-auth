@@ -2,6 +2,7 @@
 
 namespace WebSK\Auth\RequestHandlers;
 
+use DI\Attribute\Inject;
 use Fig\Http\Message\StatusCodeInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -9,6 +10,7 @@ use WebSK\Auth\Auth;
 use WebSK\Auth\AuthRoutes;
 use WebSK\Auth\User\UserService;
 use WebSK\Captcha\Captcha;
+use WebSK\CRUD\RequestParams;
 use WebSK\Utils\Messages;
 use WebSK\Slim\RequestHandlers\BaseHandler;
 
@@ -18,7 +20,7 @@ use WebSK\Slim\RequestHandlers\BaseHandler;
  */
 class SendConfirmCodeHandler extends BaseHandler
 {
-    /** @Inject  */
+    #[Inject]
     protected UserService $user_service;
 
     /**
@@ -28,11 +30,11 @@ class SendConfirmCodeHandler extends BaseHandler
      */
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
     {
-        $email = $request->getParam('email', '');
+        $email = RequestParams::parsedString($request, 'email', '');
 
         $destination = $this->urlFor(AuthRoutes::ROUTE_NAME_AUTH_SEND_CONFIRM_CODE_FORM);
 
-        if (!$request->getParam('captcha')) {
+        if (!RequestParams::parsedBody($request, 'captcha')) {
             return $response->withHeader('Location', $destination)->withStatus(StatusCodeInterface::STATUS_FOUND);
         }
 
@@ -53,6 +55,9 @@ class SendConfirmCodeHandler extends BaseHandler
         $user_id = $this->user_service->getUserIdByEmail($email);
 
         $user_obj = $this->user_service->getById($user_id);
+        if ($user_obj === null) {
+            return $response->withStatus(StatusCodeInterface::STATUS_NOT_FOUND);
+        }
 
         if ($user_obj->isConfirm()) {
             Messages::setError('Ошибка! Пользователь с таким адресом электронной почты уже зарегистрирован.');

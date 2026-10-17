@@ -6,13 +6,11 @@
 # To edit the 'php-fpm' base Image, visit its repository on Github
 #    https://github.com/Laradock/php-fpm
 #
-# To change its version, see the available Tags on the Docker Hub:
+# The development runtime is pinned to PHP 8.5.11. See available tags on Docker Hub:
 #    https://hub.docker.com/r/laradock/php-fpm/tags/
 #
-# Note: Base Image name format {image-tag}-{php-version}
-#
 
-FROM laradock/php-fpm:latest-8.3
+FROM laradock/php-fpm:20261010-8.5
 
 # always run apt update when start and after add new source list, then clean up at end.
 RUN set -xe; \
@@ -83,7 +81,7 @@ RUN if [ ${INSTALL_ZIP_ARCHIVE} = true ]; then \
 # PHP Memcached:
 #####################################
 
-RUN curl -L -o /tmp/memcached.tar.gz "https://github.com/php-memcached-dev/php-memcached/archive/v3.1.5.tar.gz" \
+RUN curl -L -o /tmp/memcached.tar.gz "https://github.com/php-memcached-dev/php-memcached/archive/v3.4.0.tar.gz" \
         && mkdir -p memcached \
         && tar -C memcached -zxvf /tmp/memcached.tar.gz --strip 1 \
         && ( \
@@ -132,10 +130,10 @@ RUN apt-get install wget -y && \
     mv mhsendmail_linux_amd64 /usr/local/bin/mhsendmail
 
 #####################################
-# Check PHP version:
+# Verify the pinned PHP 8.5 runtime:
 #####################################
 
-RUN php -v | head -n 1 | grep -q "PHP 8.3."
+RUN php -v | head -n 1 | grep -q "PHP 8.5.11"
 
 #
 #--------------------------------------------------------------------------

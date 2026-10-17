@@ -1,5 +1,6 @@
 .ai/
 .idea/
+.phpunit.cache/
 config/config.php
 /public/files
 vendor/

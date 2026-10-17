@@ -2,6 +2,7 @@
 
 namespace WebSK\Auth\RequestHandlers;
 
+use DI\Attribute\Inject;
 use Fig\Http\Message\StatusCodeInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -10,6 +11,7 @@ use WebSK\Auth\AuthRoutes;
 use WebSK\Auth\User\UserRoleService;
 use WebSK\Auth\User\UserService;
 use WebSK\Captcha\Captcha;
+use WebSK\CRUD\RequestParams;
 use WebSK\Utils\Messages;
 use WebSK\Slim\RequestHandlers\BaseHandler;
 use WebSK\Slim\Router;
@@ -23,10 +25,10 @@ use WebSK\Auth\User\UserRole;
  */
 class RegistrationHandler extends BaseHandler
 {
-    /** @Inject */
+    #[Inject]
     protected UserRoleService $user_role_service;
 
-    /** @Inject */
+    #[Inject]
     protected UserService $user_service;
 
     /**
@@ -37,14 +39,18 @@ class RegistrationHandler extends BaseHandler
      */
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
     {
-        $destination = $request->getParam('destination', Router::urlFor(AuthRoutes::ROUTE_NAME_AUTH_REGISTRATION_FORM));
+        $destination = RequestParams::parsedString(
+            $request,
+            'destination',
+            Router::urlFor(AuthRoutes::ROUTE_NAME_AUTH_REGISTRATION_FORM)
+        );
 
-        $name = trim($request->getParam('name', ''));
-        $first_name = trim($request->getParam('first_name', ''));
-        $last_name = trim($request->getParam('last_name', ''));
-        $email = trim($request->getParam('email', ''));
-        $new_password_first = $request->getParam('new_password_first', '');
-        $new_password_second = $request->getParam('new_password_second', '');
+        $name = trim(RequestParams::parsedString($request, 'name', ''));
+        $first_name = trim(RequestParams::parsedString($request, 'first_name', ''));
+        $last_name = trim(RequestParams::parsedString($request, 'last_name', ''));
+        $email = trim(RequestParams::parsedString($request, 'email', ''));
+        $new_password_first = RequestParams::parsedString($request, 'new_password_first', '');
+        $new_password_second = RequestParams::parsedString($request, 'new_password_second', '');
 
         $error_destination = Router::urlFor(AuthRoutes::ROUTE_NAME_AUTH_REGISTRATION_FORM);
 
@@ -58,7 +64,7 @@ class RegistrationHandler extends BaseHandler
             return $response->withHeader('Location', $error_destination)->withStatus(StatusCodeInterface::STATUS_FOUND);
         }
 
-        if (!$request->getParam('captcha')) {
+        if (!RequestParams::parsedBody($request, 'captcha')) {
             return $response->withHeader('Location', $error_destination)->withStatus(StatusCodeInterface::STATUS_FOUND);
         }
 
@@ -76,11 +82,9 @@ class RegistrationHandler extends BaseHandler
             return $response->withHeader('Location', $error_destination)->withStatus(StatusCodeInterface::STATUS_FOUND);
         }
 
-        if ($new_password_first || $new_password_second) {
-            if ($new_password_first != $new_password_second) {
-                Messages::setError('Ошибка! Пароль не подтвержден, либо подтвержден неверно.');
-                return $response->withHeader('Location', $error_destination)->withStatus(StatusCodeInterface::STATUS_FOUND);
-            }
+        if ($new_password_first !== $new_password_second) {
+            Messages::setError('Ошибка! Пароль не подтвержден, либо подтвержден неверно.');
+            return $response->withHeader('Location', $error_destination)->withStatus(StatusCodeInterface::STATUS_FOUND);
         }
 
         $user_obj = new User();
@@ -93,7 +97,7 @@ class RegistrationHandler extends BaseHandler
             $user_obj->setLastName($last_name);
         }
         $user_obj->setEmail($email);
-        $user_obj->setPassw(Auth::getHash($new_password_first));
+        $user_obj->setPassw(Auth::hashPassword($new_password_first));
 
         $confirm_code = $this->user_service->generateConfirmCode();
         $user_obj->setConfirmCode($confirm_code);
@@ -109,8 +113,12 @@ class RegistrationHandler extends BaseHandler
         $role_id = AuthConfig::getDefaultRoleId();
 
         if ($role_id) {
+            $user_id = $user_obj->getId();
+            if ($user_id === null) {
+                throw new \UnexpectedValueException('Saved user must have an ID.');
+            }
             $user_role_obj = new UserRole();
-            $user_role_obj->setUserId($user_obj->getId());
+            $user_role_obj->setUserId($user_id);
             $user_role_obj->setRoleId($role_id);
             $this->user_role_service->save($user_role_obj);
         }

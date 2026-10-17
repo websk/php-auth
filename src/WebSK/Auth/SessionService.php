@@ -15,9 +15,11 @@ use WebSK\Entity\EntityService;
 class SessionService extends EntityService
 {
     /** @var SessionRepository */
-    protected $repository;
+    protected EntityRepository $repository;
 
     protected UserService $user_service;
+    private bool $current_user_loaded = false;
+    private ?int $current_user_id = null;
 
     /**
      * SessionService constructor.
@@ -44,7 +46,10 @@ class SessionService extends EntityService
      */
     public function clearUserSession(int $user_id): void
     {
-        $this->repository->deleteBySession($_COOKIE[Session::AUTH_COOKIE_NAME]);
+        $session = $_COOKIE[Session::AUTH_COOKIE_NAME] ?? null;
+        if (is_string($session) && $session !== '') {
+            $this->repository->deleteBySession($session);
+        }
 
         $this->clearOldSessionsByUserId($user_id);
 
@@ -64,7 +69,7 @@ class SessionService extends EntityService
 
     public function clearAuthCookie(): void
     {
-        setcookie(Session::AUTH_COOKIE_NAME, '', time() - 3600, '/');
+        setcookie(Session::AUTH_COOKIE_NAME, '', $this->cookieOptions(time() - 3600));
     }
 
     /**
@@ -81,11 +86,12 @@ class SessionService extends EntityService
 
         $session->setUserId($user_id);
         $session->setSession($session_hash);
-        $session->setHostname($_SERVER['REMOTE_ADDR']);
+        $remote_address = $_SERVER['REMOTE_ADDR'] ?? '';
+        $session->setHostname(is_string($remote_address) ? $remote_address : '');
         $session->setTimestamp($time);
         $this->save($session);
 
-        setcookie(Session::AUTH_COOKIE_NAME, $session_hash, $delta, '/');
+        setcookie(Session::AUTH_COOKIE_NAME, $session_hash, $this->cookieOptions($delta));
 
         $this->clearOldSessionsByUserId($user_id);
     }
@@ -96,10 +102,8 @@ class SessionService extends EntityService
      */
     public function getCurrentUserId(): ?int
     {
-        static $user_session_unique_id;
-
-        if (isset($user_session_unique_id)) {
-            return $user_session_unique_id;
+        if ($this->current_user_loaded) {
+            return $this->current_user_id;
         }
 
         if (!array_key_exists(Session::AUTH_COOKIE_NAME, $_COOKIE)) {
@@ -107,10 +111,14 @@ class SessionService extends EntityService
         }
 
         $auth_session = $_COOKIE[Session::AUTH_COOKIE_NAME];
+        if (!is_string($auth_session) || $auth_session === '') {
+            return null;
+        }
 
-        $user_session_unique_id = $this->repository->findCurrentUserId($auth_session);
+        $this->current_user_id = $this->repository->findCurrentUserId($auth_session);
+        $this->current_user_loaded = true;
 
-        return $user_session_unique_id;
+        return $this->current_user_id;
     }
 
     /**
@@ -123,7 +131,9 @@ class SessionService extends EntityService
             return null;
         }
 
-        return $this->user_service->getById($user_id, false);
+        $user = $this->user_service->getById($user_id, false);
+
+        return $user instanceof User ? $user : null;
     }
 
     /**
@@ -137,6 +147,9 @@ class SessionService extends EntityService
         }
 
         $user_id = $user_obj->getId();
+        if ($user_id === null) {
+            return false;
+        }
         if ($this->user_service->hasRoleAdminByUserId($user_id)) {
             return true;
         }
@@ -165,7 +178,7 @@ class SessionService extends EntityService
 
     /**
      * Есть ли у пользователя хоть одна роль, по обозначению ролей
-     * @param array $role_designations_arr
+     * @param list<string> $role_designations_arr
      * @return bool
      */
     public function currentUserHasAccessByAnyRoleDesignations(array $role_designations_arr): bool
@@ -203,6 +216,10 @@ class SessionService extends EntityService
         }
 
         $user_obj = $this->user_service->getById($user_id);
+        if (!$user_obj instanceof User) {
+            $message = 'Пользователь не найден.';
+            return false;
+        }
 
         // Регистрация не подтверждена
         if (!$user_obj->isConfirm()) {
@@ -215,10 +232,24 @@ class SessionService extends EntityService
             $delta = time() + Session::SESSION_LIFE_TIME;
         }
 
-        $session = sha1(time() . $user_id);
+        $session = bin2hex(random_bytes(32));
 
         $this->storeUserSession($user_id, $session, $delta);
 
         return true;
+    }
+
+    /** @return array{expires: int, path: string, secure: bool, httponly: bool, samesite: 'Lax'} */
+    private function cookieOptions(int $expires): array
+    {
+        $https = $_SERVER['HTTPS'] ?? null;
+
+        return [
+            'expires' => $expires,
+            'path' => '/',
+            'secure' => is_string($https) && $https !== '' && strtolower($https) !== 'off',
+            'httponly' => true,
+            'samesite' => 'Lax',
+        ];
     }
 }

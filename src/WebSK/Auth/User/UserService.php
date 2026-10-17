@@ -7,13 +7,14 @@ use WebSK\Auth\Auth;
 use WebSK\FileManager\FileManager;
 use WebSK\Cache\CacheService;
 use WebSK\Entity\EntityService;
+use WebSK\Entity\EntityRepository;
 use WebSK\Entity\InterfaceEntity;
 use WebSK\Config\ConfWrapper;
 use WebSK\Utils\Sanitize;
 
 /**
  * Class UserService
- * @method User getById($entity_id, $exception_if_not_loaded = true)
+ * @method User|null getById(?int $entity_id, bool $exception_if_not_loaded = true)
  * @package WebSK\Auth\User
  */
 class UserService extends EntityService
@@ -29,7 +30,7 @@ class UserService extends EntityService
     protected UserRoleService $user_role_service;
 
     /** @var UserRepository */
-    protected $repository;
+    protected EntityRepository $repository;
 
     public function __construct(
         string $entity_class_name,
@@ -49,6 +50,9 @@ class UserService extends EntityService
      */
     public function beforeSave(InterfaceEntity $entity_obj): void
     {
+        if (!$entity_obj instanceof User) {
+            throw new \InvalidArgumentException('UserService can only save User entities.');
+        }
         if (!$entity_obj->getEmail()) {
             throw new \Exception('Ошибка! Не указан Email.');
         }
@@ -60,13 +64,16 @@ class UserService extends EntityService
         $email = '';
         if ($entity_obj->getId()) {
             $exist_user_obj = $this->getById($entity_obj->getId());
+            if ($exist_user_obj === null) {
+                throw new \UnexpectedValueException('Existing user was not found.');
+            }
             $email = $exist_user_obj->getEmail();
         }
 
         if ($email != $entity_obj->getEmail()) {
-            $has_user_id = $this->hasUserByEmail($email);
+            $has_user_id = $this->hasUserByEmail($entity_obj->getEmail());
             if ($has_user_id) {
-                throw new \Exception('Ошибка! Пользователь с таким адресом электронной почты ' . $email . ' уже существует.');
+                throw new \Exception('Ошибка! Пользователь с таким адресом электронной почты ' . $entity_obj->getEmail() . ' уже существует.');
             }
         }
 
@@ -77,21 +84,20 @@ class UserService extends EntityService
      * @param int $user_id
      * @throws \Exception
      */
-    public function deleteUserRolesForUserId(int $user_id)
+    public function deleteUserRolesForUserId(int $user_id): void
     {
         $user_roles_ids_arr = $this->user_role_service->getIdsArrByUserId($user_id);
 
         foreach ($user_roles_ids_arr as $user_role_id) {
             $user_role_obj = $this->user_role_service->getById($user_role_id);
+            if ($user_role_obj === null) {
+                continue;
+            }
             $this->user_role_service->delete($user_role_obj);
         }
     }
 
-    /**
-     * @param int $user_id
-     * @return array
-     * @throws \Exception
-     */
+    /** @return list<int> */
     public function getRoleIdsArrByUserId(int $user_id): array
     {
         $user_roles_ids_arr = $this->user_role_service->getIdsArrByUserId($user_id);
@@ -100,6 +106,9 @@ class UserService extends EntityService
 
         foreach ($user_roles_ids_arr as $user_role_id) {
             $user_role_obj = $this->user_role_service->getById($user_role_id);
+            if ($user_role_obj === null) {
+                continue;
+            }
             $role_ids_arr[] = $user_role_obj->getRoleId();
         }
 
@@ -117,12 +126,13 @@ class UserService extends EntityService
             return true;
         }
 
+        $photo = $user_obj->getPhoto();
         $user_obj->setPhoto('');
         $this->save($user_obj);
 
         $file_manager = new FileManager(self::PHOTO_STORAGE);
 
-        $file_path = self::PHOTO_DIR_INSIDE_STORAGE . DIRECTORY_SEPARATOR . $user_obj->getPhoto();
+        $file_path = self::PHOTO_DIR_INSIDE_STORAGE . DIRECTORY_SEPARATOR . $photo;
         if ($file_manager->getStorage()->fileExists($file_path)) {
             try {
                 $file_manager->deleteFileIfExist($file_path);
@@ -140,8 +150,14 @@ class UserService extends EntityService
      */
     public function afterDelete(InterfaceEntity $entity_obj): void
     {
+        if (!$entity_obj instanceof User) {
+            throw new \InvalidArgumentException('UserService can only delete User entities.');
+        }
         $this->deletePhoto($entity_obj);
-        $this->deleteUserRolesForUserId($entity_obj->getId());
+        $user_id = $entity_obj->getId();
+        if ($user_id !== null) {
+            $this->deleteUserRolesForUserId($user_id);
+        }
 
         parent::afterDelete($entity_obj);
     }
@@ -178,6 +194,9 @@ class UserService extends EntityService
             }
 
             $role_obj = $this->role_service->getById($role_id);
+            if ($role_obj === null) {
+                continue;
+            }
 
             if (trim($role_obj->getDesignation()) == trim($designation)) {
                 return true;
@@ -210,13 +229,16 @@ class UserService extends EntityService
         $new_password = $this->generatePassword(self::PASSWORD_LENGTH);
 
         $user_obj = $this->getById($user_id);
-        $user_obj->setPassw(Auth::getHash($new_password));
+        if ($user_obj === null) {
+            throw new \UnexpectedValueException('User was not found.');
+        }
+        $user_obj->setPassw(Auth::hashPassword($new_password));
         $this->save($user_obj);
 
         if ($user_obj->getEmail()) {
-            $site_email = ConfWrapper::value('site_email');
-            $site_domain = ConfWrapper::value('site_domain');
-            $site_name = ConfWrapper::value('site_name');
+            $site_email = self::configString('site_email');
+            $site_domain = self::configString('site_domain');
+            $site_name = self::configString('site_name');
 
             $mail_message = "<p>Добрый день, " . $user_obj->getName() . "</p>";
             $mail_message .= "<p>Вы воспользовались формой восстановления пароля на сайте " . $site_name . "</p>";
@@ -225,7 +247,7 @@ class UserService extends EntityService
             $mail_message .= "<p>Рекомендуем сменить пароль после входа на сайт.</p>";
             $mail_message .= '<p>' . $site_domain . "</p>";
 
-            $subject = "Смена пароля на сайте " . ConfWrapper::value('site_name');
+            $subject = "Смена пароля на сайте " . $site_name;
 
             $mail = new PHPMailer;
             $mail->CharSet = "utf-8";
@@ -256,7 +278,7 @@ class UserService extends EntityService
      * @param $email
      * @return bool
      */
-    public function hasUserByEmail($email): bool
+    public function hasUserByEmail(string $email): bool
     {
         $has_user_id = $this->getUserIdByEmail($email);
         if ($has_user_id) {
@@ -283,7 +305,7 @@ class UserService extends EntityService
      * @param $number
      * @return string
      */
-    public function generatePassword($number): string
+    public function generatePassword(int $number): string
     {
         $arr = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'r', 's', 't', 'u', 'v', 'x', 'y', 'z',
             'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'R', 'S', 'T', 'U', 'V', 'X', 'Y', 'Z',
@@ -291,7 +313,7 @@ class UserService extends EntityService
 
         $pass = '';
         for ($i = 0; $i < $number; $i++) {
-            $index = rand(0, count($arr) - 1);
+            $index = random_int(0, count($arr) - 1);
             $pass .= $arr[$index];
         }
 
@@ -304,9 +326,7 @@ class UserService extends EntityService
      */
     public function generateConfirmCode(): string
     {
-        $confirm_code = time() . uniqid();
-
-        return Auth::getHash($confirm_code);
+        return bin2hex(random_bytes(32));
     }
 
     /**
@@ -328,10 +348,34 @@ class UserService extends EntityService
      */
     public function getUserIdByEmailAndPassword(string $email, string $password): ?int
     {
-        $salt_password = Auth::getHash($password);
+        $user_id = $this->getUserIdByEmail($email);
+        if ($user_id === null) {
+            return null;
+        }
 
-        $user_id = $this->repository->findUserIdByEmailAndPassword($email, $salt_password);
+        $user = $this->getById($user_id);
+        if ($user === null) {
+            return null;
+        }
+        if (!Auth::verifyPassword($password, $user->getPassw())) {
+            return null;
+        }
 
-        return $user_id ?? null;
+        if (Auth::passwordNeedsRehash($user->getPassw())) {
+            $user->setPassw(Auth::hashPassword($password));
+            $this->save($user);
+        }
+
+        return $user_id;
+    }
+
+    private static function configString(string $key): string
+    {
+        $value = ConfWrapper::value($key);
+        if (!is_string($value)) {
+            throw new \UnexpectedValueException('Configuration value "' . $key . '" must be a string.');
+        }
+
+        return $value;
     }
 }

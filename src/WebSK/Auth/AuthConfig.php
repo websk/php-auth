@@ -16,7 +16,9 @@ class AuthConfig
      */
     public static function getMainLayout(): string
     {
-        return ConfWrapper::value('auth.layout_main', ConfWrapper::value('layout.main'));
+        $value = ConfWrapper::value('auth.layout_main', null);
+
+        return $value === null ? self::stringValue('layout.main') : self::ensureString('auth.layout_main', $value);
     }
 
     /**
@@ -24,7 +26,7 @@ class AuthConfig
      */
     public static function getMainPageUrl(): string
     {
-        return ConfWrapper::value('auth.main_page_url', '/');
+        return self::stringValue('auth.main_page_url', '/');
     }
 
     /**
@@ -32,7 +34,9 @@ class AuthConfig
      */
     public static function getAdminLayout(): string
     {
-        return ConfWrapper::value('auth.layout_admin', ConfWrapper::value('layout.admin'));
+        $value = ConfWrapper::value('auth.layout_admin', null);
+
+        return $value === null ? self::stringValue('layout.admin') : self::ensureString('auth.layout_admin', $value);
     }
 
     /**
@@ -40,7 +44,7 @@ class AuthConfig
      */
     public static function getAdminMainPageUrl(): string
     {
-        return ConfWrapper::value('auth.admin_main_page_url', '/admin');
+        return self::stringValue('auth.admin_main_page_url', '/admin');
     }
 
     /**
@@ -48,7 +52,9 @@ class AuthConfig
      */
     public static function getSalt(): string
     {
-        return ConfWrapper::value('auth.salt', ConfWrapper::value('salt'));
+        $value = ConfWrapper::value('auth.salt', null);
+
+        return $value === null ? self::stringValue('salt') : self::ensureString('auth.salt', $value);
     }
 
     /**
@@ -56,6 +62,27 @@ class AuthConfig
      */
     public static function getDefaultRoleId(): ?int
     {
-        return ConfWrapper::value('auth.default_user_role_id', null);
+        $value = ConfWrapper::value('auth.default_user_role_id', null);
+        if ($value !== null && !is_int($value)) {
+            throw new \UnexpectedValueException('Default auth role ID must be an integer or null.');
+        }
+
+        return $value;
+    }
+
+    private static function stringValue(string $key, ?string $default = null): string
+    {
+        $value = ConfWrapper::value($key, $default);
+
+        return self::ensureString($key, $value);
+    }
+
+    private static function ensureString(string $key, mixed $value): string
+    {
+        if (!is_string($value)) {
+            throw new \UnexpectedValueException('Configuration value "' . $key . '" must be a string.');
+        }
+
+        return $value;
     }
 }

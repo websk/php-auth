@@ -4,6 +4,7 @@ namespace WebSK\Auth;
 
 use Psr\Container\ContainerInterface;
 use WebSK\Auth\User\UserService;
+use WebSK\Cache\CacheService;
 use WebSK\Cache\CacheServiceProvider;
 use WebSK\DB\DBConnectorMySQL;
 use WebSK\DB\DBService;
@@ -25,16 +26,25 @@ class AuthServiceProvider
     /**
      * @param ContainerInterface $container
      */
-    public static function register(ContainerInterface $container): void
+    /** @param ContainerInterface&\ArrayAccess<string, mixed> $container */
+    public static function register(ContainerInterface&\ArrayAccess $container): void
     {
         /**
          * @param ContainerInterface $container
          * @return DBService
          */
-        $container->set(self::DB_SERVICE_CONTAINER_ID, function (ContainerInterface $container) {
+        $container[self::DB_SERVICE_CONTAINER_ID] = function (ContainerInterface $container): DBService {
             $db_config = $container->get(
                 self::SETTINGS_CONTAINER_ID . '.' . self::PARAM_DB . '.' . self::DB_ID
             );
+            if (!is_array($db_config)) {
+                throw new \UnexpectedValueException('Auth database configuration must be an array.');
+            }
+            foreach (['host', 'db_name', 'user', 'password'] as $key) {
+                if (!isset($db_config[$key]) || !is_string($db_config[$key])) {
+                    throw new \UnexpectedValueException('Auth database setting "' . $key . '" must be a string.');
+                }
+            }
 
             $db_connector = new DBConnectorMySQL(
                 $db_config['host'],
@@ -48,30 +58,45 @@ class AuthServiceProvider
             );
 
             return new DBService($db_connector, $db_settings);
-        });
+        };
 
         /**
          * @param ContainerInterface $container
          * @return SessionService
          */
-        $container->set(SessionService::class, function (ContainerInterface $container) {
+        $container[SessionService::class] = function (ContainerInterface $container): SessionService {
             return new SessionService(
                 Session::class,
-                $container->get(SessionRepository::class),
-                $container->get(CacheServiceProvider::SERVICE_CONTAINER_ID),
-                $container->get(UserService::class)
+                self::service($container, SessionRepository::class, SessionRepository::class),
+                self::service($container, CacheServiceProvider::SERVICE_CONTAINER_ID, CacheService::class),
+                self::service($container, UserService::class, UserService::class)
             );
-        });
+        };
 
         /**
          * @param ContainerInterface $container
          * @return SessionRepository
          */
-        $container->set(SessionRepository::class, function (ContainerInterface $container) {
+        $container[SessionRepository::class] = function (ContainerInterface $container): SessionRepository {
             return new SessionRepository(
                 Session::class,
-                $container->get(self::DB_SERVICE_CONTAINER_ID)
+                self::service($container, self::DB_SERVICE_CONTAINER_ID, DBService::class)
             );
-        });
+        };
+    }
+
+    /**
+     * @template T of object
+     * @param class-string<T> $class
+     * @return T
+     */
+    private static function service(ContainerInterface $container, string $id, string $class): object
+    {
+        $service = $container->get($id);
+        if (!$service instanceof $class) {
+            throw new \UnexpectedValueException('Container service "' . $id . '" must be an instance of ' . $class . '.');
+        }
+
+        return $service;
     }
 }

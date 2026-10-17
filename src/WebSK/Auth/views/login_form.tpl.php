@@ -4,7 +4,7 @@ use WebSK\Auth\AuthRoutes;
 use WebSK\Slim\Router;
 
 $destination = '/';
-if (isset($_REQUEST['destination'])) {
+if (isset($_REQUEST['destination']) && is_string($_REQUEST['destination'])) {
     $destination = $_REQUEST['destination'];
 }
 ?>
@@ -42,5 +42,5 @@ if (isset($_REQUEST['destination'])) {
             <a href="<?php echo Router::urlFor(AuthRoutes::ROUTE_NAME_AUTH_REGISTRATION_FORM); ?>">Регистрация</a>
         </div>
     </div>
-    <input type="hidden" name="destination" value="<?php echo $destination; ?>">
+    <input type="hidden" name="destination" value="<?php echo htmlspecialchars($destination, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8'); ?>">
 </form>

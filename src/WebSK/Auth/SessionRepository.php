@@ -47,6 +47,17 @@ class SessionRepository extends EntityRepository
             . " FROM " . Sanitize::sanitizeSqlColumnName($this->getTableName())
             . " WHERE " . Session::_SESSION . "=?";
 
-        return $this->db_service->readField($query, [$auth_session]);
+        $value = $this->db_service->readField($query, [$auth_session]);
+        if ($value === null || $value === false) {
+            return null;
+        }
+        if (is_int($value)) {
+            return $value;
+        }
+        if (is_string($value) && ctype_digit($value)) {
+            return (int) $value;
+        }
+
+        throw new \UnexpectedValueException('Session user ID must be an integer.');
     }
 }

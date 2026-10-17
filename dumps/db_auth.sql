@@ -6,6 +6,7 @@ INSERT INTO `roles` (`id`, `name`, `designation`) VALUES (1, 'Администр
 CREATE TABLE users (id int NOT NULL AUTO_INCREMENT PRIMARY KEY, created_at_ts int NOT NULL DEFAULT 0) ENGINE InnoDB DEFAULT CHARSET utf8 /* ich2309ch0239 */;
 ALTER TABLE users ADD COLUMN `email` varchar(100) DEFAULT NULL /* zx18h29hz0921 */;
 ALTER TABLE users ADD COLUMN `passw` varchar(50) DEFAULT NULL /* 08zh01z29hx0d92 */;
+ALTER TABLE users CHANGE COLUMN `passw` `passw` varchar(255) DEFAULT NULL /* auth_password_hash_255 */;
 ALTER TABLE users ADD COLUMN `name` varchar(100) DEFAULT NULL /* 80xh219h29hxc */;
 ALTER TABLE users ADD COLUMN `first_name` varchar(100) DEFAULT NULL /* xh012h0921h9h */;
 ALTER TABLE users ADD COLUMN `last_name` varchar(100) DEFAULT NULL /* x093h0219h012 */;
@@ -18,6 +19,7 @@ ALTER TABLE users ADD COLUMN `company` varchar(200) DEFAULT NULL /* x10j0291j02j
 ALTER TABLE users ADD COLUMN `comment` mediumtext /* x0901j92j1092j0 */;
 ALTER TABLE users ADD COLUMN `confirm` smallint NOT NULL DEFAULT '0' /* hc09h20912h0c921 */;
 ALTER TABLE users ADD COLUMN `confirm_code` varchar(50) DEFAULT '' /* x01h20910291j */;
+ALTER TABLE users CHANGE COLUMN `confirm_code` `confirm_code` varchar(64) DEFAULT '' /* auth_confirm_code_64 */;
 ALTER TABLE users ADD COLUMN `provider` varchar(100) NOT NULL DEFAULT '' /* x1h029hx090x192 */;
 ALTER TABLE users ADD COLUMN `provider_uid` varchar(255) DEFAULT '' /* x023h093f32j */;
 ALTER TABLE users ADD COLUMN `profile_url` varchar(1000) DEFAULT '' /* hc20303h0230f */;

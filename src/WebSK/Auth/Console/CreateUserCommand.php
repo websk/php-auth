@@ -40,27 +40,34 @@ class CreateUserCommand extends Command
 
         parent::__construct(self::NAME, [$this, 'execute']);
 
-        $this->addOption(Option::create('e',self::OPTION_EMAIL, GetOpt::OPTIONAL_ARGUMENT)->setDefaultValue('demo' . rand(1, 100) . '@websk.devbox'));
-        $this->addOption(Option::create('p', self::OPTION_PASSWORD, GetOpt::OPTIONAL_ARGUMENT)->setDefaultValue('demo' . rand(1, 100)));
+        $this->addOption(Option::create('e', self::OPTION_EMAIL, GetOpt::OPTIONAL_ARGUMENT)->setDefaultValue('demo' . random_int(1, 100) . '@websk.devbox'));
+        $this->addOption(Option::create('p', self::OPTION_PASSWORD, GetOpt::OPTIONAL_ARGUMENT)->setDefaultValue('demo' . random_int(1, 100)));
     }
 
     /**
-     * @param GetOpt $get_opt
+     * @param GetOpt<mixed> $get_opt
      */
     public function execute(GetOpt $get_opt): void
     {
         $email = $get_opt->getOption(self::OPTION_EMAIL);
         $password = $get_opt->getOption(self::OPTION_PASSWORD);
+        if (!is_string($email) || !is_string($password)) {
+            throw new \UnexpectedValueException('Email and password options must be strings.');
+        }
 
         $user_obj = new User();
         $user_obj->setEmail($email);
         $user_obj->setName($email);
         $user_obj->setConfirm(true);
-        $user_obj->setPassw(Auth::getHash($password));
+        $user_obj->setPassw(Auth::hashPassword($password));
         $this->user_service->save($user_obj);
+        $user_id = $user_obj->getId();
+        if ($user_id === null) {
+            throw new \UnexpectedValueException('Saved user must have an ID.');
+        }
 
         $user_role_obj = new UserRole();
-        $user_role_obj->setUserId($user_obj->getId());
+        $user_role_obj->setUserId($user_id);
         $user_role_obj->setRoleId(Role::ADMIN_ROLE_ID);
         $this->user_role_service->save($user_role_obj);
 

@@ -25,12 +25,15 @@ class CurrentUserHasRightToEditUser
     {
         $routeContext = RouteContext::fromRequest($request);
         $route = $routeContext->getRoute();
-
-        $user_id = (int)$route->getArgument('user_id') ?? null;
-
-        if (!isset($user_id)) {
+        if ($route === null) {
             return $handler->handle($request);
         }
+
+        $user_id_argument = $route->getArgument('user_id');
+        if ($user_id_argument === null || !ctype_digit($user_id_argument)) {
+            return $handler->handle($request);
+        }
+        $user_id = (int) $user_id_argument;
 
         $current_user_id = Auth::getCurrentUserId();
 
@@ -42,4 +45,3 @@ class CurrentUserHasRightToEditUser
         return $handler->handle($request);
     }
 }
-

@@ -2,12 +2,14 @@
 
 namespace WebSK\Auth\RequestHandlers;
 
+use DI\Attribute\Inject;
 use Fig\Http\Message\StatusCodeInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use WebSK\Auth\AuthRoutes;
 use WebSK\Auth\User\UserService;
 use WebSK\Captcha\Captcha;
+use WebSK\CRUD\RequestParams;
 use WebSK\Utils\Messages;
 use WebSK\Slim\RequestHandlers\BaseHandler;
 
@@ -17,7 +19,7 @@ use WebSK\Slim\RequestHandlers\BaseHandler;
  */
 class ForgotPasswordHandler extends BaseHandler
 {
-    /** @Inject  */
+    #[Inject]
     protected UserService $user_service;
 
     /**
@@ -27,11 +29,15 @@ class ForgotPasswordHandler extends BaseHandler
      */
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
     {
-        $email = $request->getParam('email', '');
+        $email = RequestParams::parsedString($request, 'email', '');
 
-        $destination = $request->getParam('destination', $this->urlFor(AuthRoutes::ROUTE_NAME_AUTH_FORGOT_PASSWORD_FORM));
+        $destination = RequestParams::parsedString(
+            $request,
+            'destination',
+            $this->urlFor(AuthRoutes::ROUTE_NAME_AUTH_FORGOT_PASSWORD_FORM)
+        );
 
-        if (!$request->getParam('captcha')) {
+        if (!RequestParams::parsedBody($request, 'captcha')) {
             return $response->withHeader('Location', $destination)->withStatus(StatusCodeInterface::STATUS_FOUND);
         }
 
@@ -50,6 +56,9 @@ class ForgotPasswordHandler extends BaseHandler
         }
 
         $user_id = $this->user_service->getUserIdByEmail($email);
+        if ($user_id === null) {
+            return $response->withHeader('Location', $destination)->withStatus(StatusCodeInterface::STATUS_FOUND);
+        }
 
         $this->user_service->createAndSendPasswordToUser($user_id);
 

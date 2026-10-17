@@ -2,10 +2,12 @@
 
 namespace WebSK\Auth\User\RequestHandlers;
 
+use DI\Attribute\Inject;
 use Fig\Http\Message\StatusCodeInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use WebSK\Auth\User\UserService;
+use WebSK\CRUD\RequestParams;
 use WebSK\Utils\Messages;
 use WebSK\Slim\RequestHandlers\BaseHandler;
 use WebSK\Auth\User\UserRoutes;
@@ -16,7 +18,7 @@ use WebSK\Auth\User\UserRoutes;
  */
 class UserCreatePasswordHandler extends BaseHandler
 {
-    /** @Inject  */
+    #[Inject]
     protected UserService $user_service;
 
     /**
@@ -32,7 +34,11 @@ class UserCreatePasswordHandler extends BaseHandler
             return $response->withStatus(StatusCodeInterface::STATUS_NOT_FOUND);
         }
 
-        $destination = $request->getQueryParam('destination', $this->urlFor(UserRoutes::ROUTE_NAME_USER_EDIT, ['user_id' => $user_id]));
+        $destination = RequestParams::queryString(
+            $request,
+            'destination',
+            $this->urlFor(UserRoutes::ROUTE_NAME_USER_EDIT, ['user_id' => (string) $user_id])
+        );
 
         $new_password = $this->user_service->createAndSendPasswordToUser($user_id);
 

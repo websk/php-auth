@@ -2,10 +2,12 @@
 
 namespace WebSK\Auth\RequestHandlers;
 
+use DI\Attribute\Inject;
 use Fig\Http\Message\StatusCodeInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use WebSK\Auth\SessionService;
+use WebSK\CRUD\RequestParams;
 use WebSK\Slim\RequestHandlers\BaseHandler;
 use WebSK\Auth\Auth;
 
@@ -15,7 +17,7 @@ use WebSK\Auth\Auth;
  */
 class LogoutHandler extends BaseHandler
 {
-    /** @Inject */
+    #[Inject]
     protected SessionService $session_service;
 
     /**
@@ -31,7 +33,7 @@ class LogoutHandler extends BaseHandler
             $this->session_service->clearUserSession($user_id);
         }
 
-        $destination = $request->getQueryParam('destination', '/');
+        $destination = RequestParams::queryString($request, 'destination', '/');
 
         return $response->withHeader('Location', $destination)->withStatus(StatusCodeInterface::STATUS_FOUND);
     }

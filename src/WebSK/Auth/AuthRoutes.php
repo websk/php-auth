@@ -33,7 +33,7 @@ class AuthRoutes
     const string ROUTE_NAME_AUTH_SEND_CONFIRM_CODE = 'auth:send_confirm_code';
 
     /**
-     * @param App $app
+     * @param App<\Psr\Container\ContainerInterface|null> $app
      */
     public static function register(App $app): void
     {

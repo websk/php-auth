@@ -6,7 +6,7 @@ use WebSK\Entity\EntityService;
 
 /**
  * Class RoleService
- * @method Role getById($entity_id, $exception_if_not_loaded = true)
+ * @method Role|null getById(?int $entity_id, bool $exception_if_not_loaded = true)
  * @package WebSK\Auth\User
  */
 class RoleService extends EntityService
@@ -21,7 +21,10 @@ class RoleService extends EntityService
         $role_ids_arr = $this->getAllIdsArrByIdAsc();
 
         foreach ($role_ids_arr as $role_id) {
-            $role_objs_arr[] = $this->getById($role_id);
+            $role = $this->getById($role_id);
+            if ($role !== null) {
+                $role_objs_arr[] = $role;
+            }
         }
 
         usort(

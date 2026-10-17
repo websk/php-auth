@@ -1,5 +1,15 @@
 # WebSK php-auth
 
+Authentication and user-management components for the WebSK/Slim stack.
+
+## Requirements
+
+* PHP 8.3 or newer; the demo Docker environment uses PHP 8.5.11.
+* PDO with the MySQL driver.
+* The extensions required by the selected WebSK cache, CAPTCHA and file-storage backends.
+
+The current dependency stack uses Slim 4.15, PHP-DI 7 with PHP attributes and the WebSK 3.x database/entity/CRUD packages.
+
 ## Install
 
 https://packagist.org/packages/websk/php-auth
@@ -12,6 +22,26 @@ composer require websk/php-auth
 
 ## Config
 * php-auth no special configs
+
+Existing installations must apply the SQL statements in `dumps/db_auth.sql`. The password column is widened to 255 characters and the confirmation-code column to 64 characters.
+
+New passwords use `password_hash()`. Legacy salted MD5 passwords remain valid for one successful login and are then automatically replaced with a modern hash. Session and confirmation tokens are generated with `random_bytes()`, and authentication cookies use `HttpOnly`, `SameSite=Lax` and `Secure` on HTTPS requests.
+
+## Development checks
+
+```shell
+composer validate --strict
+composer check-platform-reqs
+composer dump-autoload --optimize --strict-psr
+composer check
+composer audit --locked
+```
+
+MySQL integration tests can be run separately with:
+
+```shell
+composer test:mysql
+```
 
 ## Demo
 
@@ -39,7 +69,7 @@ composer require websk/php-auth
 * Создаем локальный конфиг, при необходимости вносим изменения:
 
   ```shell
-  cp config/config.example.php config/config.php
+  cp config/config.default.php config/config.php
   ```
 
 * Заходим в директорию с docker-compose:
@@ -60,9 +90,10 @@ composer require websk/php-auth
   docker compose up -d --build
   ```
 
-* Устанавливаем зависимости для проекта
+* Проверяем, что контейнер использует PHP 8.5.11, и устанавливаем зависимости:
 
   ```shell
+  docker compose exec php-fpm php -v
   docker compose exec php-fpm composer install
   ```
 
