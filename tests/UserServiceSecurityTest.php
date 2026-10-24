@@ -43,6 +43,20 @@ final class UserServiceSecurityTest extends TestCase
         self::assertFalse(Auth::passwordNeedsRehash($user->getPassw()));
     }
 
+    public function testUserImageHtmlEscapesStoredValues(): void
+    {
+        $user = new User();
+        $user->setName('"><script>alert(1)</script>');
+        $user->setPhoto('../avatar"><script>.png');
+
+        $html = $this->serviceWithoutConstructor()->getImageHtml($user);
+
+        self::assertStringNotContainsString('<script>', $html);
+        self::assertStringContainsString('alt="&quot;&gt;&lt;script&gt;alert(1)&lt;/script&gt;"', $html);
+        self::assertStringContainsString('/avatar%22%3E%3Cscript%3E.png', $html);
+        self::assertStringNotContainsString('../', $html);
+    }
+
     private function serviceWithoutConstructor(): UserService
     {
         $service = (new \ReflectionClass(UserService::class))->newInstanceWithoutConstructor();

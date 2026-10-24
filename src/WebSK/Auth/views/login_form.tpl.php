@@ -9,35 +9,34 @@ if (isset($_REQUEST['destination']) && is_string($_REQUEST['destination'])) {
 }
 ?>
 
-<form action="<?php echo Router::urlFor(AuthRoutes::ROUTE_NAME_AUTH_LOGIN); ?>" method="post" class="form-horizontal">
-    <div class="form-group">
-        <label class="col-md-2 control-label">Email</label>
+<form action="<?= Router::urlFor(AuthRoutes::ROUTE_NAME_AUTH_LOGIN) ?>" method="post">
+    <div class="row mb-3">
+        <label for="auth_email" class="col-md-2 col-form-label">Email</label>
         <div class="col-md-10">
-            <input type="text" name="email" class="form-control">
+            <input id="auth_email" type="email" name="email" class="form-control" autocomplete="email" required>
         </div>
     </div>
-    <div class="form-group">
-        <label class="col-md-2 control-label">Пароль</label>
+    <div class="row mb-3">
+        <label for="auth_password" class="col-md-2 col-form-label">Пароль</label>
         <div class="col-md-10">
-            <input type="password" name="password" class="form-control">
+            <input id="auth_password" type="password" name="password" class="form-control" autocomplete="current-password" required>
         </div>
     </div>
-    <div class="form-group">
-        <div class="col-md-offset-2 col-md-10">
-            <div class="checkbox">
-                <label>
-                    <input type="checkbox" name="save_auth" value="1"> Запомнить меня
-                </label>
+    <div class="row mb-3">
+        <div class="offset-md-2 col-md-10">
+            <div class="form-check">
+                <input id="auth_save_auth" class="form-check-input" type="checkbox" name="save_auth" value="1">
+                <label class="form-check-label" for="auth_save_auth">Запомнить меня</label>
             </div>
         </div>
     </div>
-    <div class="form-group">
-        <div class="col-md-offset-2 col-md-8">
+    <div class="row mb-3">
+        <div class="offset-md-2 col-md-10">
             <button type="submit" class="btn btn-primary">Войти</button>
         </div>
     </div>
-    <div class="form-group">
-        <div class="col-md-offset-2 col-md-8">
+    <div class="row mb-3">
+        <div class="offset-md-2 col-md-10">
             <a href="<?php echo Router::urlFor(AuthRoutes::ROUTE_NAME_AUTH_FORGOT_PASSWORD_FORM); ?>">Забыли пароль</a> /
             <a href="<?php echo Router::urlFor(AuthRoutes::ROUTE_NAME_AUTH_REGISTRATION_FORM); ?>">Регистрация</a>
         </div>

@@ -212,11 +212,16 @@ class UserService extends EntityService
      */
     public function getImageHtml(User $user_obj): string
     {
-        if (!$user_obj->getPhoto()) {
+        $photo = $user_obj->getPhoto();
+        if ($photo === '') {
             return '';
         }
 
-        return '<img src="/files/images/user/'. $user_obj->getPhoto() .'" alt="' . $user_obj->getName() .'" title="' . $user_obj->getName() .'" style="max-width: 75px;">';
+        $photo_url = self::PHOTO_URL_RELATIVE_TO_SITE_ROOT . '/' . rawurlencode(basename($photo));
+
+        return '<img src="' . Sanitize::sanitizeAttrValue($photo_url)
+            . '" alt="' . Sanitize::sanitizeAttrValue($user_obj->getName())
+            . '" width="75" loading="lazy">';
     }
 
     /**
@@ -240,12 +245,12 @@ class UserService extends EntityService
             $site_domain = self::configString('site_domain');
             $site_name = self::configString('site_name');
 
-            $mail_message = "<p>Добрый день, " . $user_obj->getName() . "</p>";
-            $mail_message .= "<p>Вы воспользовались формой восстановления пароля на сайте " . $site_name . "</p>";
-            $mail_message .= "<p>Ваш новый пароль: " . $new_password . "<br>";
-            $mail_message .= "Ваш email для входа: " . $user_obj->getEmail() . "</p>";
+            $mail_message = '<p>Добрый день, ' . Sanitize::sanitizeTagContent($user_obj->getName()) . '</p>';
+            $mail_message .= '<p>Вы воспользовались формой восстановления пароля на сайте ' . Sanitize::sanitizeTagContent($site_name) . '</p>';
+            $mail_message .= '<p>Ваш новый пароль: ' . Sanitize::sanitizeTagContent($new_password) . '<br>';
+            $mail_message .= 'Ваш email для входа: ' . Sanitize::sanitizeTagContent($user_obj->getEmail()) . '</p>';
             $mail_message .= "<p>Рекомендуем сменить пароль после входа на сайт.</p>";
-            $mail_message .= '<p>' . $site_domain . "</p>";
+            $mail_message .= '<p>' . Sanitize::sanitizeTagContent($site_domain) . '</p>';
 
             $subject = "Смена пароля на сайте " . $site_name;
 

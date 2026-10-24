@@ -6,6 +6,7 @@ use DI\Attribute\Inject;
 use Fig\Http\Message\StatusCodeInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use WebSK\Auth\Auth;
 use WebSK\Auth\AuthConfig;
 use WebSK\Auth\User\User;
 use WebSK\Auth\User\UserRoutes;
@@ -48,16 +49,21 @@ class UserListHandler extends BaseHandler
      */
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
     {
+        $new_user = new User();
+        $new_user->setPassw(
+            Auth::hashPassword($this->user_service->generatePassword(UserService::PASSWORD_LENGTH))
+        );
+
         $crud_table_obj = $this->crud_service->createTable(
             User::class,
             $this->crud_service->createForm(
                 'user_create',
-                new User(),
+                $new_user,
                 [
                     new CRUDFormRow('Имя на сайте', new CRUDFormWidgetInput(User::_NAME, false, true)),
                     new CRUDFormRow('Имя', new CRUDFormWidgetInput(User::_FIRST_NAME)),
                     new CRUDFormRow('Фамилия', new CRUDFormWidgetInput(User::_LAST_NAME)),
-                    new CRUDFormRow('Email', new CRUDFormWidgetInput(User::_EMAIL, false, true))
+                    new CRUDFormRow('Email', new CRUDFormWidgetInput(User::_EMAIL, false, true)),
                 ],
                 function(\WebSK\Entity\InterfaceEntity $user_obj): string {
                     if (!$user_obj instanceof User) {
@@ -100,9 +106,9 @@ class UserListHandler extends BaseHandler
             CRUDTable::FILTERS_POSITION_INLINE
         );
 
-        $content_html = '<div style="padding: 10px 0;"><ul class="nav nav-tabs">
-          <li role="presentation" class="active"><a href="#">Пользователи</a></li>
-          <li role="presentation"><a href="' . $this->urlFor(UserRoutes::ROUTE_NAME_ADMIN_ROLE_LIST)  . '">Роли пользователей</a></li>
+        $content_html = '<div class="py-2"><ul class="nav nav-tabs">
+          <li class="nav-item"><a class="nav-link active" aria-current="page" href="#">Пользователи</a></li>
+          <li class="nav-item"><a class="nav-link" href="' . $this->urlFor(UserRoutes::ROUTE_NAME_ADMIN_ROLE_LIST)  . '">Роли пользователей</a></li>
         </ul></div>';
 
         try {
@@ -113,7 +119,7 @@ class UserListHandler extends BaseHandler
         } catch (\Exception $e) {
             Messages::setError($e->getMessage());
             return $response->withHeader('Location', $this->urlFor(UserRoutes::ROUTE_NAME_ADMIN_USER_LIST))
-                ->withStatus(StatusCodeInterface::STATUS_TEMPORARY_REDIRECT);
+                ->withStatus(StatusCodeInterface::STATUS_SEE_OTHER);
         }
 
         $content_html .= $crud_table_obj->html($request);

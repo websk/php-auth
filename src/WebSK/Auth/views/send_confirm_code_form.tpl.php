@@ -6,31 +6,32 @@ use WebSK\Slim\Router;
 
 ?>
 
-<form action="<?php echo Router::urlFor(AuthRoutes::ROUTE_NAME_AUTH_SEND_CONFIRM_CODE); ?>" method="post" class="form-horizontal">
-    <div class="form-group">
-        <label class="col-md-2 control-label">Email</label>
+<form action="<?= Router::urlFor(AuthRoutes::ROUTE_NAME_AUTH_SEND_CONFIRM_CODE) ?>" method="post">
+    <div class="row mb-3">
+        <label for="confirm_code_email" class="col-md-2 col-form-label">Email</label>
         <div class="col-md-10">
-            <input type="text" name="email" class="form-control">
-            <span class="help-block">Введите адрес электронной почты, который вы указывали при регистрации</span>
+            <input id="confirm_code_email" type="email" name="email" class="form-control" aria-describedby="confirm_code_email_help" autocomplete="email" required>
+            <div id="confirm_code_email_help" class="form-text">Введите адрес электронной почты, который вы указывали при регистрации</div>
         </div>
     </div>
 
-    <div class="form-group">
-        <div class="col-md-offset-2 col-md-10">
-            <img src="<?php echo Router::urlFor(CaptchaRoutes::ROUTE_NAME_CAPTCHA_GENERATE); ?>" alt="Введите этот защитный код">
-            <input type="text" size="5" name="captcha" class="form-control">
-            <span class="help-block">Введите код, изображенный на картинке</span>
+    <div class="row mb-3">
+        <label for="confirm_code_captcha" class="col-md-2 col-form-label">Защитный код</label>
+        <div class="col-md-10">
+            <img src="<?= Router::urlFor(CaptchaRoutes::ROUTE_NAME_CAPTCHA_GENERATE) ?>" class="d-block mb-2" alt="Изображение защитного кода">
+            <input id="confirm_code_captcha" type="text" name="captcha" class="form-control" aria-describedby="confirm_code_captcha_help" autocomplete="off" required>
+            <div id="confirm_code_captcha_help" class="form-text">Введите код, изображённый на картинке</div>
         </div>
     </div>
 
-    <div class="form-group">
-        <div class="col-md-offset-2 col-md-10">
+    <div class="row mb-3">
+        <div class="offset-md-2 col-md-10">
             <button type="submit" class="btn btn-primary">Получить ссылку</button>
         </div>
     </div>
 
-    <div class="form-group">
-        <div class="col-md-offset-2 col-md-10">
+    <div class="row mb-3">
+        <div class="offset-md-2 col-md-10">
             <a href="<?php echo Router::urlFor(AuthRoutes::ROUTE_NAME_AUTH_REGISTRATION_FORM); ?>">Регистрация</a>
         </div>
     </div>

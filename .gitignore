@@ -2,5 +2,7 @@
 .idea/
 .phpunit.cache/
 config/config.php
+/node_modules/
+/public/assets/
 /public/files
 vendor/

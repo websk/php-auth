@@ -9,6 +9,37 @@ diffs and commit history.
 
 ## Unreleased
 
+## 4.0.0 - 2026-10-24
+
+### Added
+
+- Added a pinned npm asset pipeline for Bootstrap 5, jQuery, jQuery UI,
+  jQuery Validation, Font Awesome, Blueimp File Upload, and WebSK CRUD styles.
+- Added reproducibility checks for generated frontend assets.
+- Added regression coverage for administrator user-creation failures and safe
+  user-image HTML rendering.
+
+### Changed
+
+- Updated `websk/php-crud` from 3.x to 4.0.0.
+- Migrated the demo layouts, authentication forms, and administrator tabs from
+  Bootstrap 3 markup to Bootstrap 5.
+- Replaced frontend CDN dependencies with locally built assets.
+- Reworked the English README with complete installation, integration,
+  configuration, database, CLI, Docker, asset, and verification instructions.
+- Improved form labels, autocomplete metadata, required fields, CAPTCHA help,
+  responsive layout behavior, and registration password confirmation.
+
+### Fixed
+
+- Prevented repeated POST requests when administrator user creation fails by
+  returning `303 See Other` instead of `307 Temporary Redirect`.
+- Corrected administrator user creation to persist a securely hashed random
+  password without exposing it in a hidden form field.
+- Escaped dynamic layout, breadcrumb, user-image, and email HTML values.
+- Hid the logout link from unauthenticated visitors and corrected invalid HTML5
+  metadata and page structure.
+
 ## 3.0.0 - 2026-10-17
 
 ### Added
@@ -290,5 +321,6 @@ diffs and commit history.
 - GitHub Release bodies are empty except for 2.0.4, whose body states
   `phpmailer update`.
 
-[Unreleased]: https://github.com/websk/php-auth/compare/3.0.0...HEAD
+[Unreleased]: https://github.com/websk/php-auth/compare/4.0.0...HEAD
+[4.0.0]: https://github.com/websk/php-auth/compare/3.0.0...4.0.0
 [3.0.0]: https://github.com/websk/php-auth/compare/2.4.10...3.0.0

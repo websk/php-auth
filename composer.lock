@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "03a8d35567d8aeb9b4afe437527f7595",
+    "content-hash": "e5e634a9162791fd4c31753bf89998ba",
     "packages": [
         {
             "name": "fig/http-message-util",
@@ -1573,16 +1573,16 @@
         },
         {
             "name": "websk/php-crud",
-            "version": "3.0.0",
+            "version": "4.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/websk/php-crud.git",
-                "reference": "bcbaf8bee4abea52eb2d9c83b7409fc031919e51"
+                "reference": "bd91e1b1a7ecb13316f93d90dbb2b7967293f109"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/websk/php-crud/zipball/bcbaf8bee4abea52eb2d9c83b7409fc031919e51",
-                "reference": "bcbaf8bee4abea52eb2d9c83b7409fc031919e51",
+                "url": "https://api.github.com/repos/websk/php-crud/zipball/bd91e1b1a7ecb13316f93d90dbb2b7967293f109",
+                "reference": "bd91e1b1a7ecb13316f93d90dbb2b7967293f109",
                 "shasum": ""
             },
             "require": {
@@ -1619,9 +1619,9 @@
             "description": "CRUD",
             "support": {
                 "issues": "https://github.com/websk/php-crud/issues",
-                "source": "https://github.com/websk/php-crud/tree/3.0.0"
+                "source": "https://github.com/websk/php-crud/tree/4.0.0"
             },
-            "time": "2026-10-12T08:39:23+00:00"
+            "time": "2026-10-24T04:41:30+00:00"
         },
         {
             "name": "websk/php-db",

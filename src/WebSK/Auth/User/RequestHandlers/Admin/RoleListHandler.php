@@ -86,9 +86,9 @@ class RoleListHandler extends BaseHandler
             return $crud_form_response;
         }
 
-        $content_html = '<div style="padding: 10px 0;"><ul class="nav nav-tabs">
-          <li role="presentation"><a href="' . $this->urlFor(UserRoutes::ROUTE_NAME_ADMIN_USER_LIST)  . '">Пользователи</a></li>
-          <li role="presentation" class="active"><a href="#">Роли пользователей</a></li>
+        $content_html = '<div class="py-2"><ul class="nav nav-tabs">
+          <li class="nav-item"><a class="nav-link" href="' . $this->urlFor(UserRoutes::ROUTE_NAME_ADMIN_USER_LIST)  . '">Пользователи</a></li>
+          <li class="nav-item"><a class="nav-link active" aria-current="page" href="#">Роли пользователей</a></li>
         </ul></div>';
 
         $content_html .= $crud_table_obj->html($request);
