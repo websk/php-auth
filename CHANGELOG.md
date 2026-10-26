@@ -9,6 +9,22 @@ diffs and commit history.
 
 ## Unreleased
 
+## 4.0.1 - 2026-10-26
+
+### Changed
+
+- Updated `websk/php-crud` to 4.0.1 and PHPStan to 2.3.2.
+- Switched the demo layout to the canonical Bootstrap JavaScript bundle.
+
+### Fixed
+
+- Published the Bootstrap JavaScript and CSS source maps and verified referenced
+  maps during asset builds.
+- Added the demo favicon to prevent the browser's default `/favicon.ico` request
+  from returning `404 Not Found`.
+- Integrated the CRUD 4.0.1 accessibility, validation, responsive-table, and
+  Tokenize2 placeholder fixes into the generated demo assets.
+
 ## 4.0.0 - 2026-10-24
 
 ### Added
@@ -321,6 +337,7 @@ diffs and commit history.
 - GitHub Release bodies are empty except for 2.0.4, whose body states
   `phpmailer update`.
 
-[Unreleased]: https://github.com/websk/php-auth/compare/4.0.0...HEAD
+[Unreleased]: https://github.com/websk/php-auth/compare/4.0.1...HEAD
+[4.0.1]: https://github.com/websk/php-auth/compare/4.0.0...4.0.1
 [4.0.0]: https://github.com/websk/php-auth/compare/3.0.0...4.0.0
 [3.0.0]: https://github.com/websk/php-auth/compare/2.4.10...3.0.0

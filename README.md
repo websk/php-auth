@@ -28,7 +28,7 @@ and [mkcert](https://github.com/FiloSottile/mkcert). Its PHP-FPM image is pinned
 to PHP 8.5.11.
 
 The current stack uses Slim 4.15, PHP-DI 7 with attributes, WebSK DB and Entity
-3.x, WebSK CRUD 4.x, and WebSK View 3.1.x.
+3.x, WebSK CRUD 4.0.x, and WebSK View 3.1.x.
 
 ## Installation
 
@@ -332,6 +332,11 @@ npm run check:assets
 
 Host applications may use their own asset pipeline, but the templates and CRUD
 widgets require compatible copies of these libraries.
+
+The demo loads the canonical Bootstrap bundle from
+`/assets/libraries/bootstrap/js/bootstrap.bundle.min.js`. The build retains
+`bootstrap.min.js` as a compatibility alias and publishes the referenced
+Bootstrap JavaScript and CSS source maps.
 
 ## Development and verification
 

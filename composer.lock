@@ -1573,16 +1573,16 @@
         },
         {
             "name": "websk/php-crud",
-            "version": "4.0.0",
+            "version": "4.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/websk/php-crud.git",
-                "reference": "bd91e1b1a7ecb13316f93d90dbb2b7967293f109"
+                "reference": "40f25f592a3b51fd6dc81ac9dd6e6527116faf7c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/websk/php-crud/zipball/bd91e1b1a7ecb13316f93d90dbb2b7967293f109",
-                "reference": "bd91e1b1a7ecb13316f93d90dbb2b7967293f109",
+                "url": "https://api.github.com/repos/websk/php-crud/zipball/40f25f592a3b51fd6dc81ac9dd6e6527116faf7c",
+                "reference": "40f25f592a3b51fd6dc81ac9dd6e6527116faf7c",
                 "shasum": ""
             },
             "require": {
@@ -1619,9 +1619,9 @@
             "description": "CRUD",
             "support": {
                 "issues": "https://github.com/websk/php-crud/issues",
-                "source": "https://github.com/websk/php-crud/tree/4.0.0"
+                "source": "https://github.com/websk/php-crud/tree/4.0.1"
             },
-            "time": "2026-10-24T04:41:30+00:00"
+            "time": "2026-10-26T17:32:20+00:00"
         },
         {
             "name": "websk/php-db",
@@ -2121,11 +2121,11 @@
         },
         {
             "name": "phpstan/phpstan",
-            "version": "2.3.1",
+            "version": "2.3.2",
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/6155239b488e95d26d1ebd95c6b4bb294d7f09db",
-                "reference": "6155239b488e95d26d1ebd95c6b4bb294d7f09db",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/18bc23a0682f08591529377d271b5c4dfe9ed1dd",
+                "reference": "18bc23a0682f08591529377d271b5c4dfe9ed1dd",
                 "shasum": ""
             },
             "require": {
@@ -2181,7 +2181,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-10-08T21:09:11+00:00"
+            "time": "2026-10-24T11:36:00+00:00"
         },
         {
             "name": "phpunit/php-code-coverage",
